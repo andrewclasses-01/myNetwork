@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bảng tin · Andrew Classes Network</title>
+<link rel="icon" href="assets/avatar-tron.jpg">
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="css/nw.css?v=1">
+<link rel="preconnect" href="https://firestore.googleapis.com">
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+</head>
+<body>
+<main class="main">
+  <section>
+    <div id="soan" style="margin-bottom:14px"></div>
+    <div id="dong"></div>
+  </section>
+  <aside class="cot-phu">
+    <div class="card o" id="oLop"><h3>Lớp của em</h3><div class="ds-nguoi"><div class="xoay"></div></div></div>
+    <div class="card o" id="oThay"><h3>Thầy</h3><div class="ds-nguoi"></div></div>
+    <div class="card o">
+      <h3>Nếp của mạng</h3>
+      <p class="tiny" style="line-height:1.6;margin:0">• Nói chuyện lịch sự, tôn trọng bạn.<br>• Không đăng ảnh/thông tin riêng của người khác.<br>• Thấy gì không ổn thì bấm <b>Báo cáo với thầy</b> ở menu bài.<br>• Thầy có thể ẩn bài không phù hợp.</p>
+      <p class="tiny" style="margin:10px 0 0" id="verFoot"></p>
+    </div>
+  </aside>
+</main>
+
+<script src="config.js?v=1"></script>
+<script src="js/loi.js?v=1"></script>
+<script src="js/thanh.js?v=1"></script>
+<script src="js/bai.js?v=1"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = NW.$, IC = NW.IC, an = NW.chuAnToan;
+  $('#verFoot').textContent = 'Andrew Classes Network · v' + NW.CFG.PHIEN_BAN;
+
+  NW.dungThanh({ tab: 'bangTin' }).then(function (ph) {
+    var toi = NW.toi;
+    var dong = NW.Bai.dongBai({ hop: $('#dong'), loai: 'bangTin' });
+    NW.Bai.soan({ hop: $('#soan'), sauKhiDang: function (bai, id) { dong.chenDau(bai, id); } });
+
+    function veNguoi(hop, ds) {
+      hop.innerHTML = ds.length ? ds.map(function (n) {
+        return '<div class="nguoi"><a href="canhan.html?uid=' + an(n.uid) + '" style="display:flex;align-items:center;gap:10px;color:inherit;flex:1;min-width:0">' + NW.avHtml(n, 'nho') +
+          '<span><span class="ten">' + an(n.ten) + '</span><br><span class="lop">' + an(n.vaiTro === 'gv' ? 'THẦY' : (n.lop || '')) + '</span></span></a>' +
+          '<a class="cuoi nut-tron" href="tinnhan.html?voi=' + an(n.uid) + '" title="Nhắn tin" style="width:32px;height:32px">' + IC.tinNhan + '</a></div>';
+      }).join('') : '<div class="tiny">Chưa có ai.</div>';
+    }
+    if (ph.banThu) {
+      veNguoi($('#oLop .ds-nguoi'), [{ uid: 'hs_1', ten: 'MINH ANH', lop: 'A1C' }, { uid: 'hs_2', ten: 'BẢO NAM', lop: 'A1C' }]);
+      veNguoi($('#oThay .ds-nguoi'), [{ uid: 'gv', ten: 'Thầy Andrew', vaiTro: 'gv', anh: 'assets/avatar-tron.jpg' }]);
+      return;
+    }
+    var lops = toi.laThay ? [] : (toi.cacLop || [toi.lop]);
+    if (!lops.length) { $('#oLop').hidden = true; }
+    else {
+      Promise.all(lops.map(function (l) { return NW.nguoiTheoLop(l).catch(function () { return []; }); })).then(function (ds) {
+        var gop = [], co = {};
+        ds.forEach(function (d) { d.forEach(function (n) { if (n.uid !== toi.uid && !co[n.uid]) { co[n.uid] = 1; gop.push(n); } }); });
+        $('#oLop h3').textContent = lops.length > 1 ? 'Lớp của em (' + lops.join(' · ') + ')' : 'Lớp ' + lops[0];
+        veNguoi($('#oLop .ds-nguoi'), gop);
+      });
+    }
+    NW.dsThay().then(function (ds) { veNguoi($('#oThay .ds-nguoi'), ds.filter(function (n) { return n.uid !== toi.uid; })); if (toi.laThay) $('#oThay').hidden = true; });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# khoá quản trị — KHÔNG BAO GIỜ lên git
+firebase-admin.json
+*service-account*.json
+tools/*.key.json
+
+# thư viện node của công cụ
+node_modules/
+tools/package-lock.json
+
+# rác máy
+Thumbs.db
+desktop.ini
+.DS_Store
+*.log

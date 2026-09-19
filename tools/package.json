@@ -1,0 +1,9 @@
+{
+  "name": "mynetwork-tools",
+  "private": true,
+  "type": "module",
+  "description": "Công cụ quản trị myNetwork: tạo tài khoản học sinh từ lop.json, đặt lại mật khẩu, kiểm luật.",
+  "dependencies": {
+    "firebase-admin": "^13.0.0"
+  }
+}

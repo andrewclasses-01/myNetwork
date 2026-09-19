@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Khám phá · Andrew Classes Network</title>
+<link rel="icon" href="assets/avatar-tron.jpg">
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="css/nw.css?v=1">
+<link rel="preconnect" href="https://firestore.googleapis.com">
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+</head>
+<body>
+<main class="main hep">
+  <section>
+    <div class="card o">
+      <h3>Tìm bạn trong mạng</h3>
+      <div class="tim-o" id="timO"><input type="search" id="tim" placeholder="Gõ tên bạn (không cần dấu)…" autocomplete="off"></div>
+      <div class="chip-lop" id="chipLop"></div>
+      <div class="luoi-nguoi" id="luoi"><div class="trong" style="grid-column:1/-1">Chọn một lớp hoặc gõ tên để tìm.</div></div>
+    </div>
+    <div class="card o" id="oBanBe" hidden style="margin-top:14px"><h3>Lời mời kết bạn</h3><div class="ds-nguoi" id="dsMoi"></div></div>
+  </section>
+</main>
+<script src="config.js?v=1"></script>
+<script src="js/loi.js?v=1"></script>
+<script src="js/thanh.js?v=1"></script>
+<script src="js/chat.js?v=1"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = NW.$, $$ = NW.$$, IC = NW.IC, an = NW.chuAnToan, CFG = NW.CFG;
+  $('#timO').insertAdjacentHTML('afterbegin', IC.timKiem);
+
+  NW.dungThanh({ tab: 'khamPha' }).then(async function (ph) {
+    var toi = NW.toi;
+    var luoi = $('#luoi'), chips = $('#chipLop'), tim = $('#tim');
+    var lopChon = '', dsLop = [];
+
+    function veLuoi(ds) {
+      luoi.innerHTML = ds.length ? ds.map(function (n) {
+        return '<a class="the-nguoi" href="canhan.html?uid=' + an(n.uid) + '">' + NW.avHtml(n, 'to') +
+          '<span class="ten">' + an(n.ten) + '</span><span class="lop">' + an(n.vaiTro === 'gv' ? 'THẦY' : (n.lop || '')) + '</span></a>';
+      }).join('') : '<div class="trong" style="grid-column:1/-1">Không thấy ai.</div>';
+    }
+    function veChips() {
+      chips.innerHTML = dsLop.map(function (l) {
+        return '<button class="chip' + (l.ma === lopChon ? ' chon' : '') + '" data-ma="' + an(l.ma) + '">' + an(l.ten || l.ma) + '</button>';
+      }).join('');
+      $$('.chip', chips).forEach(function (c) { c.onclick = function () { lopChon = c.getAttribute('data-ma'); tim.value = ''; veChips(); taiLop(); }; });
+    }
+    async function taiLop() {
+      luoi.innerHTML = '<div class="xoay" style="grid-column:1/-1"></div>';
+      try { veLuoi((await NW.nguoiTheoLop(lopChon)).filter(function (n) { return n.uid !== toi.uid; })); }
+      catch (e) { luoi.innerHTML = '<div class="trong" style="grid-column:1/-1">' + an(NW.chuLoiKho(e)) + '</div>'; }
+    }
+    async function timTen() {
+      var q = NW.khongDau(tim.value);
+      if (!q) { if (lopChon) taiLop(); return; }
+      if (NW.laBanThu()) { veLuoi([{ uid: 'hs_1', ten: 'MINH ANH', lop: 'A1C' }].filter(function (n) { return NW.khongDau(n.ten).indexOf(q) >= 0; })); return; }
+      luoi.innerHTML = '<div class="xoay" style="grid-column:1/-1"></div>';
+      try {
+        var f = await NW.fb();
+        // Tìm theo TIỀN TỐ tên thường ("minh a" → MINH ANH). Tên thường = họ tên bỏ dấu viết thường.
+        var qr = f.fs.query(f.fs.collection(f.db, 'nwUsers'), f.fs.where('tenThuong', '>=', q), f.fs.where('tenThuong', '<=', q + ''), f.fs.limit(24));
+        var snap = await f.fs.getDocs(qr); var ds = [];
+        snap.forEach(function (d) { var x = d.data(); if (d.id !== toi.uid) ds.push({ uid: d.id, ten: x.ten, anh: x.anh, lop: x.lop, vaiTro: x.vaiTro }); });
+        // Tên trong lop.json hay là TÊN GỌI ("MINH ANH") nên tiền tố thường đủ; thêm lọc chứa trong các lớp đã đệm.
+        veLuoi(ds);
+      } catch (e) { luoi.innerHTML = '<div class="trong" style="grid-column:1/-1">' + an(NW.chuLoiKho(e)) + '</div>'; }
+    }
+    tim.oninput = function () { clearTimeout(tim._t); tim._t = setTimeout(timTen, 350); };
+
+    if (ph.banThu) { dsLop = [{ ma: 'A1C', ten: 'A1-C' }, { ma: 'B2B', ten: 'B2-B' }]; lopChon = 'A1C'; veChips(); veLuoi([{ uid: 'hs_1', ten: 'MINH ANH', lop: 'A1C' }, { uid: 'hs_2', ten: 'BẢO NAM', lop: 'A1C' }]); return; }
+    dsLop = await NW.Chat.dsLop();
+    if (!dsLop.length) dsLop = (toi.cacLop || [toi.lop]).filter(Boolean).map(function (m) { return { ma: m, ten: m }; });
+    lopChon = (toi.cacLop && toi.cacLop[0]) || toi.lop || (dsLop[0] && dsLop[0].ma) || '';
+    if (dsLop.every(function (l) { return l.ma !== lopChon; }) && lopChon) dsLop.unshift({ ma: lopChon, ten: lopChon });
+    veChips(); if (lopChon) taiLop();
+
+    // ---- Kết bạn (sẵn cho tương lai — bật CFG.BAT_KET_BAN) ----
+    if (CFG.BAT_KET_BAN) {
+      $('#oBanBe').hidden = false;
+      try {
+        var f = await NW.fb();
+        var qr = f.fs.query(f.fs.collection(f.db, 'nwBanBe'), f.fs.where('thanhVien', 'array-contains', toi.uid), f.fs.where('trangThai', '==', 'cho'), f.fs.limit(50));
+        var snap = await f.fs.getDocs(qr); var ds = [];
+        snap.forEach(function (d) { var x = d.data(); if (x.tu !== toi.uid) ds.push(Object.assign({ id: d.id }, x)); });
+        $('#dsMoi').innerHTML = ds.length ? ds.map(function (m) {
+          var k = m.tu; var t = (m.tv || {})[k] || { ten: '?' };
+          return '<div class="nguoi">' + NW.avHtml(t, 'nho') + '<span style="flex:1"><span class="ten">' + an(t.ten) + '</span><br><span class="lop">' + an(t.lop || '') + '</span></span>' +
+            '<button class="btn primary nho" data-ok="' + an(m.id) + '">Đồng ý</button><button class="btn soft nho" data-bo="' + an(m.id) + '">Bỏ</button></div>';
+        }).join('') : '<div class="tiny">Không có lời mời nào.</div>';
+        $$('[data-ok]', $('#dsMoi')).forEach(function (b) { b.onclick = async function () {
+          var m = ds.filter(function (x) { return x.id === b.getAttribute('data-ok'); })[0];
+          try { await f.fs.updateDoc(f.fs.doc(f.db, 'nwBanBe', m.id), { trangThai: 'ok', luc: Date.now() }); NW.guiThongBao(m.tu, { loai: 'dongY', link: 'canhan.html?uid=' + toi.uid }); b.parentNode.remove(); NW.toast('Đã kết bạn.'); }
+          catch (e) { NW.toast(NW.chuLoiKho(e), true); }
+        }; });
+        $$('[data-bo]', $('#dsMoi')).forEach(function (b) { b.onclick = async function () {
+          try { await f.fs.deleteDoc(f.fs.doc(f.db, 'nwBanBe', b.getAttribute('data-bo'))); b.parentNode.remove(); } catch (e) { NW.toast(NW.chuLoiKho(e), true); }
+        }; });
+      } catch (e) { $('#dsMoi').innerHTML = '<div class="tiny">' + an(NW.chuLoiKho(e)) + '</div>'; }
+    }
+  });
+})();
+</script>
+</body>
+</html>

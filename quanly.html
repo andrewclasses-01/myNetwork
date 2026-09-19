@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quản lý · Andrew Classes Network</title>
+<link rel="icon" href="assets/avatar-tron.jpg">
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="css/nw.css?v=1">
+</head>
+<body>
+<main class="main mot">
+  <div class="ql-tab">
+    <button class="chip chon" data-tab="baoCao">Báo cáo</button>
+    <button class="chip" data-tab="daAn">Bài đã ẩn</button>
+    <button class="chip" data-tab="tuCam">Từ cấm</button>
+    <button class="chip" data-tab="taiKhoan">Tài khoản</button>
+    <button class="chip" data-tab="lop">Lớp</button>
+  </div>
+  <div class="card o" id="khu"></div>
+  <div id="dong" style="margin-top:14px"></div>
+</main>
+<script src="config.js?v=1"></script>
+<script src="js/loi.js?v=1"></script>
+<script src="js/thanh.js?v=1"></script>
+<script src="js/bai.js?v=1"></script>
+<script src="js/chat.js?v=1"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = NW.$, $$ = NW.$$, IC = NW.IC, an = NW.chuAnToan;
+  NW.dungThanh({ tab: '' }).then(async function (ph) {
+    if (!NW.toi.laThay) { location.replace('bangtin.html'); return; }
+    var khu = $('#khu'), dong = $('#dong');
+    var f = ph.banThu ? null : await NW.fb();
+
+    $$('.ql-tab .chip').forEach(function (c) { c.onclick = function () { $$('.ql-tab .chip').forEach(function (x) { x.classList.toggle('chon', x === c); }); mo(c.getAttribute('data-tab')); }; });
+    function mo(tab) { dong.innerHTML = ''; khu.innerHTML = '<div class="xoay"></div>'; ({ baoCao: veBaoCao, daAn: veDaAn, tuCam: veTuCam, taiKhoan: veTaiKhoan, lop: veLop })[tab](); }
+
+    // ---- Báo cáo ----
+    async function veBaoCao() {
+      if (!f) { khu.innerHTML = '<div class="trong">Bàn thử: không có kho.</div>'; return; }
+      try {
+        var snap = await f.fs.getDocs(f.fs.query(f.fs.collection(f.db, 'nwBaoCao'), f.fs.orderBy('luc', 'desc'), f.fs.limit(60)));
+        var ds = []; snap.forEach(function (d) { ds.push(Object.assign({ id: d.id }, d.data())); });
+        khu.innerHTML = '<h3>Báo cáo từ học sinh (' + ds.length + ')</h3>' + (ds.length ? '<table class="bang"><tr><th>Lúc</th><th>Ai báo</th><th>Bài của</th><th>Lý do</th><th>Tóm tắt</th><th></th></tr>' +
+          ds.map(function (b) {
+            return '<tr data-id="' + an(b.id) + '"><td>' + an(NW.chuGio(b.luc, 'day')) + '</td><td>' + an(b.tuTen) + '</td><td>' + an(b.tenBai) + '</td>' +
+              '<td>' + an(b.lyDo) + (b.chu ? '<br><span class="tiny">' + an(b.chu) + '</span>' : '') + '</td><td class="tiny">' + an(b.tomTat) + '</td>' +
+              '<td style="white-space:nowrap"><span class="tag ' + (b.trangThai === 'moi' ? 'moi' : 'xong') + '">' + (b.trangThai === 'moi' ? 'MỚI' : 'ĐÃ XỬ LÝ') + '</span><br>' +
+              '<a class="btn soft nho" href="baidang.html?id=' + an(b.baiId) + '" target="_blank">Xem bài</a> ' +
+              '<button class="btn soft nho" data-an="' + an(b.baiId) + '">Ẩn bài</button> ' +
+              (b.trangThai === 'moi' ? '<button class="btn primary nho" data-xong="' + an(b.id) + '">Đã xử lý</button>' : '') + '</td></tr>';
+          }).join('') + '</table>' : '<div class="trong">Chưa có báo cáo nào.</div>');
+        $$('[data-an]', khu).forEach(function (b) { b.onclick = async function () { try { await f.fs.updateDoc(f.fs.doc(f.db, 'nwPosts', b.getAttribute('data-an')), { an: true }); NW.toast('Đã ẩn bài.'); } catch (e) { NW.toast(NW.chuLoiKho(e), true); } }; });
+        $$('[data-xong]', khu).forEach(function (b) { b.onclick = async function () { try { await f.fs.updateDoc(f.fs.doc(f.db, 'nwBaoCao', b.getAttribute('data-xong')), { trangThai: 'xong', xuLyLuc: Date.now() }); veBaoCao(); } catch (e) { NW.toast(NW.chuLoiKho(e), true); } }; });
+      } catch (e) { khu.innerHTML = '<div class="trong">' + an(NW.chuLoiKho(e)) + '</div>'; }
+    }
+    // ---- Bài đã ẩn ----
+    function veDaAn() {
+      khu.innerHTML = '<h3>Bài đang ẩn</h3><p class="tiny" style="margin:0">Bấm menu ⋯ trên bài để hiện lại hoặc xoá hẳn.</p>';
+      NW.Bai.dongBai({ hop: dong, loai: 'daAn', chuTrong: 'Không có bài nào đang ẩn.' });
+    }
+    // ---- Từ cấm ----
+    async function veTuCam() {
+      var ds = [];
+      if (f) { try { var s = await f.fs.getDoc(f.fs.doc(f.db, 'nwCauHinh', 'tuCam')); ds = s.exists() ? (s.data().ds || []) : []; } catch (e) { } }
+      function ve() {
+        khu.innerHTML = '<h3>Từ cấm thêm (ngoài danh sách sẵn trong config.js)</h3><div id="chips">' +
+          ds.map(function (t, i) { return '<span class="chip-tu">' + an(t) + '<button data-i="' + i + '" aria-label="Bỏ">×</button></span>'; }).join('') + '</div>' +
+          '<div style="display:flex;gap:8px;margin-top:12px"><input type="text" id="tuMoi" placeholder="Thêm từ/cụm…" style="flex:1"><button class="btn primary" id="tuThem">Thêm</button></div>' +
+          '<p class="tiny" style="margin:10px 0 0">Ô soạn bài/bình luận/tin nhắn tự chặn khi gặp từ này (so theo từ, bỏ dấu). Có hiệu lực với học sinh sau khi mở lại trang.</p>';
+        $$('[data-i]', khu).forEach(function (b) { b.onclick = function () { ds.splice(+b.getAttribute('data-i'), 1); luu(); }; });
+        $('#tuThem').onclick = function () { var t = $('#tuMoi').value.trim(); if (!t) return; ds.push(t); luu(); };
+        $('#tuMoi').onkeydown = function (e) { if (e.key === 'Enter') $('#tuThem').click(); };
+      }
+      async function luu() { ve(); if (!f) return; try { await f.fs.setDoc(f.fs.doc(f.db, 'nwCauHinh', 'tuCam'), { ds: ds, luc: Date.now() }); sessionStorage.removeItem('nwTuCam'); } catch (e) { NW.toast(NW.chuLoiKho(e), true); } }
+      ve();
+    }
+    // ---- Tài khoản ----
+    async function veTaiKhoan() {
+      var dsLop = f ? await NW.Chat.dsLop() : [];
+      khu.innerHTML = '<h3>Tài khoản học sinh</h3><div class="chip-lop" id="qlChip">' + dsLop.map(function (l) { return '<button class="chip" data-ma="' + an(l.ma) + '">' + an(l.ten || l.ma) + '</button>'; }).join('') + '</div>' +
+        '<p class="tiny" style="margin:8px 0">Khoá = em không vào được mạng (bài/tin cũ vẫn còn). Đặt lại mật khẩu: chạy <code>node tools/tao-tai-khoan.mjs --reset &lt;mã số&gt;</code> trên máy thầy (cần khoá quản trị, trang web không làm được).</p><div id="qlDs"></div>';
+      $$('#qlChip .chip').forEach(function (c) { c.onclick = async function () {
+        $$('#qlChip .chip').forEach(function (x) { x.classList.toggle('chon', x === c); });
+        var ds = await NW.nguoiTheoLop(c.getAttribute('data-ma')).catch(function () { return []; });
+        var hop = $('#qlDs');
+        hop.innerHTML = '<table class="bang"><tr><th>Tên</th><th>Mã số</th><th>Lớp</th><th>Đổi MK?</th><th></th></tr>' + ds.map(function (n) {
+          return '<tr data-uid="' + an(n.uid) + '"><td><a href="canhan.html?uid=' + an(n.uid) + '">' + an(n.ten) + '</a></td><td class="tiny">' + an(n.uid) + '</td><td>' + an((n.cacLop || []).join(' · ')) + '</td><td class="tiny" data-mk>…</td><td><button class="btn soft nho" data-khoa>…</button></td></tr>';
+        }).join('') + '</table>';
+        // đọc cờ khoá/phaiDoiMk từng em (một lượt đọc mỗi em — chỉ khi thầy mở tab này)
+        $$('tr[data-uid]', hop).forEach(async function (tr) {
+          var uid = tr.getAttribute('data-uid');
+          var hs = await NW.hoSo(uid, true).catch(function () { return null; }); if (!hs) return;
+          $('[data-mk]', tr).textContent = hs.phaiDoiMk ? 'chưa đổi' : 'đã đổi';
+          var nut = $('[data-khoa]', tr); nut.textContent = hs.khoa ? 'Mở khoá' : 'Khoá'; nut.className = 'btn nho ' + (hs.khoa ? 'primary' : 'nguy');
+          nut.onclick = async function () {
+            try { await f.fs.updateDoc(f.fs.doc(f.db, 'nwUsers', uid), { khoa: !hs.khoa }); hs.khoa = !hs.khoa; nut.textContent = hs.khoa ? 'Mở khoá' : 'Khoá'; nut.className = 'btn nho ' + (hs.khoa ? 'primary' : 'nguy'); NW.toast(hs.khoa ? 'Đã khoá.' : 'Đã mở khoá.'); }
+            catch (e) { NW.toast(NW.chuLoiKho(e), true); }
+          };
+        });
+      }; });
+    }
+    // ---- Lớp ----
+    async function veLop() {
+      var dsLop = f ? await NW.Chat.dsLop() : [];
+      khu.innerHTML = '<h3>Danh sách lớp trên mạng (kho nwCauHinh/lop)</h3>' + (dsLop.length ? '<table class="bang"><tr><th>Mã</th><th>Tên hiện</th></tr>' + dsLop.map(function (l) { return '<tr><td>' + an(l.ma) + '</td><td>' + an(l.ten || '') + '</td></tr>'; }).join('') + '</table>' : '<div class="trong">Chưa có — chạy tools/tao-tai-khoan.mjs sẽ tự ghi.</div>') +
+        '<p class="tiny" style="margin:10px 0 0">Danh sách này do công cụ tạo tài khoản ghi từ lop.json của myLesson. Đổi lớp/thêm em mới ⇒ chạy lại công cụ.</p>';
+    }
+    mo('baoCao');
+  });
+})();
+</script>
+</body>
+</html>
