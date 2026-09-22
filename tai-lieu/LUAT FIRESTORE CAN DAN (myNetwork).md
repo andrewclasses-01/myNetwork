@@ -71,13 +71,14 @@
 
 ```
     match /nwPosts/{id} {
-      allow read: if nwVao();
+      // v0.4.0: bài "Chỉ mình tôi" chỉ tác giả + thầy đọc được; các phạm vi khác lọc ở giao diện (Bai.xemDuoc)
+      allow read: if nwVao() && (resource.data.pham != 'minh' || resource.data.uid == nwToi() || laThay());
       allow create: if nwVao() && request.resource.data.uid == nwToi()
         && request.resource.data.keys().hasOnly(['uid', 'tacGia', 'chu', 'anh', 'pham', 'lop', 'luc',
              'an', 'ghim', 'camXuc', 'soBinhLuan', 'soChiaSe', 'chiaSeTu', 'goc'])
         && request.resource.data.chu is string && request.resource.data.chu.size() <= 2000
         && request.resource.data.anh is list && request.resource.data.anh.size() <= 4
-        && request.resource.data.pham in ['mang', 'lop']
+        && request.resource.data.pham in ['mang', 'ban', 'lop', 'minh']   // v0.4.0: 4 phạm vi
         && request.resource.data.an == false
         && (request.resource.data.ghim == false || laThay())
         && request.resource.data.camXuc.size() == 0
@@ -168,7 +169,7 @@
     }
 ```
 
-## Khối 5 — BẠN BÈ `nwBanBe` (sẵn cho tương lai; hiện `BAT_KET_BAN:false` nên chưa ai ghi)
+## Khối 5 — BẠN BÈ `nwBanBe` — v0.4.0 ĐÃ BẬT (`BAT_KET_BAN:true`): cùng lớp = bạn sẵn, khác lớp phải kết bạn
 
 ```
     match /nwBanBe/{id} {

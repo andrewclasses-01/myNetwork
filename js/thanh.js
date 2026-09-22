@@ -1,5 +1,5 @@
 /* ============================================================
-   thanh.js — THANH TRÊN CÙNG + CỬA VÀO TRANG (v0.2.0)
+   thanh.js — THANH TRÊN CÙNG + CỬA VÀO TRANG (v0.4.0)
 
    Mọi trang (trừ index.html) gọi:
        NW.dungThanh({ tab: 'bangTin' }).then(function (phien) { ... })
@@ -25,7 +25,8 @@
     { ma: 'khamPha', chu: 'KHÁM PHÁ', ic: IC.khamPha, href: 'khampha.html' },
     { ma: 'tinNhan', chu: 'TIN NHẮN', ic: IC.tinNhan, href: 'tinnhan.html' },
     { ma: 'bangTin', chu: 'BẢNG TIN', ic: IC.bangTin, href: 'bangtin.html' },
-    { ma: 'chuong', chu: 'THÔNG BÁO', ic: IC.chuong, href: '#' }
+    { ma: 'chuong', chu: 'THÔNG BÁO', ic: IC.chuong, href: '#' },
+    { ma: 'timKiem', chu: 'TÌM KIẾM', ic: IC.timKiem, href: 'timkiem.html' }   // v0.4.0 thầy chốt: kính lúp CUỐI bên phải
   ];
   var SAO_SVG = '<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg>';
   var LAP = '<path d="M5 0l1.1 3.9L10 5l-3.9 1.1L5 10 3.9 6.1 0 5l3.9-1.1z"/>';

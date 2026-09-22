@@ -9,7 +9,17 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 
 ⭐ Thầy chốt 20/09: **phiên sau THIẾT KẾ THÊM giao diện trước, gắn chức năng thật sau** — chưa dán luật, chưa tạo tài khoản.
 
-## Bản hiện tại — v0.3.2 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+## Bản hiện tại — v0.4.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+
+### v0.4.0 — 22/09/2026: theo mẫu v10→v12 thầy chốt (BẠN BÈ · KHOÁ TRANG · TÌM KIẾM · POP-UP TẠO BÀI · ICON MẢNH)
+- **Thanh**: bộ icon MẢNH (nét 1.55; sách mở · la bàn · bong bóng 3 chấm · ngôi nhà · chuông · **kính lúp CUỐI**) → `timkiem.html` mới.
+- **Tìm kiếm** (`timkiem.html`): Mọi người (tiền tố tên thường) · Bài đăng (60 bài mới nhất, lọc chữ ở máy, chỉ bài em xem được) · Nhóm (nhóm em đang ở).
+- **Tạo bài viết** = pop-up kiểu Facebook (bấm "Em đang nghĩ gì?" hoặc nút ảnh): 4 phạm vi `NW.PHAM` 🌐 Công khai `mang` · 👥 Bạn bè `ban` · 🏫 Chỉ lớp `lop` · 🔒 Chỉ mình tôi `minh`; nhãn + ký hiệu phạm vi trên thẻ bài.
+- **Bạn bè** (`BAT_KET_BAN:true`): cùng lớp = bạn sẵn; khác lớp phải kết bạn (kho `nwBanBe`); `NW.quanHe()` → minh/thay/cunglop/ban/choToi/choHo/la; `NW.dsBanUid()` đệm bạn bè để lọc bài "Bạn bè" (`Bai.xemDuoc`).
+- **Trang cá nhân**: mọi nút = icon TRẮNG không nền nét dày trong bìa (mình: đổi bìa trên phải · sửa + chia sẻ dưới phải; cùng lớp/bạn: nhắn tin + chia sẻ; lạ: kết bạn + chia sẻ; đã mời: đồng hồ; bạn mời em: đồng ý). Chưa là bạn → **KHOÁ**: chỉ bìa/avatar/giới thiệu + thẻ 🔒 "Kết bạn để xem thêm". "Tham gia" chỉ còn ở tab GIỚI THIỆU. Chia sẻ link = sao chép `canhan.html?uid=…`.
+- `tacGia` nhúng thêm `cacLop`. Luật Firestore (tai-lieu): `pham` 4 giá trị; bài `minh` chỉ tác giả/thầy đọc. ⬜ chưa dán.
+- Bàn thử `?thu=1`: `canhan.html?uid=hs_1` cùng lớp · `hs_2` lạ (khoá) · `hs_3` đã bạn · `hs_4` bạn mời em.
+
 
 ### v0.3.2 — 22/09/2026: vá icon gửi bình luận bị cắt (`textarea{display:block}` — khoảng hở inline làm nút gửi tụt đè viền) + `.ic{overflow:visible}`; `?v=5`.
 
@@ -48,7 +58,8 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 | `index.html` | Đăng nhập My ID + mật khẩu · đặt mật khẩu lần đầu · nút Google cho thầy |
 | `bangtin.html` | Ô soạn (chữ + tối đa 4 ảnh + phạm vi Mọi người/Chỉ lớp) + dòng bài phân trang + cột "Lớp của em" |
 | `tinnhan.html` | Danh sách phòng · phòng chat · nhắn mới · tạo nhóm · gửi ảnh · thành viên/rời nhóm |
-| `khampha.html` | Tìm theo tên (bỏ dấu) · lọc theo lớp · (lời mời kết bạn khi bật `BAT_KET_BAN`) |
+| `khampha.html` | Tìm theo tên (bỏ dấu) · lọc theo lớp · lời mời kết bạn |
+| `timkiem.html` | Tìm Mọi người · Bài đăng · Nhóm (v0.4.0) |
 | `canhan.html?uid=` | Bìa rộng · avatar+sao · giới thiệu/sở thích · tab BÀI VIẾT/ẢNH/GIỚI THIỆU · trang bạn: nút icon Nhắn tin/Kết bạn trong bìa |
 | `baidang.html?id=` | Một bài + bình luận (đích của thông báo/chia sẻ) |
 | `quanly.html` | Thầy: báo cáo · bài đã ẩn · từ cấm · khoá tài khoản · danh sách lớp |

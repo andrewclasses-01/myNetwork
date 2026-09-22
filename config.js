@@ -7,7 +7,7 @@ window.NW_CONFIG = {
 
   // Phiên bản — hiện nhỏ ở chân trang / menu. GitHub Pages giữ cache ~10 phút,
   // nhìn số này là biết máy đang chạy bản nào.
-  PHIEN_BAN: '0.3.2',
+  PHIEN_BAN: '0.4.0',
 
   // Tab đầu tiên "TRANG BÀI TẬP" trỏ về myLesson web. Chạy thử trên máy thì trỏ
   // sang bản local của myLesson (nếu đang mở), lên mạng thì domain thật.
@@ -45,7 +45,7 @@ window.NW_CONFIG = {
   // ---- Nhắn tin riêng ----
   // Thầy chốt 20/09/2026: giai đoạn đầu chỉ nhắn được với bạn CÙNG LỚP + thầy.
   // Bật cờ này (và luật Firestore đã có nhánh nwBanBe) là mở nhắn toàn mạng qua KẾT BẠN.
-  BAT_KET_BAN: false,
+  BAT_KET_BAN: true,   // v0.4.0 thầy chốt 22/09: cùng lớp = bạn sẵn, KHÁC LỚP phải kết bạn mới xem trang / nhắn tin
 
   // ---- Từ cấm: ô soạn tự chặn khi gõ (chặn ở giao diện; thầy còn kho
   // nwCauHinh/tuCam trên Firestore để thêm bớt không cần sửa code) ----

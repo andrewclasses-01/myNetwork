@@ -4,7 +4,11 @@
 > + ☰ sidebar phải + điện thoại thanh đáy + bộ cảm xúc huy hiệu SVG + ô soạn thu gọn + vá 2 lỗi `.phu` / `<a>` lồng.
 > Mẫu đã duyệt: `D:\OTHERS\CLAUDE\myNetwork - thiet ke\mau-v4\mau-v4.html` (cổng 8799 trong launch.json phiên Claude).
 > **v0.3.0 (cùng ngày)**: TRANG CÁ NHÂN đã build theo mẫu v8 (`mau-v8\mau-v8.html`, cổng 8803) + 7 cảm xúc Facebook 2D + icon tin nhắn mới.
-> Mảng còn MỞ theo thứ tự thầy nói: **tin nhắn · khám phá · đăng nhập** (chuông đã xong trong thanh).
+> **v0.4.0 (cùng ngày, mẫu v10→v12 cổng 8805–8807)**: thanh 6 icon MẢNH + kính lúp cuối → `timkiem.html` (Mọi người · Bài đăng · Nhóm);
+> pop-up TẠO BÀI VIẾT 4 phạm vi (`NW.PHAM`: mang · ban · lop · minh); LUẬT BẠN BÈ (`BAT_KET_BAN:true`, cùng lớp = bạn sẵn, khác lớp
+> kết bạn, chưa bạn → trang cá nhân KHOÁ chỉ bìa/avatar/giới thiệu); nút đầu trang = icon trắng không nền trong bìa; chia sẻ link.
+> ⚠ Luật Firestore trong `tai-lieu` đã sửa theo (pham 4 giá trị, bài `minh` chỉ tác giả/thầy đọc) — ⬜ chưa dán.
+> Mảng còn MỞ: **tin nhắn · khám phá (gộp với tìm kiếm?) · đăng nhập**.
 > Mục 4 bên dưới: các dòng "Thanh tab" · "Ô soạn" · "Thông báo (chuông)" đã XONG; còn lại vẫn mở.
 
 > Phiên mới đọc file này TRƯỚC, rồi `KE HOACH XAY DUNG.md` (lý do từng quyết định), rồi `README.md`.

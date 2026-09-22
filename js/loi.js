@@ -105,12 +105,12 @@
   // ---------- ICON (Lucide-style, stroke) ----------
   var P = function (d) { return '<svg class="ic" viewBox="0 0 24 24">' + d + '</svg>'; };
   NW.IC = {
-    baiTap: P('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'),
-    bangTin: P('<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>'),
-    tinNhan: P('<path d="M12.5 2.5a8.5 8.5 0 1 1-4.6 15.6L3 21.5l1.6-5.2A8.5 8.5 0 0 1 12.5 2.5z"/><circle cx="8.8" cy="11" r="1.3" fill="currentColor" stroke="none"/><circle cx="12.5" cy="11" r="1.3" fill="currentColor" stroke="none"/><circle cx="16.2" cy="11" r="1.3" fill="currentColor" stroke="none"/>'),  // v0.3.1: vẽ theo mẫu Flaticon "writing" thầy gửi 22/09 — bong bóng tròn, đuôi nhọn dưới trái, 3 chấm đậm
-    khamPha: P('<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>'),
+    baiTap: P('<path d="M2.5 4h5.5a3.5 3.5 0 0 1 3.5 3.5V20a2.5 2.5 0 0 0-2.5-2.5h-6.5z"/><path d="M21.5 4H16a3.5 3.5 0 0 0-3.5 3.5V20a2.5 2.5 0 0 1 2.5-2.5h6.5z"/>'),  // v0.4.0 sách mở
+    bangTin: P('<path d="M3 10.8 12 3.5l9 7.3"/><path d="M5.5 9.3V20.5h13V9.3"/><path d="M10 20.5v-5.5h4v5.5"/>'),  // v0.4.0 ngôi nhà (bảng tin)
+    tinNhan: P('<path d="M12.5 2.5a8.5 8.5 0 1 1-4.6 15.6L3 21.5l1.6-5.2A8.5 8.5 0 0 1 12.5 2.5z"/><circle cx="8.8" cy="11" r="1.2" fill="currentColor" stroke="none"/><circle cx="12.5" cy="11" r="1.2" fill="currentColor" stroke="none"/><circle cx="16.2" cy="11" r="1.2" fill="currentColor" stroke="none"/>'),  // v0.3.1 theo mẫu Flaticon thầy gửi
+    khamPha: P('<circle cx="12" cy="12" r="9.5"/><path d="m15.8 8.2-2.2 5.4-5.4 2.2 2.2-5.4z"/>'),
     caNhan: P('<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'),
-    chuong: P('<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>'),
+    chuong: P('<path d="M6.2 8.5a5.8 5.8 0 0 1 11.6 0c0 6.5 2.7 8.3 2.7 8.3H3.5s2.7-1.8 2.7-8.3"/><path d="M10.4 20.5a1.8 1.8 0 0 0 3.2 0"/>'),
     tim: P('<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>'),
     binhLuan: P('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'),
     chiaSe: P('<path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/>'),
@@ -122,11 +122,11 @@
     an: P('<path d="M17.9 17.9A10.9 10.9 0 0 1 12 20c-7 0-11-8-11-8a20 20 0 0 1 5.1-6"/><path d="M9.9 4.2A9.1 9.1 0 0 1 12 4c7 0 11 8 11 8a20 20 0 0 1-2.2 3.2"/><path d="M14.1 14.1a3 3 0 1 1-4.2-4.2"/><line x1="1" y1="1" x2="23" y2="23"/>'),
     hien: P('<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'),
     baoCao: P('<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>'),
-    timKiem: P('<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>'),
+    timKiem: P('<circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.6-4.6"/>'),
     them: P('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>'),
     lui: P('<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>'),
     dong: P('<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'),
-    khoa: P('<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>'),
+    khoa: P('<rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/>'),
     nhom: P('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>'),
     thoat: P('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>'),
     ghim: P('<line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.8a1 1 0 0 0-.4-.8L16 12V6h1a1 1 0 0 0 0-2H7a1 1 0 0 0 0 2h1v6l-2.6 2.4a1 1 0 0 0-.4.8z"/>'),
@@ -134,7 +134,8 @@
     camera: P('<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>'),
     lopHoc: P('<path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/>'),
     theGioi: P('<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'),
-    link: P('<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>'),
+    link: P('<path d="M10 13.5a4.5 4.5 0 0 0 6.4.4l3-3a4.5 4.5 0 0 0-6.4-6.4L11.5 6"/><path d="M14 10.5a4.5 4.5 0 0 0-6.4-.4l-3 3a4.5 4.5 0 0 0 6.4 6.4L12.5 18"/>'),
+    dongHo: P('<circle cx="12" cy="12" r="9.5"/><path d="M12 7v5l3.2 2"/>'),
     caiDat: P('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h0a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v0a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'),
     ketBan: P('<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>'),
     menu3: P('<line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>'),
@@ -391,7 +392,59 @@
   // Bản rút gọn của một người để NHÚNG vào bài/bình luận/tin (khỏi đọc thêm tài liệu khi hiện).
   NW.tomTat = function (hs) {
     hs = hs || NW.toi || {};
-    return { uid: hs.uid || '', ten: hs.ten || '?', anh: hs.anh || '', lop: hs.lop || '', vaiTro: hs.vaiTro || 'hs' };
+    // v0.4.0 thêm cacLop để lọc bài "Bạn bè" (cùng lớp = bạn) không phải đọc thêm hồ sơ tác giả
+    return { uid: hs.uid || '', ten: hs.ten || '?', anh: hs.anh || '', lop: hs.lop || '', vaiTro: hs.vaiTro || 'hs', cacLop: (hs.cacLop || [hs.lop]).filter(Boolean) };
+  };
+
+  // ---------- v0.4.0 — PHẠM VI BÀI (thầy chốt 22/09, kiểu Facebook + Chỉ lớp) ----------
+  NW.PHAM = [
+    { ma: 'mang', ky: '🌐', nh: 'Công khai', mo: 'Cả mạng Andrew Classes đều thấy' },
+    { ma: 'ban', ky: '👥', nh: 'Bạn bè', mo: 'Bạn bè và bạn cùng lớp em' },
+    { ma: 'lop', ky: '🏫', nh: 'Chỉ lớp', mo: 'Chỉ lớp của em và thầy' },
+    { ma: 'minh', ky: '🔒', nh: 'Chỉ mình tôi', mo: 'Chỉ em xem được (nháp, kỷ niệm riêng)' }
+  ];
+  NW.phamCua = function (ma) { for (var i = 0; i < NW.PHAM.length; i++) if (NW.PHAM[i].ma === ma) return NW.PHAM[i]; return NW.PHAM[0]; };
+
+  // ---------- v0.4.0 — BẠN BÈ: cùng lớp = bạn sẵn · khác lớp phải kết bạn (kho nwBanBe) ----------
+  var _banUid = null;
+  // Promise<Set uid bạn bè đã đồng ý> — đệm một lần mỗi trang (≤ 300 bạn = 1 truy vấn)
+  NW.dsBanUid = function () {
+    if (_banUid) return _banUid;
+    _banUid = (async function () {
+      var set = new Set();
+      if (NW.laBanThu()) { set.add('hs_3'); return set; }
+      try {
+        var f = await NW.fb(); var uid = NW.toi.uid;
+        var snap = await f.fs.getDocs(f.fs.query(f.fs.collection(f.db, 'nwBanBe'), f.fs.where('thanhVien', 'array-contains', uid), f.fs.where('trangThai', '==', 'ok'), f.fs.limit(300)));
+        snap.forEach(function (d) { var tv = d.data().thanhVien || []; set.add(tv[0] === uid ? tv[1] : tv[0]); });
+      } catch (e) { console.warn('[nw] bạn bè', e); }
+      return set;
+    })();
+    return _banUid;
+  };
+  NW.xoaDemBan = function () { _banUid = null; };
+  // Quan hệ của em với một người: minh · thay · cunglop · ban · choToi (em đã mời) · choHo (bạn mời em) · la (người lạ)
+  NW.quanHe = async function (hs) {
+    var toi = NW.toi;
+    if (!hs || hs.uid === toi.uid) return { loai: 'minh' };
+    if (hs.vaiTro === 'gv' || toi.laThay) return { loai: 'thay' };
+    var lops = toi.cacLop || [toi.lop];
+    if ((hs.cacLop || [hs.lop]).some(function (l) { return l && lops.indexOf(l) >= 0; })) return { loai: 'cunglop' };
+    var id = toi.uid < hs.uid ? toi.uid + '__' + hs.uid : hs.uid + '__' + toi.uid;
+    try {
+      var f = await NW.fb();
+      var snap = await f.fs.getDoc(f.fs.doc(f.db, 'nwBanBe', id));
+      if (!snap.exists()) return { loai: 'la', id: id };
+      var x = snap.data();
+      if (x.trangThai === 'ok') return { loai: 'ban', id: id };
+      return { loai: x.tu === toi.uid ? 'choToi' : 'choHo', id: id };
+    } catch (e) { console.warn('[nw] quan hệ', e); return { loai: 'la', id: id }; }
+  };
+  // Sao chép link (chia sẻ trang cá nhân) — có dự phòng cho máy không cho clipboard
+  NW.chepLink = function (url) {
+    var xong = function () { NW.toast('Đã sao chép link — dán gửi cho bạn là được.'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(xong, function () { window.prompt('Sao chép link này:', url); });
+    else window.prompt('Sao chép link này:', url);
   };
 
   // Danh sách người theo lớp — 1 lượt đọc mỗi tài liệu (lớp ~20 em) + đệm 10 phút.
