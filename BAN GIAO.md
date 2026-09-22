@@ -1,21 +1,94 @@
-# BÀN GIAO myNetwork — phiên 22/09/2026 (v0.9.0) · trước đó v0.4.0 `b6b4c6c` · gốc phiên 20/09 (v0.1.0 `dc03133`)
+# BÀN GIAO myNetwork — chốt phiên 23/09/2026 (**v0.9.2** `c069c25`, đã push) · trước đó v0.9.0 `ee93d55` · gốc 20/09 (v0.1.0 `dc03133`)
 
-> **Phiên mới đọc khối 🚀 ngay dưới, rồi MỤC A0**, rồi mục A (phiên thiết kế đợt 1), rồi `README.md` (nhật ký từng bản).
+> **Phiên mới đọc khối 🚀 ngay dưới là đủ để bắt tay vào việc.** Cần sâu hơn: `README.md` (nhật ký từng bản, chi tiết nhất)
+> → mục A0/A dưới file này (lịch sử 2 phiên thiết kế) → `KE HOACH XAY DUNG.md` (lý do từng quyết định).
 
-## 🟢 23/09/2026 — **v0.9.2** (CHƯA PUSH, thầy dặn "làm trên bản local, xong hết mới push")
-Đợt tinh chỉnh BẢNG TIN theo 5 ý thầy + tính năng CHẶN TIN NHẮN mới. Chi tiết từng thứ: README v0.9.2.
-4 điều thầy chốt trong phiên (KHÔNG hỏi lại): chặn **ở giao diện cả hai bên** (người bị chặn thấy dải báo + khoá ô gõ), 3 công tắc cài đặt
-**lưu theo MÁY**, "Hiển thị danh bạ" tắt = khung **chỉ còn Thầy Andrew**, **giữ** nhãn ĐÃ ẨN trên thẻ bài.
-⬜ Còn nợ: áp dụng chặn cho `tinnhan.html` · luật `tai-lieu/` đã sửa thêm (`nwUsers/{uid}/rieng` + `nwChats.chanBoi`) nhưng CHƯA DÁN.
+## 🚀 BẮT ĐẦU PHIÊN SAU — thầy dừng tối 23/09/2026 (main = origin/main, cây sạch)
 
-## 🔵 22/09/2026 (phiên sau) — **v0.9.1**: bàn thử ĐI LẠI ĐƯỢC giữa các trang
+### Đang ở đâu
+- **Giao diện xong cả 6 mảng** (bảng tin · cá nhân · tin nhắn · khám phá · đăng nhập · quản lý) và đã qua **2 đợt tinh chỉnh bảng tin** của thầy.
+- **Vẫn CHƯA có một lượt ghi/đọc Firestore thật nào**: chưa dán luật, chưa tạo tài khoản, chưa em nào đăng nhập. Mọi thứ mới chạy ở **bàn thử**.
+- 3 bản gần nhất: **v0.9.0** `ee93d55` (trang Quản lý) · **v0.9.1** `8f9f25f` (bàn thử đi lại được giữa các trang) · **v0.9.2** `c069c25` (đợt 23/09).
+- ⬜ **Thầy chưa bấm tay** bản nào từ v0.5.0 trở đi trên kho thật (mới xem qua bàn thử).
+
+### Phiên 23/09 làm gì (chi tiết từng thứ: README v0.9.1 + v0.9.2)
+1. **v0.9.1 — bàn thử đi lại được**: mọi đường trong nhà tự mang theo `?thu=1`/`?thu=thay` (`NW.duong/NW.di/NW.thay` + bộ bắt cú bấm `<a>`
+   trong `loi.js`, **chỉ chạy ở localhost có `?thu=`** ⇒ trên mạng không đổi gì). Vá 1 lỗi thật: `khampha.html` ép cứng `?thu=1` làm **vai THẦY
+   rơi xuống vai học sinh** khi bấm ô một loại. ⇒ Giờ thầy chỉ cần mở **MỘT địa chỉ** rồi bấm đi khắp nơi.
+2. **Ảnh màn đăng nhập mới**: `assets/dang-nhap-2.webp` (nén từ PNG 2,7 MB → **186 KB**). Ảnh cũ `dang-nhap.webp` **còn nguyên**, muốn quay lại chỉ sửa 1 dòng `index.html`.
+3. **v0.9.2 — bảng tin đợt tinh chỉnh** (8 việc): bớt nhãn thẻ bài · gộp 2 hàng thành 1 (3 icon + số bên trái, cảm xúc bên phải **không số**) ·
+   ô soạn bỏ icon ảnh · cột phải bỏ "Nếp của mạng" → khung **NGƯỜI LIÊN HỆ** (tìm + ⋯ Cài đặt đoạn chat) · danh bạ có cả bạn khác lớp ·
+   **chặn tin nhắn** · **khung sinh nhật** · icon Bình luận + Chia sẻ vẽ lại theo Facebook.
+
+### Thầy đã chốt trong phiên 23/09 — KHÔNG hỏi lại
+- **Chặn tin nhắn = chặn ở giao diện CẢ HAI BÊN**: người chặn không thấy người kia trong danh bạ; người bị chặn **vẫn thấy tin cũ** nhưng có dải
+  báo *"… đang hạn chế tin nhắn"* và **ô gõ bị đóng**. Không dùng cách chặn bằng luật kho (tốn 1 lượt đọc cho mỗi tin nhắn của cả mạng).
+- **3 công tắc cài đặt (Âm thanh tin nhắn · Hiển thị danh bạ · Trạng thái hoạt động) lưu THEO MÁY** (localStorage), không lưu theo tài khoản.
+- **"Hiển thị danh bạ" tắt** = khung vẫn còn nhưng **chỉ hiện Thầy Andrew**, không ai khác.
+- **Giữ nhãn ĐÃ ẨN** trên thẻ bài (chỉ bỏ BẠN BÈ và CHỈ MÌNH TÔI).
+- **Sinh nhật KHÔNG BAO GIỜ hiện của thầy** (bàn thử cố tình để thầy cũng sinh nhật "hôm nay" để luật này luôn được thử).
+
+### Việc kế tiếp, theo thứ tự nên làm (hỏi thầy chọn bằng AskUserQuestion)
+1. **Thầy bấm tay bàn thử** (cổng 8795 `mynetwork-web`): vai học sinh `bangtin.html?thu=1` · vai thầy `quanly.html?thu=thay` — bảng A4 bên dưới.
+   ⚠ Lần đầu sau mỗi bản mới: thêm `&moi=<số>` vào địa chỉ, không thì trình duyệt cầm bản cũ.
+   Chỗ nào chưa ưng → sửa thẳng trên kho (nếp phiên 23/09) hoặc làm mẫu vòng mới `mau-v29` (nếp cũ, cho mảng lớn).
+2. **Nhập NGÀY SINH cho học sinh** (nếu thầy muốn khung Sinh nhật sống): xem mục ⚠ ngay dưới.
+3. **Kỹ thuật để LIVE** (mục 5 + README "Việc thầy cần làm"): Claude soạn bản luật GỘP cho thầy tự dán → 6 chỉ mục → bật Email/Password +
+   Authorized domain → thầy chạy `tools/tao-tai-khoan.mjs --dry` rồi thật → `tools/kiem-luat.mjs` ⚠ 28 ca viết cho v0.1.0, **phải thêm ca**:
+   pham ban/minh · gan/camGiac · binhLuan anh/traLoi · nwChats tat/chuaDoc/anLuc + nhóm chỉ thầy tạo + `lop` · tin camXuc/traLoi · nwKhamPha ·
+   noiBat · hoatDongLuc/soThich · nwBanBe · **`chanBoi` + `nwUsers/{uid}/rieng`** → thầy đăng nhập thật, bấm tay → domain `network.andrewclasses.com`.
+   ⛔ Claude **không dán luật, không tạo tài khoản, không ghi dữ liệu thật** khi thầy chưa bảo.
+4. **Gộp myLesson web vào myNetwork** (việc lớn, phiên riêng, **chỉ khi thầy nói** — học sinh đang dùng myLesson): xem mục 3 khối cũ bên dưới.
+
+### ⚠ Khung SINH NHẬT chưa sống được — vì chưa có dữ liệu
+Đã đo tận kho ngày 23/09: **myStudent `students.birthday` = 0/182 em** có dữ liệu · **`lop.json` `sinhNhat` = 0/162 em** có dữ liệu.
+Code đã chạy đúng (bàn thử hiện đúng), nhưng **trên trang thật khung này sẽ không bao giờ hiện** cho tới khi có dữ liệu. Đường đi:
+**myStudent (nhập ngày sinh) → bấm 🌐 xuất lại `lop.json` → chạy `tools/tao-tai-khoan.mjs`** (đã sửa sẵn để chép, cắt bỏ năm, chỉ giữ `dd/MM`).
+Thầy có thể nhờ Claude viết tool đổ ngày sinh từ Excel vào myStudent cho nhanh — thầy chưa quyết.
+
+### Còn nợ (ghi để không quên)
+- ⬜ **Luật Firestore `tai-lieu/` CHƯA DÁN** — đã sửa thêm tới v0.9.2: `nwUsers/{uid}/rieng/{muc}` (chỉ chính chủ) · `nwChats.chanBoi`
+  (mỗi em chỉ thêm/bỏ chính uid của mình) · và toàn bộ sửa đổi từ v0.4.0→v0.7.0 trước đó.
+- ⬜ **Chặn tin nhắn mới làm ở hộp chat nổi**, chưa áp dụng cho trang `tinnhan.html`.
+- ⬜ Em mới vào lớp **chưa tự vào nhóm chat lớp** (tool tạo tài khoản nên thêm).
+- ⬜ Đồng nhất 7 cảm xúc sang chat lớp myLesson (phiên myLesson).
+- ⬜ Nút "Thích" đang là **trái tim**; ảnh mẫu Facebook thầy gửi là **ngón tay cái** — thầy chưa quyết đổi hay không.
+- ⬜ Mục A5.6 cũ: bài "Bạn bè" chỉ lọc ở giao diện (`Bai.xemDuoc`), luật đọc chưa chặn tuyệt đối.
+
+### Bản đồ file mới thêm trong phiên 23/09
+| File | Việc |
+|---|---|
+| `js/lienhe.js` **(mới)** | Khung NGƯỜI LIÊN HỆ + tìm + ⋯ Cài đặt đoạn chat + pop-up Danh sách chặn + **khung SINH NHẬT**. Dùng: `NW.LienHe.dung({hop, hopSinhNhat})` |
+| `js/loi.js` | Thêm `NW.duong/di/thay` (bàn thử) · `NW.caiDat/datCaiDat` · `NW.chanTinh/datChan/dsChanUid/dsChan` · icon `chan`, `banh` · vẽ lại `binhLuan`, `chiaSe` |
+| `js/chatnoi.js` | Nút chặn trên đầu hộp + dải báo + khoá ô gõ + nghe sự kiện `nw-chan` |
+| `js/bai.js` | Nhãn thẻ bài · hàng nút gộp (`demHtml`, `cumCamXuc(cx, khongSo)`) · ô soạn bỏ icon ảnh |
+| `tools/tao-tai-khoan.mjs` | Chép `sinhNhat` từ `lop.json` sang `nwUsers`, cắt còn `dd/MM` (hàm `ngayThang`) |
+| `assets/dang-nhap-2.webp` | Ảnh màn đăng nhập mới (ảnh cũ `dang-nhap.webp` vẫn còn) |
+
+### Nếp làm việc (giữ nguyên)
+- Thầy yêu cầu **từng chỗ một**, Claude sửa thẳng trên kho rồi thầy xem ở bàn thử. Mảng lớn thì mới làm mẫu HTML riêng (`mau-vN`, cổng 8824+).
+- Mỗi đợt: tăng `?v=` (đang **`?v=13`**) + `PHIEN_BAN` (đang **`0.9.2`**) + ghi README + commit + push ngay.
+- Script vá viết ra file `.py` trong scratchpad (heredoc dài hay hỏng), chuỗi tìm chép **NGUYÊN VĂN**, in tiếng Việt bằng `.encode('ascii','backslashreplace')`.
+- **Kiểm bằng BẤM CHUỘT THẬT + đo DOM**, đừng tin ảnh chụp: Browser pane có lúc **không vẽ lớp phủ `position:fixed`** (pop-up mở thật mà ảnh trống trơn)
+  và có lúc chụp trước khi trang vẽ xong. Đo bằng `javascript_tool` mới chắc.
+- Tối đa 5 server preview — tắt bớt trước khi mở mẫu mới.
+
+### Bẫy đã trả giá trong phiên 23/09
+- ⛔ **Không truy vấn `nwChats` theo `chanBoi` được**: luật đọc phòng đòi *em phải ở trong `thanhVien`*, mà Firestore chỉ cho **MỘT** `array-contains`
+  mỗi truy vấn ⇒ cả truy vấn bị từ chối. Đã chuyển sang ô riêng `nwUsers/{em}/rieng/chan`. **Nếu không phát hiện, lên thật danh bạ sẽ lỗi câm.**
+- ⛔ **Trình duyệt cầm file cũ** dù đã tăng `?v=`: sửa file `.js` sau khi đã bump thì URL không đổi ⇒ vẫn bản cũ. Chữa: `fetch(url,{cache:'reload'})` rồi `location.reload()`.
+- ⛔ **Tên người trong bàn thử phải khớp nhau giữa các trang**: `hs_3` ở `canhan.html` là BẢO NAM, lúc đầu viết thành NGỌC ÁNH ⇒ bấm sang trang cá nhân thấy tên khác.
+- ⛔ Ảnh chụp Browser pane **nói dối** (xem mục nếp làm việc ở trên).
+
+
+## 🔵 22/09/2026 — **v0.9.1**: bàn thử ĐI LẠI ĐƯỢC giữa các trang (giữ để tra)
 Thầy yêu cầu "cho các trang liên kết với nhau như khi mở trang thật để tôi dò lỗi". Đã làm: mọi đường trong nhà tự mang theo `?thu=1`/`?thu=thay`
 (`NW.duong/NW.di/NW.thay` + bộ bắt cú bấm `<a>` trong `js/loi.js`, chỉ chạy ở localhost có `?thu=`), các chỗ nhảy trang bằng JS đổi sang `NW.di()`,
 `index.html` trong bàn thử vào thẳng không gọi kho, Đăng xuất → đăng nhập lại thành vòng khép kín. **Vá 1 lỗi thật**: `khampha.html` ép cứng `?thu=1`
 khi bấm ô một loại ⇒ đang xem vai THẦY bị rơi xuống vai học sinh. Chi tiết: README v0.9.1. ⇒ Bảng địa chỉ A4 bên dưới giờ chỉ cần mở MỘT địa chỉ
 (`bangtin.html?thu=1` hoặc `quanly.html?thu=thay`) rồi bấm đi khắp nơi.
 
-## 🚀 BẮT ĐẦU PHIÊN SAU — thầy dừng tối 22/09/2026 sau v0.9.0 `ee93d55` (main = origin/main, cây sạch)
+## 📗 (CŨ, giữ để tra) Khối bắt đầu phiên viết tối 22/09/2026 sau v0.9.0 `ee93d55`
 
 **Đang ở đâu:** GIAO DIỆN ĐÃ XONG CẢ 6 MẢNG (bảng tin · cá nhân · tin nhắn · khám phá · đăng nhập · quản lý) — v0.5.0 → v0.9.0 đều push
 cùng ngày 22/09. **Chưa có một lượt ghi/đọc Firestore thật nào** (chưa dán luật, chưa tạo tài khoản). Thầy **chưa bấm tay** bản nào từ v0.5.0.
