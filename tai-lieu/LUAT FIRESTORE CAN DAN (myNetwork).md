@@ -57,6 +57,12 @@
                .hasOnly(['khoa', 'canhBao', 'capNhat', 'ten', 'anh', 'bia', 'gioiThieu'])));
       allow delete: if false;
 
+      // v0.9.2 (23/09): ô RIÊNG của từng em — hiện chỉ có `chan` = danh sách em đang chặn.
+      // Chỉ chính chủ đọc/ghi ⇒ không ai dòm được em chặn ai.
+      match /rieng/{muc} {
+        allow read, write: if nwVao() && uid == nwToi();
+      }
+
       match /thongBao/{id} {
         allow read, update, delete: if nwVao() && uid == nwToi();
         allow create: if nwVao() && request.resource.data.tu == nwToi()
@@ -155,14 +161,19 @@
       // nhóm: CHỈ THẦY đổi tên, thêm/bớt thành viên (v0.6.0: học sinh không rời nhóm thầy lập).
       allow update: if nwVao() && (nwToi() in resource.data.thanhVien || laThay())
         && request.resource.data.diff(resource.data).affectedKeys()
-             .hasOnly(['tinCuoi', 'capNhat', 'docLuc', 'ten', 'thanhVien', 'tv', 'anh', 'tat', 'chuaDoc', 'anLuc'])
+             .hasOnly(['tinCuoi', 'capNhat', 'docLuc', 'ten', 'thanhVien', 'tv', 'anh', 'tat', 'chuaDoc', 'anLuc', 'chanBoi'])   // v0.9.2: chanBoi = chặn tin nhắn
         && (laThay()
             || !request.resource.data.diff(resource.data).affectedKeys().hasAny(['thanhVien', 'tv', 'ten', 'anh']))
         // cờ riêng: chỉ sửa ô của chính mình trong 3 map
         && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['tat', 'chuaDoc', 'anLuc'])
             || (request.resource.data.get('tat', {}).diff(resource.data.get('tat', {})).affectedKeys().hasOnly([nwToi()])
                 && request.resource.data.get('chuaDoc', {}).diff(resource.data.get('chuaDoc', {})).affectedKeys().hasOnly([nwToi()])
-                && request.resource.data.get('anLuc', {}).diff(resource.data.get('anLuc', {})).affectedKeys().hasOnly([nwToi()])));
+                && request.resource.data.get('anLuc', {}).diff(resource.data.get('anLuc', {})).affectedKeys().hasOnly([nwToi()])))
+        // v0.9.2 — CHẶN TIN NHẮN: mỗi em chỉ được thêm/bỏ CHÍNH UID CỦA MÌNH trong `chanBoi`
+        // (danh sách mới ⊆ danh sách cũ + em · danh sách cũ trừ em ⊆ danh sách mới)
+        && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['chanBoi'])
+            || (request.resource.data.get('chanBoi', []).hasOnly(resource.data.get('chanBoi', []).concat([nwToi()]))
+                && resource.data.get('chanBoi', []).removeAll([nwToi()]).hasOnly(request.resource.data.get('chanBoi', []))));
       allow delete: if laThay();
 
       match /tin/{mid} {

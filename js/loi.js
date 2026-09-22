@@ -122,8 +122,10 @@
     caNhan: P('<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'),
     chuong: P('<path d="M6.2 8.5a5.8 5.8 0 0 1 11.6 0c0 6.5 2.7 8.3 2.7 8.3H3.5s2.7-1.8 2.7-8.3"/><path d="M10.4 20.5a1.8 1.8 0 0 0 3.2 0"/>'),
     tim: P('<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>'),
-    binhLuan: P('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'),
-    chiaSe: P('<path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/>'),
+    // v0.9.2b (thầy chốt 23/09, theo ảnh Facebook): bong bóng TRÒN, đuôi nhọn ở góc dưới trái
+    binhLuan: P('<path d="M12 3.6c-4.8 0-8.7 3.1-8.7 7.2 0 2.2 1.2 4.2 3.2 5.5v3.1a.5.5 0 0 0 .8.4l3.1-2.1c.5.1 1.1.1 1.6.1 4.8 0 8.7-3.1 8.7-7s-3.9-7.2-8.7-7.2z"/>'),
+    // v0.9.2c (thầy chốt 23/09): vẽ lại theo mẫu Flaticon share_2990295 — mũi tên to, đuôi móc câu dày, vuốt nhọn ở góc dưới trái
+    chiaSe: P('<path d="M12.6 3 21.2 12.1 12.6 21v-6.7c-4.6 0-8.6 2.2-10.4 6.6-.5-6.3 2.7-11.2 10.4-11.5V3z"/>'),
     anh: P('<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>'),
     gui: P('<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>'),
     baCham: P('<circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/><circle cx="5" cy="12" r="1.6"/>'),
@@ -161,7 +163,11 @@
     chuongTat: P('<path d="M8.6 3.7A5.8 5.8 0 0 1 17.8 8.5c0 3.1.6 5.2 1.3 6.6"/><path d="M6.2 8.5c0 6.5-2.7 8.3-2.7 8.3h13"/><path d="M10.4 20.5a1.8 1.8 0 0 0 3.2 0"/><path d="M3 3l18 18"/>'),
     chuongBat: P('<path d="M6.2 8.5a5.8 5.8 0 0 1 11.6 0c0 6.5 2.7 8.3 2.7 8.3H3.5s2.7-1.8 2.7-8.3"/><path d="M10.4 20.5a1.8 1.8 0 0 0 3.2 0"/>'),
     chuaDoc: P('<rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m2.5 7.5 9.5 6.5 9.5-6.5"/><circle cx="19" cy="6" r="3" fill="currentColor" stroke="#fff" stroke-width="1.5"/>'),
-    daDoc: P('<rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m2.5 7.5 9.5 6.5 9.5-6.5"/>')
+    daDoc: P('<rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m2.5 7.5 9.5 6.5 9.5-6.5"/>'),
+    // v0.9.2 (23/09): chặn tin nhắn — vòng tròn gạch chéo
+    chan: P('<circle cx="12" cy="12" r="9.3"/><line x1="5.4" y1="5.4" x2="18.6" y2="18.6"/>'),
+    // v0.9.2 (23/09): bánh sinh nhật — thân bánh + 3 ngọn nến
+    banh: P('<path d="M3.5 20.5h17v-6a2.5 2.5 0 0 0-2.5-2.5H6a2.5 2.5 0 0 0-2.5 2.5z"/><path d="M8 12V8.6M12 12V8.6M16 12V8.6"/><path d="M8 6.6a.9.9 0 1 1-1.8 0c0-.6.9-1.6.9-1.6s.9 1 .9 1.6zM12.9 6.6a.9.9 0 1 1-1.8 0c0-.6.9-1.6.9-1.6s.9 1 .9 1.6zM16.9 6.6a.9.9 0 1 1-1.8 0c0-.6.9-1.6.9-1.6s.9 1 .9 1.6z"/>')
   };
 
   // Cảm xúc — cùng bộ với chat lớp bên myLesson (lop.html CAM_XUC)
@@ -833,4 +839,91 @@
     document.addEventListener('pointerdown', nanA, true);
     document.addEventListener('click', nanA, true);
   }
+
+  // ---------- v0.9.2 — CÀI ĐẶT ĐOẠN CHAT (thầy chốt 23/09: lưu THEO MÁY, không tốn lượt kho nào) ----------
+  var CD_KHOA = 'nw_caidat', CD_GOC = { amThanh: true, danhBa: true, hoatDong: true }, _cd = null;
+  NW.caiDat = function () {
+    if (!_cd) {
+      _cd = Object.assign({}, CD_GOC);
+      try { Object.assign(_cd, JSON.parse(localStorage.getItem(CD_KHOA) || '{}')); } catch (e) { }
+    }
+    return _cd;
+  };
+  NW.datCaiDat = function (khoa, bat) {
+    var cd = NW.caiDat(); cd[khoa] = !!bat;
+    try { localStorage.setItem(CD_KHOA, JSON.stringify(cd)); } catch (e) { }
+    return cd;
+  };
+
+  // ---------- v0.9.2 — CHẶN TIN NHẮN (thầy chốt 23/09) ----------
+  // Cờ chặn nằm NGAY TRONG phòng chat riêng của hai người: nwChats/{a__b}.chanBoi = [uid đã chặn].
+  // Mở hộp chat là đã đọc phòng đó rồi ⇒ KHÔNG tốn thêm lượt đọc nào, và ngoài hai người trong phòng không ai đọc được.
+  // Người chặn: không thấy người kia trong danh bạ · Người bị chặn: vẫn thấy tin cũ nhưng KHOÁ ô gõ.
+  NW.phongRieng = function (a, b) { return a < b ? a + '__' + b : b + '__' + a; };
+  var THU_CHAN = 'nw_thu_chan';       // bàn thử: danh sách em chặn (lưu trên máy)
+  var THU_HO_CHAN = ['hs_13'];        // bàn thử: bạn này đang chặn em — để thầy xem được cảnh BỊ CHẶN
+  function thuChan() { try { return JSON.parse(localStorage.getItem(THU_CHAN) || '[]'); } catch (e) { return []; } }
+  function thuGhi(ds) { try { localStorage.setItem(THU_CHAN, JSON.stringify(ds)); } catch (e) { } }
+  var _chanUid = null;
+
+  // Trạng thái chặn giữa em và một người → { toiChan, hoChan }
+  NW.chanTinh = async function (uid) {
+    if (!uid) return { toiChan: false, hoChan: false };
+    if (NW.laBanThu()) return { toiChan: thuChan().some(function (n) { return n.uid === uid; }), hoChan: THU_HO_CHAN.indexOf(uid) >= 0 };
+    try {
+      var f = await NW.fb();
+      var snap = await f.fs.getDoc(f.fs.doc(f.db, 'nwChats', NW.phongRieng(NW.toi.uid, uid)));
+      var ds = snap.exists() ? (snap.data().chanBoi || []) : [];
+      return { toiChan: ds.indexOf(NW.toi.uid) >= 0, hoChan: ds.indexOf(uid) >= 0 };
+    } catch (e) { console.warn('[nw] chặn', e); return { toiChan: false, hoChan: false }; }
+  };
+  // Chặn / bỏ chặn. nguoi = {uid, ten, anh, lop}
+  NW.datChan = async function (nguoi, bat) {
+    if (!nguoi || !nguoi.uid) return;
+    if (NW.laBanThu()) {
+      var ds = thuChan().filter(function (n) { return n.uid !== nguoi.uid; });
+      if (bat) ds.push({ uid: nguoi.uid, ten: nguoi.ten, anh: nguoi.anh || '', lop: nguoi.lop || '', vaiTro: nguoi.vaiTro || '' });
+      thuGhi(ds);
+    } else {
+      var f = await NW.fb();
+      // (1) cờ trong phòng chat của hai người — để BÊN KIA biết mình bị chặn (đọc phòng là việc sẵn có, không tốn thêm)
+      var ref = f.fs.doc(f.db, 'nwChats', NW.phongRieng(NW.toi.uid, nguoi.uid));
+      var snap = await f.fs.getDoc(ref);
+      if (!snap.exists()) {
+        if (!(NW.Chat && NW.Chat.moRieng)) throw new Error('Chưa mở được phòng chat.');
+        await NW.Chat.moRieng(nguoi);
+      }
+      await f.fs.updateDoc(ref, { chanBoi: bat ? f.fs.arrayUnion(NW.toi.uid) : f.fs.arrayRemove(NW.toi.uid) });
+      // (2) danh sách riêng của em — để lọc danh bạ bằng MỘT lượt đọc, và không ai khác dòm được em chặn ai
+      await f.fs.setDoc(f.fs.doc(f.db, 'nwUsers', NW.toi.uid, 'rieng', 'chan'),
+        { ds: bat ? f.fs.arrayUnion(nguoi.uid) : f.fs.arrayRemove(nguoi.uid) }, { merge: true });
+    }
+    _chanUid = null;
+    document.dispatchEvent(new CustomEvent('nw-chan', { detail: { uid: nguoi.uid, bat: !!bat } }));
+  };
+  // Set uid những người EM đang chặn.
+  // ⚠ KHÔNG truy vấn nwChats theo `chanBoi` được: luật đọc phòng đòi "em phải ở trong thanhVien", mà Firestore
+  // chỉ cho MỘT array-contains mỗi truy vấn ⇒ cả truy vấn sẽ bị từ chối. Nên danh sách của em nằm ở một ô RIÊNG
+  // `nwUsers/{em}/rieng/chan` — chỉ mình em đọc/ghi được (1 lượt đọc mỗi trang, đệm lại).
+  NW.dsChanUid = function () {
+    if (_chanUid) return _chanUid;
+    _chanUid = (async function () {
+      var set = new Set();
+      if (NW.laBanThu()) { thuChan().forEach(function (n) { set.add(n.uid); }); return set; }
+      try {
+        var f = await NW.fb();
+        var snap = await f.fs.getDoc(f.fs.doc(f.db, 'nwUsers', NW.toi.uid, 'rieng', 'chan'));
+        if (snap.exists()) (snap.data().ds || []).forEach(function (u) { set.add(u); });
+      } catch (e) { console.warn('[nw] danh sách chặn', e); }
+      return set;
+    })();
+    return _chanUid;
+  };
+  // Danh sách người em đang chặn kèm tên/ảnh — chỉ gọi khi mở pop-up Danh sách chặn
+  NW.dsChan = async function () {
+    if (NW.laBanThu()) return thuChan();
+    var uids = Array.from(await NW.dsChanUid());
+    var hs = await Promise.all(uids.map(function (u) { return NW.hoSo(u).catch(function () { return null; }); }));
+    return uids.map(function (u, i) { return Object.assign({ uid: u, ten: u }, hs[i] || {}); });
+  };
 })();

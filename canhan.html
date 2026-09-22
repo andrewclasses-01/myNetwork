@@ -6,7 +6,7 @@
 <title>Trang cá nhân · Andrew Classes Network</title>
 <link rel="icon" href="assets/avatar-tron.jpg">
 <link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="css/nw.css?v=12">
+<link rel="stylesheet" href="css/nw.css?v=13">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
 </head>
@@ -26,11 +26,11 @@
 <input type="file" id="fileAv" accept="image/*" hidden>
 <input type="file" id="fileBia" accept="image/*" hidden>
 
-<script src="config.js?v=12"></script>
-<script src="js/loi.js?v=12"></script>
-<script src="js/thanh.js?v=12"></script>
-<script src="js/bai.js?v=12"></script>
-<script src="js/chat.js?v=12"></script>
+<script src="config.js?v=13"></script>
+<script src="js/loi.js?v=13"></script>
+<script src="js/thanh.js?v=13"></script>
+<script src="js/bai.js?v=13"></script>
+<script src="js/chat.js?v=13"></script>
 <script>
 // v0.4.0 (22/09/2026, mẫu v12 thầy chốt): bìa rộng · avatar to + sao · MỌI nút = icon trắng không nền nằm TRONG bìa
 // (mình: đổi bìa góc trên phải; sửa giới thiệu + chia sẻ link góc dưới phải · cùng lớp/bạn bè: nhắn tin + chia sẻ ·
@@ -221,12 +221,13 @@
         hs_1: { ten: 'MINH ANH', lop: 'A1C', cacLop: ['A1C', 'NNTNGK9'], gioiThieu: 'Em thích tiếng Anh 🌟', soThich: 'vẽ · mèo' },
         hs_2: { ten: 'HÀ LINH', lop: 'B2B', cacLop: ['B2B'], gioiThieu: 'Thích K-pop và chụp ảnh 📷' },
         hs_3: { ten: 'BẢO NAM', lop: 'B2B', cacLop: ['B2B'], gioiThieu: 'Fan bóng đá ⚽' },
-        hs_4: { ten: 'MINH TÚ', lop: 'NNTNGK9', cacLop: ['NNTNGK9'], gioiThieu: 'Xin chào!' }
+        hs_4: { ten: 'MINH TÚ', lop: 'NNTNGK9', cacLop: ['NNTNGK9'], gioiThieu: 'Xin chào!' },
+        hs_13: { ten: 'TRÚC LINH', lop: 'A2A', cacLop: ['A2A'], gioiThieu: 'Mê đọc truyện 📖' }   // v0.9.2: bạn khác lớp đang CHẶN em
       };
       var h = ds[u] || { ten: u, lop: 'A1C', cacLop: ['A1C'] };
       return Object.assign({ uid: u, vaiTro: 'hs', luc: Date.now() - 40 * 864e5 }, h);
     }
-    function quanHeBanThu(u) { return { hs_1: { loai: 'cunglop' }, hs_2: { loai: 'la' }, hs_3: { loai: 'ban' }, hs_4: { loai: 'choHo', id: 'x' } }[u] || { loai: 'la' }; }
+    function quanHeBanThu(u) { return { hs_1: { loai: 'cunglop' }, hs_2: { loai: 'la' }, hs_3: { loai: 'ban' }, hs_4: { loai: 'choHo', id: 'x' }, hs_13: { loai: 'ban' } }[u] || { loai: 'la' }; }
   });
 })();
 </script>

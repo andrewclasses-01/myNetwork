@@ -27,9 +27,8 @@
     hop.className = (hop.className + ' card soan').trim();
     hop.innerHTML = '<div class="soan-gon">' + NW.avHtml(toi) +
       '<button class="gia" id="soanMo" type="button">' + (toi.laThay ? 'Thầy muốn nhắn gì cho cả mạng?' : an(toi.ten || 'Em') + ' ơi, em đang nghĩ gì thế?') + '</button>' +
-      '<button class="nut-tron" id="soanMoAnh" type="button" title="Đăng ảnh" aria-label="Đăng ảnh">' + IC.anh + '</button></div>';
+      '</div>';   // v0.9.2 (thầy chốt 23/09): bỏ icon ảnh ở ô gọn — thêm ảnh đã có sẵn trong pop-up "Tạo bài viết"
     $('#soanMo', hop).onclick = function () { moPop(false); };
-    $('#soanMoAnh', hop).onclick = function () { moPop(true); };
 
     // v13 — pop-up thêm: KÉO-THẢ / DÁN ảnh · xem trước dạng lưới như thẻ bài · GẮN THẺ BẠN · CẢM XÚC/HOẠT ĐỘNG
     function moPop(chonAnhNgay) {
@@ -252,11 +251,15 @@
     Object.keys(cx || {}).forEach(function (u) { var m = cx[u]; if (m) { d[m] = (d[m] || 0) + 1; tong++; } });
     return { d: d, tong: tong };
   }
-  function cumCamXuc(cx) {
+  // v0.9.2: số nhỏ cạnh icon trong hàng nút — 0 thì giấu luôn cho gọn (đúng như ảnh mẫu thầy gửi)
+  function demHtml(n) { n = n || 0; return '<b class="dem"' + (n ? '' : ' hidden') + '>' + (n || '') + '</b>'; }
+
+  // khongSo = true: chỉ hiện các icon cảm xúc, KHÔNG kèm số (v0.9.2 — thầy chốt 23/09 cho cụm bên phải thẻ bài)
+  function cumCamXuc(cx, khongSo) {
     var c = demCamXuc(cx);
     if (!c.tong) return '';
     var loai = NW.CAM_XUC.filter(function (x) { return c.d[x.ma]; }).slice(0, 3);
-    return '<span class="cx-cum" data-cxai>' + loai.map(function (x) { return NW.cxHtml(x.ma); }).join('') + '<b>' + c.tong + '</b></span>';
+    return '<span class="cx-cum" data-cxai>' + loai.map(function (x) { return NW.cxHtml(x.ma); }).join('') + (khongSo ? '' : '<b>' + c.tong + '</b>') + '</span>';
   }
   // v13: bài > 4 ảnh thì ô thứ 4 phủ "+N"; bấm ảnh nào mở bộ ảnh từ ảnh đó (data-ds = cả bộ)
   function khuAnhHtml(anh, nho) {
@@ -295,7 +298,9 @@
     el.className = 'card bai' + (bai.an ? ' an' : '');
     el.setAttribute('data-id', id);
     var cuaToi = bai.uid === toi.uid;
-    var nhan = (bai.ghim ? '<span class="nhan-ghim">GHIM</span>' : '') + (bai.noiBat ? '<span class="nhan-noibat">' + IC.sao + 'NỔI BẬT</span>' : '') + (bai.pham === 'ban' ? '<span class="nhan-ban">BẠN BÈ</span>' : '') + (bai.pham === 'minh' ? '<span class="nhan-minh">CHỈ MÌNH TÔI</span>' : '') +
+    // v0.9.2 (thầy chốt 23/09): chỉ còn GHIM · NỔI BẬT · ĐÃ ẨN — bỏ BẠN BÈ và CHỈ MÌNH TÔI
+    // (icon phạm vi đơn sắc cạnh dòng giờ đã cho biết bài dành cho ai rồi).
+    var nhan = (bai.ghim ? '<span class="nhan-ghim">GHIM</span>' : '') + (bai.noiBat ? '<span class="nhan-noibat">' + IC.sao + 'NỔI BẬT</span>' : '') +
                (bai.an ? '<span class="nhan-an">ĐÃ ẨN</span>' : '');
     var goc = '';
     if (bai.chiaSeTu) {
@@ -310,12 +315,12 @@
       '<div class="bai-nut-goc"><button class="nut-tron bai-menu" data-menu type="button" aria-label="Menu bài">' + IC.baCham + '</button>' +
         '<button class="nut-tron bai-an" data-anbai type="button" aria-label="Ẩn bài này khỏi bảng tin" title="Ẩn khỏi bảng tin">' + IC.dong + '</button></div>' +
       chuBai(bai.chu, o.gon !== false) + (bai.chiaSeTu ? goc : khuAnhHtml(bai.anh)) +
-      '<div class="bai-so">' + cumCamXuc(bai.camXuc) +
-        '<span class="phai"><button data-mobl type="button">' + (bai.soBinhLuan || 0) + ' bình luận</button><span>' + (bai.soChiaSe || 0) + ' chia sẻ</span></span></div>' +
+      // v0.9.2 (thầy chốt 23/09, theo ảnh mẫu): MỘT hàng — 3 icon + số bên TRÁI (không chữ), cụm cảm xúc đã thả bên PHẢI
       '<div class="bai-nut">' +
-        '<button data-cx type="button" class="' + (cx ? 'da ' + cx : '') + '">' + (cx ? NW.cxHtml(cx) : IC.tim) + '<span>' + (cx ? NW.tenCamXuc(cx) : 'Thích') + '</span></button>' +
-        '<button data-mobl type="button">' + IC.binhLuan + '<span>Bình luận</span></button>' +
-        '<button data-chiase type="button">' + IC.chiaSe + '<span>Chia sẻ</span></button>' +
+        '<button data-cx type="button" class="' + (cx ? 'da ' + cx : '') + '" title="Thích">' + (cx ? NW.cxHtml(cx) : IC.tim) + demHtml(demCamXuc(bai.camXuc).tong) + '</button>' +
+        '<button data-mobl type="button" title="Bình luận">' + IC.binhLuan + demHtml(bai.soBinhLuan) + '</button>' +
+        '<button data-chiase type="button" title="Chia sẻ">' + IC.chiaSe + demHtml(bai.soChiaSe) + '</button>' +
+        '<span class="cx-phai">' + cumCamXuc(bai.camXuc, true) + '</span>' +
       '</div><div class="bl-khu" data-blkhu hidden></div>';
     el.style.position = 'relative';
 
@@ -349,10 +354,8 @@
       bai.camXuc = bai.camXuc || {};
       if (moi) bai.camXuc[toi.uid] = moi; else delete bai.camXuc[toi.uid];
       nutCx.className = moi ? 'da ' + moi : '';
-      nutCx.innerHTML = moi ? NW.cxHtml(moi) + '<span>' + NW.tenCamXuc(moi) + '</span>' : IC.tim + '<span>Thích</span>';
-      var so = $('.bai-so', el); var cum = $('.cx-cum', so);
-      var html = cumCamXuc(bai.camXuc);
-      if (cum) cum.outerHTML = html; else so.insertAdjacentHTML('afterbegin', html);
+      nutCx.innerHTML = (moi ? NW.cxHtml(moi) : IC.tim) + demHtml(demCamXuc(bai.camXuc).tong);
+      var phai = $('.cx-phai', el); if (phai) phai.innerHTML = cumCamXuc(bai.camXuc, true);
       ganCxAi();
       if (NW.laBanThu()) return;
       NW.fb().then(function (f) {
@@ -410,7 +413,8 @@
     }
     function capNhatDem(d) {
       bai.soBinhLuan = Math.max(0, (bai.soBinhLuan || 0) + d);
-      $$('[data-mobl]', el)[0].textContent = bai.soBinhLuan + ' bình luận';
+      var demBl = $('[data-mobl] .dem', el);
+      if (demBl) { demBl.textContent = bai.soBinhLuan || ''; demBl.hidden = !bai.soBinhLuan; }
     }
     // một bình luận (gốc hoặc trả lời)
     function motBl(b, con) {

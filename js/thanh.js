@@ -222,6 +222,7 @@
   var NHIP_MS = 3 * 60 * 1000, _nhipCuoi = 0;
   async function nhipOnline() {
     if (NW.laBanThu() || document.hidden || !NW.toi || NW.toi.laThay) return;
+    if (!NW.caiDat().hoatDong) return;   // v0.9.2: em tắt "Trạng thái hoạt động" ⇒ không ghi nhịp ⇒ bạn thấy em offline
     if (Date.now() - _nhipCuoi < NHIP_MS - 5000) return;
     _nhipCuoi = Date.now();
     try { var f = await NW.fb(); await f.fs.updateDoc(f.fs.doc(f.db, 'nwUsers', NW.toi.uid), { hoatDongLuc: _nhipCuoi }); }

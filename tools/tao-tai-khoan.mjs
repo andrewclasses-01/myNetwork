@@ -64,14 +64,25 @@ const DL = JSON.parse(fs.readFileSync(LOP_JSON, 'utf8'));
 const NOI = [...(DL.lop || []).map((l) => ({ ...l, loai: 'lop' })), ...(DL.khoa || []).map((l) => ({ ...l, loai: 'khoa' }))];
 console.log('📄 ' + LOP_JSON + ' — cập nhật ' + DL.capNhat + ' · ' + (DL.lop || []).length + ' lớp + ' + (DL.khoa || []).length + ' khoá');
 
+// v0.9.2 — sinh nhật: lop.json cho cả ngày/tháng/năm, nhưng nwUsers CHỈ giữ 'dd/MM'
+// (mạng chỉ cần biết hôm nay ai sinh nhật; không đưa năm sinh lên mạng cho cả trường đọc).
+function ngayThang(s) {
+  const m = String(s || '').trim().match(/^(\d{1,2})\s*[\/\-.]\s*(\d{1,2})/);
+  if (!m) return '';
+  const d = +m[1], t = +m[2];
+  if (d < 1 || d > 31 || t < 1 || t > 12) return '';
+  return ('0' + d).slice(-2) + '/' + ('0' + t).slice(-2);
+}
+
 // Gom theo MÃ đăng nhập: một em có thể ở 2 nơi ⇒ một tài khoản.
 const theoMa = new Map();
 for (const noi of NOI) {
   for (const h of noi.hocSinh || []) {
     const ma = chuanMa(h.ma);
     if (!ma || !h.id) continue;
-    if (!theoMa.has(ma)) theoMa.set(ma, { ma, ten: h.ten, ids: [], noi: [] });
+    if (!theoMa.has(ma)) theoMa.set(ma, { ma, ten: h.ten, ids: [], noi: [], sinhNhat: '' });
     const e = theoMa.get(ma);
+    if (!e.sinhNhat) e.sinhNhat = ngayThang(h.sinhNhat);   // v0.9.2: chỉ giữ NGÀY/THÁNG
     e.ids.push({ id: h.id, loai: noi.loai, maLop: noi.maLop });
     e.noi.push({ maLop: noi.maLop, tenGoc: noi.tenGoc, loai: noi.loai });
   }
@@ -80,7 +91,7 @@ const DS = [...theoMa.values()].map((e) => {
   const chinh = e.ids.find((x) => x.loai === 'lop') || e.ids[0];
   return {
     uid: 'hs_' + chinh.id, msId: chinh.id, ma: e.ma, ten: String(e.ten || '').trim(),
-    lop: chinh.maLop, cacLop: [...new Set(e.noi.map((n) => n.maLop))]
+    lop: chinh.maLop, cacLop: [...new Set(e.noi.map((n) => n.maLop))], sinhNhat: e.sinhNhat
   };
 }).filter((e) => !CHI_LOP || e.cacLop.includes(CHI_LOP));
 console.log('👥 ' + DS.length + ' tài khoản' + (CHI_LOP ? ' (lớp ' + CHI_LOP + ')' : ''));
@@ -113,6 +124,7 @@ for (const e of DS) {
         await auth.setCustomUserClaims(e.uid, claims);
         await db.doc('nwUsers/' + e.uid).set({
           uid: e.uid, ten: e.ten, tenThuong: khongDau(e.ten), lop: e.lop, cacLop: e.cacLop, vaiTro: 'hs', msId: e.msId,
+          sinhNhat: e.sinhNhat,
           anh: '', bia: '', gioiThieu: '', phaiDoiMk: true, khoa: false, luc: Date.now(), capNhat: Date.now()
         }, { merge: true });
       }
@@ -127,7 +139,7 @@ for (const e of DS) {
         if (doiEmail || doiTen) await auth.updateUser(e.uid, { email, displayName: e.ten });
         if (doiClaim) await auth.setCustomUserClaims(e.uid, claims);
         // Hồ sơ: chỉ cập nhật các trường do myStudent quản (KHÔNG đụng anh/bia/gioiThieu/phaiDoiMk/khoa)
-        await db.doc('nwUsers/' + e.uid).set({ uid: e.uid, ten: e.ten, tenThuong: khongDau(e.ten), lop: e.lop, cacLop: e.cacLop, vaiTro: 'hs', msId: e.msId, capNhat: Date.now() }, { merge: true });
+        await db.doc('nwUsers/' + e.uid).set({ uid: e.uid, ten: e.ten, tenThuong: khongDau(e.ten), lop: e.lop, cacLop: e.cacLop, vaiTro: 'hs', msId: e.msId, sinhNhat: e.sinhNhat, capNhat: Date.now() }, { merge: true });
       }
       capNhat++;
     }

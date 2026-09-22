@@ -66,9 +66,10 @@
     var el = document.createElement('div'); el.className = 'cn-hop'; el.setAttribute('data-uid', nguoi.uid);
     el.innerHTML = '<div class="cn-dau">' + NW.avHtml(nguoi) + '<div class="ai"><b>' + an(nguoi.ten) + (nguoi.vaiTro === 'gv' ? NW.tichHtml('nho') : '') + '</b><small>' +
         an(nguoi.vaiTro === 'gv' ? 'Thầy' : (NW.dangOnline(nguoi) ? 'Đang hoạt động' : (nguoi.lop || ''))) + '</small></div>' +
+      (nguoi.vaiTro === 'gv' ? '' : '<button type="button" data-chanbtn title="Chặn tin nhắn" aria-label="Chặn tin nhắn">' + IC.chan + '</button>') +
       '<button type="button" data-min title="Thu nhỏ" aria-label="Thu nhỏ"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>' +
       '<button type="button" data-dong title="Đóng" aria-label="Đóng">' + IC.dong + '</button></div>' +
-      '<div class="cn-than"></div>' +
+      '<div class="cn-than"></div><div class="cn-chanbao" hidden></div>' +
       '<div class="cn-chan"><button type="button" class="nut anh" title="Gửi ảnh" aria-label="Gửi ảnh">' + IC.anh + '</button><input type="file" accept="image/*" hidden>' +
       '<textarea rows="1" placeholder="Aa" maxlength="' + (NW.CFG.TOI_DA_CHU_TIN || 1000) + '"></textarea>' +
       '<button type="button" class="nut gui" hidden title="Gửi" aria-label="Gửi">' + IC.gui + '</button>' +
@@ -103,6 +104,36 @@
       } catch (e) { NW.toast(NW.chuLoiKho ? NW.chuLoiKho(e) : 'Không gửi được ảnh.', true); }
       nutAnh.disabled = false;
     };
+    // ---- v0.9.2 (thầy chốt 23/09): CHẶN TIN NHẮN ngay trong hộp chat ----
+    var bao = $('.cn-chanbao', el), chanEl = $('.cn-chan', el), nutChan = $('[data-chanbtn]', el);
+    function veChan(t) {
+      hop.chan = t;
+      var khoa = t.toiChan || t.hoChan;
+      chanEl.hidden = khoa;
+      bao.hidden = !khoa;
+      if (t.toiChan) bao.innerHTML = '<span>Em đã chặn <b>' + an(nguoi.ten) + '</b>. Bạn này không nhắn tin cho em được.</span><button type="button" class="btn soft nho" data-bochan>Bỏ chặn</button>';
+      else if (t.hoChan) bao.innerHTML = '<span><b>' + an(nguoi.ten) + '</b> đang hạn chế tin nhắn. Em không nhắn được cho bạn này.</span>';
+      if (nutChan) nutChan.classList.toggle('dang-chan', !!t.toiChan);
+      var bo = $('[data-bochan]', bao);
+      if (bo) bo.onclick = async function () { bo.disabled = true; await doiChan(false); };
+    }
+    async function doiChan(bat) {
+      try {
+        await NW.datChan(nguoi, bat);
+        veChan(await NW.chanTinh(nguoi.uid));
+        NW.toast(bat ? ('Đã chặn ' + nguoi.ten + '.') : ('Đã bỏ chặn ' + nguoi.ten + '.'));
+      } catch (e) { NW.toast(NW.chuLoiKho ? NW.chuLoiKho(e) : 'Không đổi được.', true); }
+    }
+    if (nutChan) nutChan.onclick = async function () {
+      if (hop.chan && hop.chan.toiChan) { doiChan(false); return; }
+      if (!(await NW.hoi('Chặn ' + nguoi.ten + '?', 'Bạn này sẽ không nhắn tin cho em được nữa, và không còn hiện trong danh bạ của em. Em bỏ chặn lại lúc nào cũng được.', { ok: 'Chặn', nguy: true }))) return;
+      doiChan(true);
+    };
+    NW.chanTinh(nguoi.uid).then(veChan);
+    // chặn/bỏ chặn ở nơi khác (pop-up Danh sách chặn) → hộp đang mở cập nhật theo
+    hop.ngheChan = function (e) { if (e.detail && e.detail.uid === nguoi.uid) NW.chanTinh(nguoi.uid).then(veChan); };
+    document.addEventListener('nw-chan', hop.ngheChan);
+
     $('[data-dong]', el).onclick = function () { dong(hop); };
     $('[data-min]', el).onclick = function () { thuNho(hop); };
     el.addEventListener('click', function () { $$('.cn-hop', khu()).forEach(function (x) { x.classList.remove('chon'); }); el.classList.add('chon'); });
@@ -111,6 +142,7 @@
   function dong(hop) {
     hops = hops.filter(function (h) { return h !== hop; });
     if (hop.dungNghe) { try { hop.dungNghe(); } catch (e) { } hop.dungNghe = null; }
+    if (hop.ngheChan) { document.removeEventListener('nw-chan', hop.ngheChan); hop.ngheChan = null; }
     hop.el.remove(); veMin();
   }
   function thuNho(hop) { hop.min = true; hop.el.remove(); veMin(); }

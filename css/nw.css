@@ -1506,3 +1506,64 @@ body.dn{min-height:100dvh}
   .ql-nb .th{display:none}
   .ql-muc-hang .th{width:56px; height:36px}
 }
+
+
+/* ============================================================
+   v0.9.2 (thầy chốt 23/09/2026) — BẢNG TIN đợt tinh chỉnh
+   ============================================================ */
+
+/* --- thẻ bài: MỘT hàng nút. Trái = 3 icon + số (không chữ) · Phải = cảm xúc đã thả (theo ảnh mẫu thầy gửi) --- */
+.bai-nut{align-items:center; gap:2px; margin-top:6px; padding-top:4px}
+.bai-nut button{flex:0 0 auto; justify-content:flex-start; gap:6px; padding:8px 10px; border-radius:10px}
+.bai-nut .dem{font-size:12.5px; font-weight:800; letter-spacing:-.01em}
+.bai-nut .dem[hidden]{display:none}
+.bai-nut .cx-phai{margin-left:auto; display:flex; align-items:center; padding-right:4px; font-size:12px; color:var(--muted); font-weight:700}
+.bai-nut .cx-phai .cx-cum{cursor:pointer}
+
+/* --- cột phải: khung NGƯỜI LIÊN HỆ kéo dài, có tìm + ⋯ --- */
+.lien-he{display:flex; flex-direction:column; min-height:0; max-height:calc(100vh - var(--cao-thanh) - 84px)}
+.lh-dau{display:flex; align-items:center; gap:2px; margin-bottom:6px}
+.lh-dau h3{margin:0; flex:1}
+.lh-dau .nut-tron{width:30px; height:30px; color:var(--muted)}
+.lh-dau .nut-tron:hover{background:var(--ground); color:var(--ink)}
+.lh-dau .nut-tron .ic{width:16px; height:16px; stroke-width:2.2}
+.lh-tim{width:100%; margin-bottom:6px; padding:8px 11px; border:1px solid var(--line); border-radius:11px;
+  font:inherit; font-size:13px; background:var(--ground)}
+.lh-tim:focus{outline:none; border-color:var(--accent); background:var(--surface)}
+.lh-ds{overflow:auto; min-height:0; flex:1; margin:0 -6px; padding:0 6px}
+.cot-ver{margin:0; padding:0 4px; color:var(--muted)}
+
+/* --- bảng cài đặt đoạn chat (thả xuống dưới nút ⋯) --- */
+.lh-caidat{padding:8px}
+.lh-cd-dau{padding:4px 8px 8px; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:800}
+.lh-gat{display:flex !important; align-items:center; gap:10px; width:100%; padding:9px 8px; border-radius:10px; text-align:left}
+.lh-gat:hover{background:var(--ground)}
+.lh-gat .chu{flex:1; min-width:0; display:block}
+.lh-gat .chu b{display:block; font-size:13px; font-weight:700}
+.lh-gat .chu small{display:block; font-size:11px; color:var(--muted); font-weight:600; line-height:1.35; margin-top:1px}
+.lh-gat .nut{flex:none; width:36px; height:20px; border-radius:999px; background:#d7dde1; position:relative;
+  transition:background-color .16s var(--em)}
+.lh-gat .nut::after{content:''; position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%;
+  background:#fff; box-shadow:0 1px 3px rgba(22,35,42,.28); transition:transform .16s var(--em)}
+.lh-gat.bat .nut{background:var(--accent)}
+.lh-gat.bat .nut::after{transform:translateX(16px)}
+.lh-cd-muc{margin-top:4px; border-top:1px solid var(--line); border-radius:0 0 10px 10px}
+.lh-cd-muc .mui{margin-left:auto; color:var(--muted); font-style:normal; font-weight:800}
+
+/* --- hộp chat nổi: dải báo đã chặn / bị chặn --- */
+.cn-dau [data-chanbtn].dang-chan{color:var(--do)}
+.cn-chanbao{display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--ground);
+  border-top:1px solid var(--line); font-size:12px; line-height:1.45; color:var(--muted); font-weight:600}
+.cn-chanbao[hidden]{display:none}
+.cn-chanbao span{flex:1; min-width:0}
+.cn-chanbao b{color:var(--ink)}
+
+/* --- khung SINH NHẬT (chỉ hiện đúng hôm có bạn sinh nhật; không bao giờ có thầy) --- */
+.sinh-nhat[hidden]{display:none}
+.sinh-nhat .lh-dau h3{display:flex; align-items:center; gap:7px}
+.sinh-nhat .lh-dau h3 .ic{width:17px; height:17px; color:var(--accent); stroke-width:1.7}
+.sn-ds .nguoi{align-items:flex-start; padding:6px 8px}
+.sn-ds .nguoi > span{min-width:0}
+.sn-ds .ten-nut{display:block; padding:0; font-weight:700; font-size:13.5px; text-align:left}
+.sn-ds .ten-nut:hover{color:var(--accent)}
+.sn-mo{display:block; font-size:11.5px; color:var(--muted); font-weight:600; line-height:1.4}

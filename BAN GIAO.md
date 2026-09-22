@@ -2,6 +2,12 @@
 
 > **Phiên mới đọc khối 🚀 ngay dưới, rồi MỤC A0**, rồi mục A (phiên thiết kế đợt 1), rồi `README.md` (nhật ký từng bản).
 
+## 🟢 23/09/2026 — **v0.9.2** (CHƯA PUSH, thầy dặn "làm trên bản local, xong hết mới push")
+Đợt tinh chỉnh BẢNG TIN theo 5 ý thầy + tính năng CHẶN TIN NHẮN mới. Chi tiết từng thứ: README v0.9.2.
+4 điều thầy chốt trong phiên (KHÔNG hỏi lại): chặn **ở giao diện cả hai bên** (người bị chặn thấy dải báo + khoá ô gõ), 3 công tắc cài đặt
+**lưu theo MÁY**, "Hiển thị danh bạ" tắt = khung **chỉ còn Thầy Andrew**, **giữ** nhãn ĐÃ ẨN trên thẻ bài.
+⬜ Còn nợ: áp dụng chặn cho `tinnhan.html` · luật `tai-lieu/` đã sửa thêm (`nwUsers/{uid}/rieng` + `nwChats.chanBoi`) nhưng CHƯA DÁN.
+
 ## 🔵 22/09/2026 (phiên sau) — **v0.9.1**: bàn thử ĐI LẠI ĐƯỢC giữa các trang
 Thầy yêu cầu "cho các trang liên kết với nhau như khi mở trang thật để tôi dò lỗi". Đã làm: mọi đường trong nhà tự mang theo `?thu=1`/`?thu=thay`
 (`NW.duong/NW.di/NW.thay` + bộ bắt cú bấm `<a>` trong `js/loi.js`, chỉ chạy ở localhost có `?thu=`), các chỗ nhảy trang bằng JS đổi sang `NW.di()`,

@@ -6,7 +6,7 @@
 <title>Bảng tin · Andrew Classes Network</title>
 <link rel="icon" href="assets/avatar-tron.jpg">
 <link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="css/nw.css?v=12">
+<link rel="stylesheet" href="css/nw.css?v=13">
 </head>
 <body>
 <main class="main">
@@ -15,21 +15,20 @@
     <div id="dong"></div>
   </section>
   <aside class="cot-phu">
-    <div class="card o" id="oLop"><h3>Lớp của em</h3><div class="ds-nguoi ds-lop"><div class="xoay"></div></div></div>
-    <div class="card o">
-      <h3>Nếp của mạng</h3>
-      <p class="tiny" style="line-height:1.6;margin:0">• Nói chuyện lịch sự, tôn trọng bạn.<br>• Không đăng ảnh/thông tin riêng của người khác.<br>• Thấy gì không ổn thì bấm <b>Báo cáo với thầy</b> ở menu bài.<br>• Thầy có thể ẩn bài không phù hợp.</p>
-      <p class="tiny" style="margin:10px 0 0" id="verFoot"></p>
-    </div>
+    <!-- v0.9.2 (thầy chốt 23/09): bỏ khung "Nếp của mạng", khung NGƯỜI LIÊN HỆ kéo dài xuống — ruột ở js/lienhe.js -->
+    <div id="oSinhNhat"></div>   <!-- v0.9.2 (thầy chốt 23/09): chỉ hiện đúng hôm có bạn sinh nhật -->
+    <div id="oLienHe"></div>
+    <p class="tiny cot-ver" id="verFoot"></p>
   </aside>
 </main>
 
-<script src="config.js?v=12"></script>
-<script src="js/loi.js?v=12"></script>
-<script src="js/thanh.js?v=12"></script>
-<script src="js/bai.js?v=12"></script>
-<script src="js/chat.js?v=12"></script>
-<script src="js/chatnoi.js?v=12"></script>
+<script src="config.js?v=13"></script>
+<script src="js/loi.js?v=13"></script>
+<script src="js/thanh.js?v=13"></script>
+<script src="js/bai.js?v=13"></script>
+<script src="js/chat.js?v=13"></script>
+<script src="js/chatnoi.js?v=13"></script>
+<script src="js/lienhe.js?v=13"></script>
 <script>
 (function () {
   'use strict';
@@ -41,43 +40,7 @@
     var dong = NW.Bai.dongBai({ hop: $('#dong'), loai: 'bangTin' });
     NW.Bai.soan({ hop: $('#soan'), sauKhiDang: function (bai, id) { dong.chenDau(bai, id); } });
 
-    // v14 — LỚP CỦA EM: hiện ĐỦ cả lớp, không nhãn lớp, không icon tin nhắn;
-    // bấm AVATAR → trang cá nhân · bấm TÊN → hộp chat nổi góc dưới (kiểu Facebook); thầy đứng đầu danh sách với tích vàng
-    function veLop(hop, ds) {
-      hop.innerHTML = ds.length ? ds.map(function (n, i) {
-        return '<div class="nguoi" data-i="' + i + '"><a href="canhan.html?uid=' + an(n.uid) + '" title="Trang cá nhân">' + NW.avHtml(n, 'nho') + '</a>' +
-          '<button type="button" class="ten-nut" data-chat title="Nhắn tin">' + an(n.ten) + (n.vaiTro === 'gv' ? NW.tichHtml('nho') : '') +
-'</button></div>';
-      }).join('') : '<div class="tiny">Chưa có ai.</div>';
-      NW.$$('[data-chat]', hop).forEach(function (b) {
-        b.onclick = function () { NW.ChatNoi.mo(ds[+b.closest('.nguoi').getAttribute('data-i')]); };
-      });
-    }
-
-    if (ph.banThu) {
-      $('#oLop h3').textContent = 'Lớp A1C';
-      veLop($('#oLop .ds-lop'), [
-        { uid: 'gv', ten: 'Thầy Andrew', vaiTro: 'gv', anh: 'assets/avatar-tron.jpg', online: true },
-        { uid: 'hs_1', ten: 'MINH ANH', lop: 'A1C', online: true }, { uid: 'hs_5', ten: 'THẢO VY', lop: 'A1C' }, { uid: 'hs_6', ten: 'GIA HUY', lop: 'A1C', online: true },
-        { uid: 'hs_7', ten: 'KHÁNH LINH', lop: 'A1C' }, { uid: 'hs_8', ten: 'TUẤN KIỆT', lop: 'A1C' }, { uid: 'hs_9', ten: 'PHƯƠNG NHI', lop: 'A1C' },
-        { uid: 'hs_10', ten: 'HOÀNG LONG', lop: 'A1C' }, { uid: 'hs_11', ten: 'BẢO CHÂU', lop: 'A1C' }, { uid: 'hs_15', ten: 'ANH THƯ', lop: 'A1C' },
-        { uid: 'hs_16', ten: 'MINH KHANG', lop: 'A1C' }, { uid: 'hs_17', ten: 'HÀ MY', lop: 'A1C' }]);
-      return;
-    }
-    var lops = toi.laThay ? [] : (toi.cacLop || [toi.lop]);
-    if (!lops.length) { $('#oLop').hidden = true; return; }
-    $('#oLop h3').textContent = lops.length > 1 ? 'Lớp của em (' + lops.join(' · ') + ')' : 'Lớp ' + lops[0];
-    // chấm online lấy từ hoatDongLuc trong hồ sơ ⇒ đọc lại danh sách lớp (đệm tối đa 2 phút) và làm mới 3 phút/lần khi tab mở
-    function taiLop() {
-      Promise.all(lops.map(function (l) { return NW.nguoiTheoLop(l, 2 * 60 * 1000).catch(function () { return []; }); }).concat([NW.dsThay().catch(function () { return []; })])).then(function (ds) {
-        var thay = ds.pop(), gop = [], co = {};
-        thay.forEach(function (n) { if (n.uid !== toi.uid) { co[n.uid] = 1; gop.push(n); } });
-        ds.forEach(function (d) { d.forEach(function (n) { if (n.uid !== toi.uid && !co[n.uid]) { co[n.uid] = 1; gop.push(n); } }); });
-        veLop($('#oLop .ds-lop'), gop);
-      });
-    }
-    taiLop();
-    setInterval(function () { if (!document.hidden) taiLop(); }, 3 * 60 * 1000);
+    NW.LienHe.dung({ hop: $('#oLienHe'), hopSinhNhat: $('#oSinhNhat') });
   });
 
 })();

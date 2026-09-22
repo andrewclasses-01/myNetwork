@@ -9,7 +9,47 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 
 ⭐ 22/09: phiên thiết kế đợt 1 đã build v0.2.0→v0.4.0 (xem `BAN GIAO.md` mục A). Thầy dừng cuối phiên, ⬜ chưa bấm tay; còn mở: tin nhắn · khám phá · đăng nhập. Vẫn chưa dán luật, chưa tạo tài khoản.
 
-## Bản hiện tại — v0.9.1 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+## Bản hiện tại — v0.9.2 (23/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+
+### v0.9.2 — 23/09/2026: BẢNG TIN đợt tinh chỉnh theo 5 ý của thầy — `?v=13`
+1. **Thẻ bài bớt nhãn**: bỏ `BẠN BÈ` và `CHỈ MÌNH TÔI` (icon phạm vi đơn sắc cạnh dòng giờ đã nói đủ). Còn lại **GHIM · NỔI BẬT · ĐÃ ẨN** + tích vàng của thầy.
+2. **Gộp 2 hàng dưới bài thành MỘT** (theo ảnh mẫu thầy gửi): bên **trái** 3 nút chỉ-icon kèm số — Thích · Bình luận · Chia sẻ (số = 0 thì giấu);
+   bên **phải** cụm cảm xúc đã thả (bấm vào vẫn mở danh sách ai thả gì). Hàng `.bai-so` cũ bỏ hẳn. Giữ/rê nút Thích vẫn ra bảng 7 cảm xúc.
+3. **Ô soạn gọn bỏ icon ảnh** — thêm ảnh nằm trong pop-up "Tạo bài viết" (đã có sẵn nút Ảnh ở dải *Thêm vào bài viết*).
+4. **Cột phải**: bỏ khung *Nếp của mạng*; khung còn lại đổi tên thành **NGƯỜI LIÊN HỆ**, kéo dài xuống hết màn (tự cuộn), đầu khung có **nút tìm**
+   (lọc theo tên, bỏ dấu) và **nút ⋯** mở bảng **Cài đặt đoạn chat**: *Âm thanh tin nhắn · Hiển thị danh bạ · Trạng thái hoạt động* (3 công tắc,
+   **lưu THEO MÁY** trong localStorage — thầy chốt, không tốn lượt kho nào) + **Danh sách chặn** (pop-up, bỏ chặn tại chỗ).
+   *Hiển thị danh bạ* TẮT = khung vẫn còn nhưng **chỉ hiện Thầy Andrew**. *Trạng thái hoạt động* TẮT = `thanh.js` không ghi `hoatDongLuc` ⇒ bạn thấy em offline.
+   Ruột khung nằm ở **`js/lienhe.js` mới** (`NW.LienHe.dung({hop})`), `bangtin.html` chỉ còn một dòng gọi.
+5. **Danh bạ có cả bạn KHÁC LỚP đã kết bạn** — gộp: thầy + `NW.nguoiTheoLop` từng lớp + `NW.dsBanUid()` (chỉ đọc hồ sơ những uid chưa có trong danh sách).
+
+6. **Icon Bình luận + Chia sẻ vẽ lại theo Facebook** (thầy gửi ảnh mẫu 23/09): bình luận = **bong bóng tròn, đuôi nhọn góc dưới trái**
+   (trước là bong bóng chữ nhật kiểu Lucide); chia sẻ = **mũi tên to, đuôi móc câu dày vuốt nhọn ở góc dưới trái**, vẽ lại theo mẫu Flaticon `share_2990295` thầy gửi (trước là hộp + mũi tên lên kiểu "tải lên").
+   Sửa thẳng `IC.binhLuan` / `IC.chiaSe` trong `loi.js` ⇒ đổi ở mọi nơi dùng (thẻ bài + thống kê trang Quản lý). Mũi tên nâng lên 1,3 đơn vị cho cân giữa ô icon.
+
+7. **Cụm cảm xúc bên phải bỏ số** — chỉ còn các icon đã thả (bấm vào vẫn xem được ai thả gì). Số lượt vẫn còn ở nút Thích bên trái.
+   `cumCamXuc(cx, khongSo)` — bình luận vẫn giữ số như cũ.
+8. **Khung SINH NHẬT** (mới) — nằm **ngay trên** khung Người liên hệ, **chỉ hiện đúng hôm** có người trong danh bạ sinh nhật; hết ngày là tự biến mất.
+   **KHÔNG BAO GIỜ hiện sinh nhật của thầy** (`laSinhNhatHomNay` chặn `vaiTro === 'gv'` ngay dòng đầu — bàn thử cố tình để thầy cũng sinh nhật
+   "hôm nay" để luật này luôn được thử). Bấm tên = mở hộp chat nổi để nhắn lời chúc; bấm avatar = trang cá nhân.
+   - Hồ sơ **chỉ giữ NGÀY/THÁNG** (`nwUsers.sinhNhat = 'dd/MM'`, không có năm) — mạng chỉ cần biết hôm nay ai sinh nhật, không đưa năm sinh
+     lên cho cả trường đọc. `tools/tao-tai-khoan.mjs` cắt sẵn khi chép từ `lop.json` (hàm `ngayThang`, nhận `d/M/yyyy`, `dd-MM-yyyy`, `d.M.yyyy`).
+   - **Không cần sửa luật**: học sinh không tự sửa được `sinhNhat` (không nằm trong danh sách khoá cho phép), công cụ ghi bằng khoá quản trị.
+   - ⚠ **CHƯA CÓ DỮ LIỆU THẬT**: `birthday` trong myStudent **0/182 em** có, `sinhNhat` trong `lop.json` **0/162 em** có ⇒ trên trang thật khung này
+     sẽ **không bao giờ hiện** cho tới khi thầy nhập ngày sinh trong myStudent → bấm 🌐 xuất lại `lop.json` → chạy lại `tools/tao-tai-khoan.mjs`.
+
+**CHẶN TIN NHẮN (mới)** — thầy chốt: chặn **ở giao diện cả hai bên**, không tốn 1 lượt đọc cho mỗi tin nhắn của cả mạng.
+- Nút chặn là **icon vòng tròn gạch chéo trên đầu hộp chat nổi** (bấm tên ở khung Người liên hệ để mở). Hỏi lại trước khi chặn; chặn rồi icon đỏ, bấm lần nữa = bỏ chặn.
+- **Người chặn**: người kia biến khỏi danh bạ, hộp chat hiện dải *"Em đã chặn X…"* + nút Bỏ chặn, ô gõ ẩn đi.
+- **Người bị chặn**: vẫn thấy tin cũ nhưng hộp chat hiện *"X đang hạn chế tin nhắn…"* và **ô gõ bị đóng**.
+- Chỗ lưu (2 nơi, đều rẻ): `nwChats/{a__b}.chanBoi` = cờ cho **bên kia** đọc — mở chat là đã đọc phòng đó rồi nên **không tốn thêm lượt đọc**, và ngoài
+  hai người trong phòng không ai đọc được · `nwUsers/{em}/rieng/chan.ds` = danh sách của **chính em** để lọc danh bạ bằng **1 lượt đọc/trang** (ô riêng, chỉ em đọc).
+  ⚠ Không truy vấn `nwChats` theo `chanBoi` được: luật đọc phòng đòi *em phải ở trong `thanhVien`*, mà Firestore chỉ cho **một** `array-contains` mỗi truy vấn ⇒ cả truy vấn bị từ chối.
+- **Luật `tai-lieu/` đã sửa thêm** (⬜ vẫn CHƯA DÁN): `nwUsers/{uid}/rieng/{muc}` chỉ chính chủ đọc/ghi · `nwChats` thêm khoá `chanBoi` và chỉ cho mỗi em thêm/bỏ **chính uid của mình**.
+- ⬜ Chưa áp dụng chặn cho trang `tinnhan.html` (mới làm ở hộp chat nổi) — việc đợt sau.
+
+**Bàn thử**: `hs_3` BẢO NAM và `hs_13` TRÚC LINH là hai bạn khác lớp đã kết bạn; **TRÚC LINH đang chặn em** để thầy xem được cảnh bị chặn
+(`THU_HO_CHAN` trong `loi.js`). Chặn/bỏ chặn ở bàn thử chỉ lưu trên máy (localStorage `nw_thu_chan`), không ghi kho.
 
 ### v0.9.1 — 22/09/2026: BÀN THỬ ĐI LẠI ĐƯỢC GIỮA CÁC TRANG (như trang thật) — `?v=12`
 Trước bản này, bàn thử chỉ xem được TỪNG trang: bấm icon trên thanh là mất `?thu=…` ⇒ trang mới không có phiên ⇒ bị đẩy về màn đăng nhập.
