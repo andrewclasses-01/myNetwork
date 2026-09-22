@@ -9,7 +9,18 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 
 ⭐ 22/09: phiên thiết kế đợt 1 đã build v0.2.0→v0.4.0 (xem `BAN GIAO.md` mục A). Thầy dừng cuối phiên, ⬜ chưa bấm tay; còn mở: tin nhắn · khám phá · đăng nhập. Vẫn chưa dán luật, chưa tạo tài khoản.
 
-## Bản hiện tại — v0.6.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+## Bản hiện tại — v0.7.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+
+### v0.7.0 — 22/09/2026: KHÁM PHÁ = cổng hoạt động của trung tâm (mẫu v17 → thảo luận → v18 → v19, thầy "ok build") — `?v=9`
+Thầy chốt: Khám phá không phải "bài hay/ảnh mới" nữa mà là nơi gắn **trò chơi tiếng Anh · giải đấu online · khoá học · chương trình trung tâm · thông báo quan trọng**; nội dung **thầy tự đăng** (kho `nwKhamPha`); **Nổi bật = bài thầy ghim**; bố cục phối hợp (nổi bật cuộn ngang, còn lại là ô to); giải đấu **làm vỏ trước**.
+- `khampha.html` viết lại: **Thông báo quan trọng** (dải đỏ = mức cao / vàng = thường, hiện ĐỦ chữ, tự ẩn khi hết hạn, bấm mở pop-up) → **Nổi bật** (dải cuộn ngang thẻ NHỎ: máy tính 3,5 thẻ / điện thoại đúng 2,5 thẻ; chỉ bài `noiBat:true`, thầy có ✕ gỡ) → **4 ô to** gradient (Trò chơi · Giải đấu · Khoá học · Chương trình, đếm mục, "N đang diễn ra") → bấm ô = **trang một loại** (`?loai=`): đầu trang cùng màu + ← về, lưới thẻ có ảnh bìa 16:9, nút hành động (link mở tab mới; không link thì mở pop-up), thẻ giải đấu có trạng thái + top 3, khoá học có số bài + thanh tiến độ.
+- **Thầy quản lý ngay trên trang**: nút *+ Thêm mục* (đầu trang / trong loại) và ✎ trên thẻ → pop-up: loại · tiêu đề · mô tả · link · chữ nút · bắt đầu/kết thúc · ô riêng theo loại (mức thông báo / trạng thái + top 3 / số bài + tiến độ) · ảnh bìa (nén 1280, Storage `_kp`) · ghim · thứ tự; nút **Ẩn mục** (`an:true`). Ghi `nwKhamPha` thật (`addDoc`/`updateDoc`).
+- `bai.js`: menu ⋯ của bài có thêm (chỉ thầy) **"Ghim vào Nổi bật (Khám phá)" / "Gỡ khỏi Nổi bật"** (`noiBat`, `noiBatLuc`); bài ghim mang nhãn ★ NỔI BẬT; bàn thử `thayDoi` đổi tại chỗ.
+- **Luật** (`tai-lieu/`, ⬜ chưa dán): khối 5b `nwKhamPha` (đọc: đã đăng nhập; ghi: chỉ thầy); `nwPosts` thầy sửa thêm `noiBat`,`noiBatLuc`. **Chỉ mục** thêm 2: `nwPosts(noiBat, noiBatLuc desc)` · `nwKhamPha(an, thuTu)` — `firestore.indexes.json` + `CHI MUC FIRESTORE.md`.
+- CSS gộp v17/v18/v19 (`.kp-*`, `.tt`, `.tien-do`, `.kp-top`, `.chon-o`); phần `.goi-y`/`.the-nguoi` cũ giữ nguyên cho timkiem.
+- Bàn thử: `khampha.html?thu=1` (dữ liệu mẫu 9 mục + 3 bài nổi bật); mẫu v19 có nút "Xem như thầy" ở `D:\OTHERS\CLAUDE\myNetwork - thiet ke\mau-v19\mau-v19.html?thu=1&thay=1` (cổng 8814). ⬜ Thầy chưa bấm tay.
+
+## Bản trước — v0.6.0 (22/09/2026)
 
 ### v0.6.0 — 22/09/2026: TRANG TIN NHẮN theo mẫu v15 + v16 thầy chốt ("ok build" 22/09) — `?v=8`
 Mẫu: `D:\OTHERS\CLAUDE\myNetwork - thiet ke\mau-v15\` (8810) → `mau-v16\` (8811), bản chép repo v0.5.0; chép về `js/chat.js` `js/loi.js` `css/nw.css`. `Chat.dung` viết lại (khối menu phòng / chọn người giữ nguyên).

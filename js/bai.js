@@ -295,7 +295,7 @@
     el.className = 'card bai' + (bai.an ? ' an' : '');
     el.setAttribute('data-id', id);
     var cuaToi = bai.uid === toi.uid;
-    var nhan = (bai.ghim ? '<span class="nhan-ghim">GHIM</span>' : '') + (bai.pham === 'ban' ? '<span class="nhan-ban">BẠN BÈ</span>' : '') + (bai.pham === 'minh' ? '<span class="nhan-minh">CHỈ MÌNH TÔI</span>' : '') +
+    var nhan = (bai.ghim ? '<span class="nhan-ghim">GHIM</span>' : '') + (bai.noiBat ? '<span class="nhan-noibat">' + IC.sao + 'NỔI BẬT</span>' : '') + (bai.pham === 'ban' ? '<span class="nhan-ban">BẠN BÈ</span>' : '') + (bai.pham === 'minh' ? '<span class="nhan-minh">CHỈ MÌNH TÔI</span>' : '') +
                (bai.an ? '<span class="nhan-an">ĐÃ ẨN</span>' : '');
     var goc = '';
     if (bai.chiaSeTu) {
@@ -580,11 +580,13 @@
       if (toi.laThay) {
         items.push({ ic: bai.an ? IC.hien : IC.an, chu: bai.an ? 'Hiện lại bài' : 'Ẩn bài (thầy)', onclick: function () { thayDoi({ an: !bai.an }); } });
         items.push({ ic: IC.ghim, chu: bai.ghim ? 'Bỏ ghim' : 'Ghim lên đầu', onclick: function () { thayDoi({ ghim: !bai.ghim }); } });
+        // v18 (thầy chốt 22/09): chỉ THẦY ghim bài vào mục NỔI BẬT của trang Khám phá; gỡ được ở đây hoặc ở Khám phá
+        items.push({ ic: IC.sao, chu: bai.noiBat ? 'Gỡ khỏi Nổi bật' : 'Ghim vào Nổi bật (Khám phá)', onclick: function () { thayDoi({ noiBat: !bai.noiBat, noiBatLuc: bai.noiBat ? 0 : Date.now() }); } });
       }
       NW.menuNho(nut, items);
     };
     async function thayDoi(patch) {
-      if (NW.laBanThu()) { NW.toast('Bàn thử: không ghi thật.'); return; }
+      if (NW.laBanThu()) { Object.assign(bai, patch); el.replaceWith(Bai.dung(bai, id, o)); NW.toast('Bàn thử: đổi trên máy em, không ghi thật.'); return; }
       try {
         var f = await NW.fb();
         await f.fs.updateDoc(f.fs.doc(f.db, 'nwPosts', id), patch);
@@ -753,16 +755,16 @@
       bl: anhMau('EM CHỤP', '#00CEC9', '#81ECEC', 1000, 750), lop1: anhMau('BẢNG', '#636E72', '#B2BEC3', 1200, 800), lop2: anhMau('SÂN', '#00B894', '#DFE6E9', 1200, 800)
     };
     return [
-      { id: 'm1', bai: { uid: 'gv', tacGia: tg2, chu: 'Chào cả mạng! Đây là bảng tin của Andrew Classes. Các em đăng bài lịch sự, thân thiện nhé. 😊', anh: [], pham: 'mang', lop: 'GV', luc: t - 3600e3, an: false, ghim: true, camXuc: { hs_1: 'tim', hs_2: 'like', hs_3: 'haha' }, soBinhLuan: 2, soChiaSe: 1, chiaSeTu: null, goc: null,
+      { id: 'm1', bai: { uid: 'gv', tacGia: tg2, chu: 'Chào cả mạng! Đây là bảng tin của Andrew Classes. Các em đăng bài lịch sự, thân thiện nhé. 😊', anh: [], pham: 'mang', lop: 'GV', luc: t - 3600e3, an: false, ghim: true, noiBat: true, noiBatLuc: t - 3000e3, camXuc: { hs_1: 'tim', hs_2: 'like', hs_3: 'haha' }, soBinhLuan: 2, soChiaSe: 1, chiaSeTu: null, goc: null,
         _blMau: [{ id: 'b1', uid: 'hs_1', tacGia: tg1, chu: 'Dạ vâng ạ!', luc: t - 3000e3, camXuc: {} }, { id: 'b2', uid: 'hs_2', tacGia: tg3, chu: 'Em chào thầy 🙌', luc: t - 2000e3, camXuc: { hs_1: 'tim' } }] } },
       { id: 'm0', bai: { uid: 'hs_0', tacGia: tg0, chu: 'Được 3 sao bài Listening hôm nay 🥳 Cảm ơn Minh Anh đã ôn cùng!', anh: [A.sao], pham: 'ban', lop: 'A1C', luc: t - 300e3, an: false, ghim: false,
         camXuc: { hs_1: 'tim', hs_5: 'like' }, soBinhLuan: 1, soChiaSe: 0, chiaSeTu: null, goc: null, gan: [{ uid: 'hs_1', ten: 'MINH ANH' }], camGiac: { ma: 'tuyetVoi', ky: '🥳', chu: 'tuyệt vời', loai: 'cam' },
         _blMau: [{ id: 'c0', uid: 'hs_1', tacGia: tg1, chu: 'Giỏi quá 👏 mai ôn tiếp nha', luc: t - 200e3, camXuc: { hs_0: 'tim' } }] } },
       { id: 'm3', bai: { uid: 'hs_2', tacGia: tg3, chu: 'Chia sẻ lại bài của thầy cho lớp mình xem.', anh: [], pham: 'mang', lop: 'B2B', luc: t - 600e3, an: false, ghim: false, camXuc: {}, soBinhLuan: 0, soChiaSe: 0, chiaSeTu: 'm1', goc: { uid: 'gv', tacGia: tg2, chu: 'Chào cả mạng! Đây là bảng tin của Andrew Classes.', anh: [], luc: t - 3600e3 } } },
-      { id: 'm4', bai: { uid: 'hs_5', tacGia: tg5, chu: 'Góc học tập mới của em, tối nay cày WORDS 3 💪', anh: [A.hoc1, A.hoc2, A.hoc3], pham: 'lop', lop: 'A1C', luc: t - 1500e3, an: false, ghim: false,
+      { id: 'm4', bai: { uid: 'hs_5', tacGia: tg5, chu: 'Góc học tập mới của em, tối nay cày WORDS 3 💪', anh: [A.hoc1, A.hoc2, A.hoc3], pham: 'lop', lop: 'A1C', luc: t - 1500e3, an: false, ghim: false, noiBat: true, noiBatLuc: t - 1000e3,
         camXuc: { hs_1: 'tim', hs_0: 'ngac', hs_6: 'tim' }, soBinhLuan: 0, soChiaSe: 0, chiaSeTu: null, goc: null, gan: [], camGiac: { ma: 'hocBai', ky: '📚', chu: 'học bài', loai: 'hd' } } },
       { id: 'm2', bai: { uid: 'hs_1', tacGia: tg1, chu: 'Hôm nay em làm xong hết bài WORDS 2 rồi, 100% luôn 🎉 Bạn nào chưa làm thì làm nhanh kẻo hết hạn nha https://andrewclasses.com', anh: [], pham: 'ban', lop: 'A1C', luc: t - 1800e3, an: false, ghim: false, camXuc: { hs_0: 'tim', hs_2: 'cuoi' }, soBinhLuan: 0, soChiaSe: 0, chiaSeTu: null, goc: null } },
-      { id: 'm6', bai: { uid: 'gv', tacGia: tg2, chu: 'Ảnh buổi Speaking Test tuần này 📸 Các đội làm rất tốt, tuần sau công bố kết quả nhé!', anh: [A.sp1, A.sp2, A.sp3, A.sp4, A.sp5, A.sp6], pham: 'mang', lop: 'GV', luc: t - 3000e3, an: false, ghim: false,
+      { id: 'm6', bai: { uid: 'gv', tacGia: tg2, chu: 'Ảnh buổi Speaking Test tuần này 📸 Các đội làm rất tốt, tuần sau công bố kết quả nhé!', anh: [A.sp1, A.sp2, A.sp3, A.sp4, A.sp5, A.sp6], pham: 'mang', lop: 'GV', luc: t - 3000e3, an: false, ghim: false, noiBat: true, noiBatLuc: t - 2000e3,
         camXuc: { hs_1: 'tim', hs_2: 'tim', hs_3: 'haha', hs_5: 'ngac', hs_6: 'like', hs_7: 'tim', hs_8: 'cuoi' }, soBinhLuan: 5, soChiaSe: 2, chiaSeTu: null, goc: null,
         gan: [{ uid: 'hs_1', ten: 'MINH ANH' }, { uid: 'hs_5', ten: 'THẢO VY' }, { uid: 'hs_2', ten: 'BẢO NAM' }], camGiac: null,
         _blMau: [

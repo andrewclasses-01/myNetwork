@@ -1,4 +1,4 @@
-# BÀN GIAO myNetwork — phiên 22/09/2026 (v0.6.0) · trước đó v0.4.0 `b6b4c6c` · gốc phiên 20/09 (v0.1.0 `dc03133`)
+# BÀN GIAO myNetwork — phiên 22/09/2026 (v0.7.0) · trước đó v0.4.0 `b6b4c6c` · gốc phiên 20/09 (v0.1.0 `dc03133`)
 
 > **Phiên mới đọc MỤC A0 này trước**, rồi mục A (phiên thiết kế đợt 1), rồi `README.md` (nhật ký từng bản).
 
@@ -9,7 +9,8 @@
 - Chi tiết từng thứ đã làm: `README.md` mục v0.5.0. Chốt của thầy đợt này (KHÔNG hỏi lại): icon phạm vi đơn sắc · tích VÀNG thay chữ THẦY · không lớp cạnh tên, không nhãn LỚP trên bài · "TÊN ơi, em đang nghĩ gì thế?" · cảm xúc/hoạt động = huy hiệu 2D vẽ tay · ⋯ + ✕ ẩn bài, dịch vào · cột phải chỉ Lớp (đủ, thầy đầu) + Nếp · bấm tên = hộp chat nổi, bấm avatar = cá nhân · icon Bài tập theo Flaticon paper_10538038 · điện thoại giấu cột phải · lời mời kết bạn trong THÔNG BÁO · 10 ảnh/bài · chấm xanh online trên avatar (thầy không).
 - **Bàn thử cho thầy bấm** (cổng 8795, `?thu=1`): `bangtin.html?thu=1` (chuông có lời mời kết bạn · bấm tên MINH ANH ở cột phải → hộp chat · bài "Speaking Test" mở bình luận có trả lời lồng · ô "BẠN THỬ ơi…" → pop-up gắn thẻ/cảm xúc/kéo ảnh) · `baidang.html?thu=1&id=m1` · `canhan.html?thu=1&uid=hs_1`.
 - **v0.6.0 (cùng phiên)**: TRANG TIN NHẮN theo mẫu v15 (8810) + v16 (8811) — xem README v0.6.0. Chốt thêm của thầy: menu ⋯ từng cuộc chat 5 mục icon đen trắng · HS KHÔNG tạo nhóm, KHÔNG rời nhóm thầy lập · nhóm luôn đứng đầu danh sách.
-- **CÒN MỞ**: khám phá → đăng nhập → kỹ thuật dán luật (⚠ luật `tai-lieu/` đã sửa thêm cho v0.5.0: `soThich`, `hoatDongLuc`, `gan`, `camGiac`, ảnh ≤10, `binhLuan.anh/traLoiCho`, `soBinhLuan` giảm N) → chỉ mục → tài khoản → `kiem-luat.mjs` (cần thêm ca mới) → domain → gắn myLesson.
+- **v0.7.0 (cùng phiên)**: KHÁM PHÁ làm lại thành CỔNG HOẠT ĐỘNG (mẫu v17 bị thầy bác → thảo luận 4 câu → v18 → v19 "ok build") — xem README v0.7.0. Chốt của thầy: thầy tự đăng mục (nwKhamPha) · Nổi bật = bài thầy ghim từ menu ⋯ · nổi bật cuộn ngang ≥2,5 thẻ/màn, còn lại ô to · thông báo hiện đủ chữ · giải đấu vỏ trước.
+- **CÒN MỞ**: đăng nhập (index.html) → kỹ thuật dán luật (⚠ luật `tai-lieu/` đã sửa thêm cho v0.5.0: `soThich`, `hoatDongLuc`, `gan`, `camGiac`, ảnh ≤10, `binhLuan.anh/traLoiCho`, `soBinhLuan` giảm N) → chỉ mục → tài khoản → `kiem-luat.mjs` (cần thêm ca mới) → domain → gắn myLesson.
 - Bẫy đợt này: (1) `python -c` in tiếng Việt ra console cp1252 ⇒ `UnicodeEncodeError` — in bằng `.encode('ascii','backslashreplace')`; (2) chuỗi tìm trong script vá phải chép NGUYÊN VĂN từ file (đoán thiếu một dấu `"` là 0 kết quả); (3) mẫu dùng lớp `.bang` trùng với bảng `.bang` của nw.css ⇒ đặt tên riêng `.bang-mau`; (4) `input.files` phải chép ra mảng TRƯỚC khi `this.value=''`; (5) Browser pane có lúc `innerWidth=0` — `resize_window` cỡ cố định rồi mới đo/chụp.
 
 

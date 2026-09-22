@@ -4,32 +4,84 @@
       "collectionGroup": "nwChats",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "thanhVien", "arrayConfig": "CONTAINS" },
-        { "fieldPath": "capNhat", "order": "DESCENDING" }
+        {
+          "fieldPath": "thanhVien",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "capNhat",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "nwPosts",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "uid", "order": "ASCENDING" },
-        { "fieldPath": "luc", "order": "DESCENDING" }
+        {
+          "fieldPath": "uid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "luc",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "nwPosts",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "an", "order": "ASCENDING" },
-        { "fieldPath": "luc", "order": "DESCENDING" }
+        {
+          "fieldPath": "an",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "luc",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "nwBanBe",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "thanhVien", "arrayConfig": "CONTAINS" },
-        { "fieldPath": "trangThai", "order": "ASCENDING" }
+        {
+          "fieldPath": "thanhVien",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "trangThai",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "nwPosts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "noiBat",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "noiBatLuc",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "nwKhamPha",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "an",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "thuTu",
+          "order": "ASCENDING"
+        }
       ]
     }
   ],

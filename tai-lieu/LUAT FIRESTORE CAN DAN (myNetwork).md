@@ -100,7 +100,7 @@
         || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['soChiaSe'])
              && request.resource.data.soChiaSe == resource.data.soChiaSe + 1)
            // thầy: ẩn / hiện / ghim
-        || (laThay() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['an', 'ghim', 'lyDoAn'])));
+        || (laThay() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['an', 'ghim', 'lyDoAn', 'noiBat', 'noiBatLuc'])));   // v0.7.0: ghim vào Nổi bật (Khám phá)
       allow delete: if nwVao() && (resource.data.uid == nwToi() || laThay());
 
       match /binhLuan/{cid} {
@@ -200,6 +200,18 @@
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['trangThai', 'luc'])
         && request.resource.data.trangThai == 'ok';
       allow delete: if nwVao() && (nwToi() in resource.data.thanhVien || laThay());
+    }
+```
+
+## Khối 5b — KHÁM PHÁ `nwKhamPha` (v0.7.0: trò chơi · giải đấu · khoá học · chương trình · thông báo — thầy tự đăng)
+
+```
+    match /nwKhamPha/{id} {
+      allow read: if nwVao();
+      allow create, update, delete: if laThay()
+        && request.resource.data.loai in ['thongBao', 'troChoi', 'giaiDau', 'khoaHoc', 'chuongTrinh']
+        && request.resource.data.tieuDe is string && request.resource.data.tieuDe.size() <= 80
+        && request.resource.data.moTa is string && request.resource.data.moTa.size() <= 600;
     }
 ```
 

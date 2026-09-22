@@ -24,3 +24,8 @@ Collection ID + hai trường đúng như bảng (Query scope: Collection).
 npx firebase-tools deploy --only firestore:indexes --project aword-70dae
 ```
 (chưa cài CLI trên máy này; khoá quản trị hiện chỉ đọc luật nên đường này cần thầy đăng nhập Google.)
+
+
+## v0.7.0 — thêm 2 chỉ mục (Khám phá)
+5. `nwPosts`: `noiBat` Ascending + `noiBatLuc` Descending — dải NỔI BẬT ở Khám phá (bài thầy ghim).
+6. `nwKhamPha`: `an` Ascending + `thuTu` Ascending — danh sách mục Khám phá (chỉ mục chưa ẩn, theo thứ tự).
