@@ -9,7 +9,9 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 
 ⭐ Thầy chốt 20/09: **phiên sau THIẾT KẾ THÊM giao diện trước, gắn chức năng thật sau** — chưa dán luật, chưa tạo tài khoản.
 
-## Bản hiện tại — v0.3.1 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+## Bản hiện tại — v0.3.2 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+
+### v0.3.2 — 22/09/2026: vá icon gửi bình luận bị cắt (`textarea{display:block}` — khoảng hở inline làm nút gửi tụt đè viền) + `.ic{overflow:visible}`; `?v=5`.
 
 ### v0.3.1 — 22/09/2026: icon TIN NHẮN vẽ lại theo mẫu Flaticon thầy gửi (bong bóng tròn, đuôi nhọn dưới trái, 3 chấm đậm); `?v=4`.
 
