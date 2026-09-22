@@ -1,6 +1,34 @@
 # BÀN GIAO myNetwork — phiên 22/09/2026 (v0.9.0) · trước đó v0.4.0 `b6b4c6c` · gốc phiên 20/09 (v0.1.0 `dc03133`)
 
-> **Phiên mới đọc MỤC A0 này trước**, rồi mục A (phiên thiết kế đợt 1), rồi `README.md` (nhật ký từng bản).
+> **Phiên mới đọc khối 🚀 ngay dưới, rồi MỤC A0**, rồi mục A (phiên thiết kế đợt 1), rồi `README.md` (nhật ký từng bản).
+
+## 🚀 BẮT ĐẦU PHIÊN SAU — thầy dừng tối 22/09/2026 sau v0.9.0 `ee93d55` (main = origin/main, cây sạch)
+
+**Đang ở đâu:** GIAO DIỆN ĐÃ XONG CẢ 6 MẢNG (bảng tin · cá nhân · tin nhắn · khám phá · đăng nhập · quản lý) — v0.5.0 → v0.9.0 đều push
+cùng ngày 22/09. **Chưa có một lượt ghi/đọc Firestore thật nào** (chưa dán luật, chưa tạo tài khoản). Thầy **chưa bấm tay** bản nào từ v0.5.0.
+
+**Hướng lớn thầy chốt 22/09 (KHÔNG hỏi lại):** `andrewclasses.com` sẽ **trở thành myNetwork** (đa chức năng); làm bài tập chỉ là MỘT phần;
+trang lớp của HS nằm ở tab TRANG BÀI TẬP, thẻ bài vẫn mở trang bài như cũ; thầy không có bài tập nên tab đầu của thầy = QUẢN LÝ.
+**CHƯA CHUYỂN NGAY** — HS đang dùng myLesson web; chỉ gộp khi thầy nói.
+
+**Việc kế tiếp, theo thứ tự nên làm (hỏi thầy chọn bằng AskUserQuestion):**
+1. **Thầy bấm tay bàn thử** (không cần tài khoản, cổng 8795 `mynetwork-web`): vai học sinh `?thu=1`, vai thầy `?thu=thay` — bảng A4 bên dưới.
+   Chỗ nào chưa ưng → làm mẫu vòng mới (`mau-v29` trở đi, cổng 8824 trở đi, nếp mục A2/7).
+2. **Kỹ thuật để LIVE** (mục 5 + README "Việc thầy cần làm"): (a) Claude chuẩn bị bản luật GỘP từ `tai-lieu/LUAT FIRESTORE CAN DAN` + Storage để
+   thầy tự dán (⛔ Claude không dán, không tạo tài khoản, không ghi dữ liệu thật) → (b) 6 chỉ mục `firestore.indexes.json` → (c) bật Email/Password +
+   Authorized domain → (d) `tools/tao-tai-khoan.mjs --dry` rồi thật (thầy chạy) → (e) `tools/kiem-luat.mjs` ⚠ 28 ca viết cho v0.1.0, PHẢI THÊM CA:
+   pham ban/minh · gan/camGiac · binhLuan anh/traLoi · nwChats tat/chuaDoc/anLuc + nhóm chỉ thầy tạo + `lop` · tin camXuc/traLoi · nwKhamPha · noiBat ·
+   hoatDongLuc/soThich · nwBanBe → (f) thầy đăng nhập thật, bấm tay → domain `network.andrewclasses.com`.
+3. **Gộp myLesson web vào myNetwork** (việc lớn, phiên riêng, chỉ khi thầy nói): cùng repo/tên miền → `CFG.LINK_DASHBOARD` trỏ đường cùng nhà
+   (mẫu v28 đã thử với `mau-v28/baitap/`, chạy ổn) → giấu đầu trang riêng của dashboard (sửa bên myLesson) → trang lớp HS vào tab TRANG BÀI TẬP
+   → chuyển HS sang đăng nhập myNetwork. Trước đó bắt buộc xong bước 2.
+4. Nhỏ, ghi để không quên: em mới vào lớp **chưa tự vào nhóm chat lớp** (tool tạo tài khoản nên thêm, chạy khoá quản trị) · đồng nhất 7 cảm xúc sang
+   chat lớp myLesson (phiên myLesson) · mục A5.6 (lọc "Bạn bè" chỉ ở giao diện).
+
+**Nếp làm việc đã quen (giữ nguyên):** mỗi tính năng = mẫu HTML (chép repo `css/ js/ assets/ config.js` + `mau-vN.html` vào
+`D:\OTHERS\CLAUDE\myNetwork - thiet ke\mau-vN\`, `launch.json` `mynetwork-mauN`) → thầy duyệt bằng AskUserQuestion → chỉ khi "ok build" mới chép về
+repo, tăng `?v=` (đang `?v=11`) + `PHIEN_BAN` (đang `0.9.0`), README, commit + push ngay. Script vá viết ra file `.py` trong scratchpad (heredoc dài
+hay hỏng), chuỗi tìm chép NGUYÊN VĂN, in tiếng Việt bằng `.encode('ascii','backslashreplace')`. Tối đa 5 server preview — tắt mẫu cũ trước khi mở mới.
 
 ## A0. Phiên 22/09/2026 đợt 2 — thầy đổi ý: BUILD TIẾP BẢNG TIN (chưa làm tin nhắn) → v0.5.0
 
@@ -47,9 +75,14 @@ Chạy tay: `python -m http.server 88xx --directory "D:/OTHERS/CLAUDE/myNetwork 
 6. **Phạm vi bài** (pop-up "Tạo bài viết" mở khi bấm ô "Em đang nghĩ gì?"): 🌐 Công khai `mang` · 👥 Bạn bè `ban` (bạn + cùng lớp) · 🏫 Chỉ lớp `lop` (thầy cho giữ) · 🔒 Chỉ mình tôi `minh`. Bài Công khai vẫn hiện trên bảng tin cho cả mạng (thầy chọn cách này thay vì bảng tin "chỉ bạn bè").
 7. **Ô soạn thu gọn** 1 dòng; **thẻ bài kiểu 1** (hàng đếm + hàng 3 nút) giữ nguyên.
 
-### A4. Bàn thử cho thầy bấm (cổng 8795 `mynetwork-web`, thêm `?thu=1`)
+### A4. Bàn thử cho thầy bấm (cổng 8795 `mynetwork-web`, thêm `?thu=1` = vai học sinh · `?thu=thay` = vai thầy, từ v0.9.0)
 | Xem gì | Địa chỉ |
 |---|---|
+| **Trang QUẢN LÝ (v0.9.0)** — cột trái 10 mục, tạo nhóm, ghim/ẩn bài, kéo xếp Nổi bật, thêm mục Khám phá | `quanly.html?thu=thay` (thêm `&muc=nhom` … để mở thẳng mục) |
+| Xem mọi trang với vai thầy (tab đầu = QUẢN LÝ, tích vàng, nút thêm mục Khám phá) | `bangtin.html?thu=thay` · `khampha.html?thu=thay` · `tinnhan.html?thu=thay` |
+| Tin nhắn (v0.6.0): menu ⋯ từng cuộc, 7 cảm xúc, trả lời, ảnh, đã xem | `tinnhan.html?thu=1` |
+| Khám phá = cổng hoạt động (v0.7.0): dải Nổi bật, 4 ô, trang từng loại | `khampha.html?thu=1` · `khampha.html?thu=1&loai=troChoi` |
+| Đăng nhập (v0.8.0): gõ `ANDREW` → màn Google; `#doimk` = màn đặt mật khẩu | `index.html?vao=1` · `index.html#doimk` |
 | Bảng tin + pop-up tạo bài + bảng chọn 7 cảm xúc (giữ nút Thích) | `http://localhost:8795/bangtin.html?thu=1` |
 | Trang mình (đổi bìa/avatar/sửa giới thiệu) | `canhan.html?thu=1` |
 | Trang bạn CÙNG LỚP (nhắn tin) | `canhan.html?thu=1&uid=hs_1` |
@@ -60,10 +93,10 @@ Chạy tay: `python -m http.server 88xx --directory "D:/OTHERS/CLAUDE/myNetwork 
 | Tin nhắn · Khám phá · Bài đăng (chưa thiết kế lại) | `tinnhan.html?thu=1` · `khampha.html?thu=1` · `baidang.html?thu=1&id=m1` |
 Điện thoại: thu cửa sổ ≤ 640px (hoặc Viewport → Mobile trong Browser pane). Trình duyệt hay cầm bản cũ: thêm `&moi=<số>` vào địa chỉ để ép tải lại.
 
-### A5. Việc CÒN MỞ (thứ tự thầy nói)
-1. **Tin nhắn** — bong bóng, nhóm, 7 cảm xúc trong chat, điện thoại 1 cột (mẫu v13 trở đi).
-2. **Khám phá** — cân nhắc gộp vào Tìm kiếm (giờ Khám phá = tìm tên + chip lớp + lời mời kết bạn; Tìm kiếm = Mọi người/Bài/Nhóm).
-3. **Đăng nhập** — chữ Anh/Việt, câu nhắc mật khẩu lần đầu.
+### A5. Việc CÒN MỞ (thứ tự thầy nói — mục 1–3 ĐÃ XONG v0.6.0/0.7.0/0.8.0, giữ để tra; việc thật xem khối 🚀 đầu file)
+1. ✅ **Tin nhắn** — bong bóng, nhóm, 7 cảm xúc trong chat, điện thoại 1 cột (mẫu v13 trở đi).
+2. ✅ **Khám phá** — (cũ) cân nhắc gộp vào Tìm kiếm (giờ Khám phá = tìm tên + chip lớp + lời mời kết bạn; Tìm kiếm = Mọi người/Bài/Nhóm).
+3. ✅ **Đăng nhập** — (cũ) chữ Anh/Việt, câu nhắc mật khẩu lần đầu.
 4. Kỹ thuật (sau thiết kế): dán luật Firestore + Storage (`tai-lieu/`, ĐÃ SỬA theo v0.4.0: `pham` 4 giá trị, bài `minh` chỉ tác giả/thầy đọc, kho `nwBanBe` bật) → chỉ mục → bật Email/Password → `tools/tao-tai-khoan.mjs` → `tools/kiem-luat.mjs` (⚠ 28 phép thử viết cho v0.1.0, cần thêm ca `pham:'ban'/'minh'` + bạn bè) → domain → gắn myLesson.
 5. Đồng nhất 7 cảm xúc sang chat lớp myLesson (phiên myLesson).
 6. Nhỏ: bài "Bạn bè" chỉ lọc ở giao diện (`Bai.xemDuoc`) — luật đọc chưa chặn tuyệt đối (muốn chặn phải `exists()` nwBanBe trong luật, tốn 1 đọc/bài); `tacGia.cacLop` chỉ có từ v0.4.0, bài cũ chỉ có `lop`.
@@ -89,6 +122,7 @@ Chạy tay: `python -m http.server 88xx --directory "D:/OTHERS/CLAUDE/myNetwork 
 
 ## 0. Trạng thái một dòng
 
+(Viết ở v0.1.0; tới v0.9.0: 8 trang + 6 module JS `loi thanh bai chat chatnoi khampha`, giao diện xong 6 mảng — xem khối 🚀.)
 Khung mạng xã hội đã dựng xong ở mức "chạy được với dữ liệu mẫu": 7 trang + 4 module JS + CSS +
 luật + công cụ, đã push GitHub public `andrewclasses-01/myNetwork`, Pages sống ở
 `https://andrewclasses-01.github.io/myNetwork/` (mới chỉ hiện màn đăng nhập; không đăng nhập được
@@ -167,7 +201,7 @@ người mẫu ở `NW.Chat.nguoiNhanDuoc` và `bangtin.html` nhánh `ph.banThu`
 
 Theo `README.md` mục "Việc thầy cần làm": dán luật Firestore + Storage → 4 chỉ mục → bật Email/Password +
 Authorized domain `andrewclasses-01.github.io` → `tools/tao-tai-khoan.mjs --dry` rồi thật → Claude chạy
-`tools/kiem-luat.mjs` → thầy bấm tay → domain `network.andrewclasses.com` → gắn vào myLesson (mục 7 `KE HOACH`).
+`tools/kiem-luat.mjs` (⚠ 28 ca viết cho v0.1.0 — THÊM CA cho v0.4.0→v0.9.0, danh sách ở khối 🚀 bước 2e; 4 chỉ mục nay là 6) → thầy bấm tay → domain `network.andrewclasses.com` → gắn vào myLesson (mục 7 `KE HOACH`).
 ⚠ Sửa CSS/JS xong nhớ tăng `?v=` ở 7 trang + `PHIEN_BAN` trong `config.js`. Bản mới = số bản mới, ghi vào README.
 
 ## 6. Bẫy đã gặp trong phiên này
