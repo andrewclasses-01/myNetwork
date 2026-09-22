@@ -1,5 +1,5 @@
 /* ============================================================
-   bai.js — BÀI ĐĂNG (v0.1.0): ô soạn · thẻ bài · cảm xúc · bình luận · chia sẻ ·
+   bai.js — BÀI ĐĂNG (v0.2.0): ô soạn · thẻ bài · cảm xúc · bình luận · chia sẻ ·
    báo cáo · menu sửa/xoá/ẩn/ghim · dòng bài có phân trang.
    Dùng chung cho bangtin.html · canhan.html · baidang.html · quanly.html.
 
@@ -25,14 +25,18 @@
     var toi = NW.toi;
     var hop = o.hop;
     hop.className = (hop.className + ' card soan').trim();
+    // v0.2.0 (thầy chốt 22/09): thu gọn — MỘT dòng giả + nút ảnh; bấm mới bung ô soạn đầy đủ.
     hop.innerHTML =
+      '<div class="soan-gon">' + NW.avHtml(toi) +
+        '<button class="gia" id="soanMo" type="button">' + (toi.laThay ? 'Thầy muốn nhắn gì cho cả mạng?' : 'Em đang nghĩ gì, ' + an(toi.ten || '') + '?') + '</button>' +
+        '<button class="nut-tron" id="soanMoAnh" type="button" title="Đăng ảnh" aria-label="Đăng ảnh">' + IC.anh + '</button></div>' +
       '<div class="soan-dau">' + NW.avHtml(toi) + '<div style="flex:1;min-width:0">' +
       '<textarea id="soanChu" rows="1" placeholder="' + (toi.laThay ? 'Thầy muốn nhắn gì cho cả mạng?' : 'Em đang nghĩ gì?') + '" maxlength="' + CFG.TOI_DA_CHU_BAI + '"></textarea>' +
       '<div class="soan-anh" id="soanAnh" hidden></div><div class="canh-cam" id="soanCam" hidden></div></div></div>' +
       '<div class="soan-chan">' +
       '<button class="btn soft nho" id="soanThemAnh" type="button">' + IC.anh + ' Ảnh</button>' +
       '<input type="file" id="soanFile" accept="image/*" multiple hidden>' +
-      '<button class="chon-pham" id="soanPham" type="button" title="Ai xem được bài này?">' + IC.theGioi + '<span>MỌI NGƯỜI</span></button>' +
+      '<button class="chon-pham" id="soanPham" type="button" title="Ai xem được bài này?">' + IC.theGioi + '<span>MỌI NGƯỜI</span> ▾</button>' +
       (toi.laThay ? '<label class="chon-pham" style="cursor:pointer"><input type="checkbox" id="soanGhim" style="accent-color:var(--accent)"> GHIM</label>' : '') +
       '<span class="dem" id="soanDem"></span>' +
       '<button class="btn primary nho" id="soanDang" type="button" disabled>ĐĂNG</button></div>';
@@ -42,6 +46,9 @@
     var pham = 'mang';
     var lopToi = o.lopMacDinh || toi.lop || '';
     NW.tuCao(ta, 260);
+    function moSoan(focus) { hop.classList.add('mo'); if (focus) ta.focus(); }
+    $('#soanMo', hop).onclick = function () { moSoan(true); };
+    $('#soanMoAnh', hop).onclick = function () { moSoan(false); $('#soanFile', hop).click(); };
 
     function kiem() {
       var n = ta.value.trim().length;
@@ -77,12 +84,19 @@
       }).join('');
       $$('.bo', khuAnh).forEach(function (b) { b.onclick = function () { anhDs.splice(+b.getAttribute('data-i'), 1); veAnh(); kiem(); }; });
     }
+    // phạm vi: menu thả 2 mục có dòng giải thích (thầy chốt 22/09 thay nút đổi qua lại)
     var nutPham = $('#soanPham', hop);
+    function datPham(p) {
+      pham = p;
+      nutPham.classList.toggle('lop', pham === 'lop');
+      nutPham.innerHTML = (pham === 'lop' ? IC.lopHoc + '<span>CHỈ LỚP ' + an(lopToi) + '</span>' : IC.theGioi + '<span>MỌI NGƯỜI</span>') + ' ▾';
+    }
     nutPham.onclick = function () {
       if (toi.laThay || !lopToi) return;
-      pham = pham === 'mang' ? 'lop' : 'mang';
-      nutPham.classList.toggle('lop', pham === 'lop');
-      nutPham.innerHTML = (pham === 'lop' ? IC.lopHoc + '<span>CHỈ LỚP ' + an(lopToi) + '</span>' : IC.theGioi + '<span>MỌI NGƯỜI</span>');
+      NW.menuNho(nutPham, [
+        { ic: IC.theGioi, chu: 'Mọi người — cả mạng Andrew Classes thấy', onclick: function () { datPham('mang'); } },
+        { ic: IC.lopHoc, chu: 'Chỉ lớp ' + lopToi + ' — bạn cùng lớp và thầy thấy', onclick: function () { datPham('lop'); } }
+      ]);
     };
 
     nutDang.onclick = async function () {
@@ -105,7 +119,7 @@
           camXuc: {}, soBinhLuan: 0, soChiaSe: 0, chiaSeTu: null, goc: null
         };
         var ref = await f.fs.addDoc(f.fs.collection(f.db, 'nwPosts'), bai);
-        ta.value = ''; anhDs = []; veAnh(); NW.tuCao(ta, 260); kiem();
+        ta.value = ''; anhDs = []; veAnh(); NW.tuCao(ta, 260); kiem(); hop.classList.remove('mo');
         NW.toast('Đã đăng bài.');
         if (o.sauKhiDang) o.sauKhiDang(bai, ref.id);
       } catch (e) { NW.toast(NW.chuLoiKho(e), true); }
@@ -123,7 +137,7 @@
     var c = demCamXuc(cx);
     if (!c.tong) return '';
     var loai = NW.CAM_XUC.filter(function (x) { return c.d[x.ma]; }).slice(0, 3);
-    return '<span class="cx-cum" data-cxai><span class="ky">' + loai.map(function (x) { return x.ky; }).join('') + '</span> ' + c.tong + '</span>';
+    return '<span class="cx-cum" data-cxai>' + loai.map(function (x) { return NW.cxHtml(x.ma); }).join('') + '<b>' + c.tong + '</b></span>';
   }
   function khuAnhHtml(anh, nho) {
     if (!anh || !anh.length) return '';
@@ -156,8 +170,10 @@
                (bai.an ? '<span class="nhan-an">ĐÃ ẨN</span>' : '');
     var goc = '';
     if (bai.chiaSeTu) {
-      goc = bai.goc ? '<a class="bai-goc" href="baidang.html?id=' + an(bai.chiaSeTu) + '" style="display:block;color:inherit">' +
-        dauBai(bai.goc.tacGia, bai.goc.luc) + chuBai(bai.goc.chu, true) + khuAnhHtml(bai.goc.anh) + '</a>' :
+      // ⛔ v0.2.0: trước là <a class="bai-goc"> — bên trong dauBai() lại có <a> tên tác giả ⇒ HTML cấm <a> lồng <a>,
+      // trình duyệt tự đóng thẻ ngoài, ruột bài gốc rơi ra ngoài khung. Nay dùng <div role="link"> + bấm bằng JS.
+      goc = bai.goc ? '<div class="bai-goc" data-goc="' + an(bai.chiaSeTu) + '" role="link" tabindex="0">' +
+        dauBai(bai.goc.tacGia, bai.goc.luc) + chuBai(bai.goc.chu, true) + khuAnhHtml(bai.goc.anh) + '</div>' :
         '<div class="bai-goc mat">Bài gốc không còn.</div>';
     }
     var cx = (bai.camXuc || {})[toi.uid] || '';
@@ -167,11 +183,18 @@
       '<div class="bai-so">' + cumCamXuc(bai.camXuc) +
         '<span class="phai"><button data-mobl type="button">' + (bai.soBinhLuan || 0) + ' bình luận</button><span>' + (bai.soChiaSe || 0) + ' chia sẻ</span></span></div>' +
       '<div class="bai-nut">' +
-        '<button data-cx type="button" class="' + (cx ? 'da' : '') + '">' + (cx ? '<span class="ky">' + NW.kyCamXuc(cx) + '</span>' : IC.tim) + '<span>' + (cx ? 'Đã thả' : 'Thích') + '</span></button>' +
+        '<button data-cx type="button" class="' + (cx ? 'da ' + cx : '') + '">' + (cx ? NW.cxHtml(cx) : IC.tim) + '<span>' + (cx ? NW.tenCamXuc(cx) : 'Thích') + '</span></button>' +
         '<button data-mobl type="button">' + IC.binhLuan + '<span>Bình luận</span></button>' +
         '<button data-chiase type="button">' + IC.chiaSe + '<span>Chia sẻ</span></button>' +
       '</div><div class="bl-khu" data-blkhu hidden></div>';
     el.style.position = 'relative';
+
+    // bấm vào khung bài gốc (trừ khi bấm đúng link tên / nút ảnh bên trong) → mở bài gốc
+    var khungGoc = $('[data-goc]', el);
+    if (khungGoc) khungGoc.onclick = function (e) {
+      if (e.target.closest('a,button')) return;
+      location.href = 'baidang.html?id=' + khungGoc.getAttribute('data-goc');
+    };
 
     // ảnh phóng to
     $$('[data-anh]', el).forEach(function (b) { b.onclick = function (e) { e.preventDefault(); NW.xemAnh(b.getAttribute('data-anh')); }; });
@@ -185,8 +208,8 @@
       var moi = ma === cu ? '' : ma;
       bai.camXuc = bai.camXuc || {};
       if (moi) bai.camXuc[toi.uid] = moi; else delete bai.camXuc[toi.uid];
-      nutCx.className = moi ? 'da' : '';
-      nutCx.innerHTML = moi ? '<span class="ky">' + NW.kyCamXuc(moi) + '</span><span>Đã thả</span>' : IC.tim + '<span>Thích</span>';
+      nutCx.className = moi ? 'da ' + moi : '';
+      nutCx.innerHTML = moi ? NW.cxHtml(moi) + '<span>' + NW.tenCamXuc(moi) + '</span>' : IC.tim + '<span>Thích</span>';
       var so = $('.bai-so', el); var cum = $('.cx-cum', so);
       var html = cumCamXuc(bai.camXuc);
       if (cum) cum.outerHTML = html; else so.insertAdjacentHTML('afterbegin', html);
@@ -202,14 +225,14 @@
     function moMenuCx() {
       var m = $('#nwCxMenu');
       if (!m) { m = document.createElement('div'); m.id = 'nwCxMenu'; m.className = 'cx-menu'; document.body.appendChild(m); }
-      m.innerHTML = NW.CAM_XUC.map(function (c) { return '<button type="button" data-ma="' + c.ma + '" title="' + c.ma + '">' + c.ky + '</button>'; }).join('') +
+      m.innerHTML = NW.CAM_XUC.map(function (c) { return '<button type="button" data-ma="' + c.ma + '" data-nh="' + c.nh + '" aria-label="' + c.nh + '">' + NW.cxHtml(c.ma) + '</button>'; }).join('') +
         ((bai.camXuc || {})[toi.uid] ? '<button type="button" class="bo" data-ma="">Gỡ</button>' : '');
       var r = nutCx.getBoundingClientRect();
       m.style.left = Math.max(8, Math.min(window.innerWidth - 300, r.left)) + 'px';
-      m.style.top = (r.top - 52) + 'px';
+      m.style.top = (r.top - 58) + 'px';
       m.classList.add('mo');
       $$('button', m).forEach(function (b) { b.onclick = function (e) { e.stopPropagation(); datCx(b.getAttribute('data-ma')); dongMenuCx(); }; });
-      var phu = document.createElement('div'); phu.className = 'phu'; phu.id = 'nwCxPhu'; phu.onclick = dongMenuCx; document.body.appendChild(phu);
+      var phu = document.createElement('div'); phu.className = 'phu-nen'; phu.id = 'nwCxPhu'; phu.onclick = dongMenuCx; document.body.appendChild(phu);
     }
     function dongMenuCx() { var m = $('#nwCxMenu'); if (m) m.classList.remove('mo'); var p = $('#nwCxPhu'); if (p) p.remove(); }
     nutCx.addEventListener('pointerdown', function (e) {
@@ -232,7 +255,7 @@
         var html = '';
         for (var i = 0; i < uids.length; i++) {
           var hs = NW.laBanThu() ? { ten: uids[i] } : (await NW.hoSo(uids[i]).catch(function () { return null; })) || { ten: '?' };
-          html += '<a class="nguoi" href="canhan.html?uid=' + an(uids[i]) + '">' + NW.avHtml(hs, 'nho') + '<span><span class="ten">' + an(hs.ten) + '</span><br><span class="lop">' + an(hs.lop || '') + '</span></span><span class="cuoi" style="font-size:20px">' + NW.kyCamXuc(cx[uids[i]]) + '</span></a>';
+          html += '<a class="nguoi" href="canhan.html?uid=' + an(uids[i]) + '">' + NW.avHtml(hs, 'nho') + '<span><span class="ten">' + an(hs.ten) + '</span><br><span class="lop">' + an(hs.lop || '') + '</span></span><span class="cuoi">' + NW.cxHtml(cx[uids[i]], 'to') + '</span></a>';
         }
         $('#cxDs', p).innerHTML = html || '<div class="trong">Chưa ai thả.</div>';
       };

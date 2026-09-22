@@ -137,14 +137,69 @@
     link: P('<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>'),
     caiDat: P('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h0a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v0a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'),
     ketBan: P('<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>'),
+    menu3: P('<line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>'),
+    sao: P('<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/>'),
     tinMoi: P('<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>')
   };
 
   // Cảm xúc — cùng bộ với chat lớp bên myLesson (lop.html CAM_XUC)
+  // `ky` = chữ emoji dự phòng (dùng trong CHỮ thông báo); HÌNH hiện trên trang là huy hiệu SVG (NW.cxHtml) —
+  // v0.2.0 thầy chốt 22/09: bỏ emoji hệ thống (mỗi máy vẽ một kiểu), dùng bộ vẽ tay giống nhau mọi máy.
   NW.CAM_XUC = [
-    { ma: 'tim', ky: '❤️' }, { ma: 'like', ky: '👍' }, { ma: 'haha', ky: '😆' },
-    { ma: 'ngac', ky: '😮' }, { ma: 'khoc', ky: '😢' }, { ma: 'gaCon', ky: '🐥' }
+    { ma: 'tim', ky: '❤️', nh: 'Yêu' }, { ma: 'like', ky: '👍', nh: 'Thích' }, { ma: 'haha', ky: '😆', nh: 'Haha' },
+    { ma: 'ngac', ky: '😮', nh: 'Wow' }, { ma: 'khoc', ky: '😢', nh: 'Buồn' }, { ma: 'gaCon', ky: '🐥', nh: 'Gà con' }
   ];
+  NW.tenCamXuc = function (ma) {
+    for (var i = 0; i < NW.CAM_XUC.length; i++) if (NW.CAM_XUC[i].ma === ma) return NW.CAM_XUC[i].nh;
+    return '';
+  };
+  // Một huy hiệu cảm xúc: <svg class="cx [lop]"><use href="#cx-<mã>"></svg> — hình nằm trong sprite napCamXuc().
+  NW.cxHtml = function (ma, lop) {
+    var co = NW.CAM_XUC.some(function (c) { return c.ma === ma; });
+    if (!co) return '';
+    return '<svg class="cx' + (lop ? ' ' + lop : '') + '" aria-label="' + chuAnToan(NW.tenCamXuc(ma)) + '"><use href="#cx-' + ma + '"/></svg>';
+  };
+  // Sprite 6 huy hiệu (vẽ tay, phong cách huy hiệu tròn bóng khối) — chèn MỘT lần vào đầu <body>.
+  NW.napCamXuc = function () {
+    if (document.getElementById('nwCxSprite')) return;
+    var sao = '<path d="M5 0l1.1 3.9L10 5l-3.9 1.1L5 10 3.9 6.1 0 5l3.9-1.1z"/>';
+    var vien = '<circle cx="16" cy="16" r="15.3" fill="none" stroke="#000" stroke-opacity=".13" stroke-width="1.4"/><ellipse cx="13" cy="7.6" rx="8.5" ry="4.4" fill="url(#gSang)"/>';
+    var html = '<svg id="nwCxSprite" width="0" height="0" style="position:absolute" aria-hidden="true"><defs>' +
+      '<radialGradient id="gLike" cx="38%" cy="30%" r="80%"><stop offset="0" stop-color="#6FB1FF"/><stop offset=".55" stop-color="#2B86F5"/><stop offset="1" stop-color="#0F55BD"/></radialGradient>' +
+      '<radialGradient id="gTim" cx="38%" cy="30%" r="80%"><stop offset="0" stop-color="#FF8DA0"/><stop offset=".55" stop-color="#F43B5A"/><stop offset="1" stop-color="#C40F2E"/></radialGradient>' +
+      '<radialGradient id="gVang" cx="38%" cy="28%" r="82%"><stop offset="0" stop-color="#FFF0A6"/><stop offset=".5" stop-color="#FFD24A"/><stop offset="1" stop-color="#E8950A"/></radialGradient>' +
+      '<radialGradient id="gGa" cx="38%" cy="28%" r="82%"><stop offset="0" stop-color="#FFF6C8"/><stop offset=".5" stop-color="#FFDA66"/><stop offset="1" stop-color="#F0A81C"/></radialGradient>' +
+      '<linearGradient id="gSang" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>' +
+      '<filter id="bongTrang" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="1" stdDeviation=".8" flood-color="#000" flood-opacity=".25"/></filter></defs>' +
+      '<symbol id="cx-like" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gLike)"/>' + vien +
+        '<g transform="translate(16 16) scale(.74) translate(-16 -16)" fill="#fff" filter="url(#bongTrang)"><path d="M5 14.5h4.2v12H5a1.6 1.6 0 0 1-1.6-1.6v-8.8A1.6 1.6 0 0 1 5 14.5z"/>' +
+        '<path d="M10.4 26.5V14.7l4.6-8.6c.5-1 1.6-1.4 2.6-1 1.3.5 2 1.9 1.7 3.3l-1 4.6h6.8c1.6 0 2.7 1.4 2.3 2.9l-2.1 8.3c-.3 1.3-1.4 2.3-2.8 2.3z"/></g></symbol>' +
+      '<symbol id="cx-tim" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gTim)"/>' + vien +
+        '<path transform="translate(16 16) scale(.76) translate(-16 -16)" fill="#fff" filter="url(#bongTrang)" d="M16 27.2S4.6 20.2 4.6 12.6c0-3.6 2.8-6.3 6.2-6.3 2.2 0 4.1 1.2 5.2 3 1.1-1.8 3-3 5.2-3 3.4 0 6.2 2.7 6.2 6.3 0 7.6-11.4 14.6-11.4 14.6z"/></symbol>' +
+      '<symbol id="cx-haha" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gVang)"/>' + vien +
+        '<path d="M6.8 12.6q3.4-4.2 6.8 0M18.4 12.6q3.4-4.2 6.8 0" fill="none" stroke="#3F2A05" stroke-width="2.3" stroke-linecap="round"/>' +
+        '<path d="M6.4 16.6h19.2c0 6.4-4.3 10.4-9.6 10.4S6.4 23 6.4 16.6z" fill="#3F2A05"/><path d="M8.2 17.4h15.6v1.2q0 1-1 1H9.2q-1 0-1-1z" fill="#fff"/><ellipse cx="16" cy="24.2" rx="5.4" ry="2.8" fill="#F0284A"/></symbol>' +
+      '<symbol id="cx-ngac" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gVang)"/>' + vien +
+        '<path d="M7.2 8.8q3.4-3 6.8-.4M18 8.4q3.4-2.6 6.8.4" fill="none" stroke="#3F2A05" stroke-width="2.1" stroke-linecap="round"/>' +
+        '<ellipse cx="10.8" cy="14.4" rx="2.5" ry="3.4" fill="#3F2A05"/><ellipse cx="21.2" cy="14.4" rx="2.5" ry="3.4" fill="#3F2A05"/>' +
+        '<circle cx="11.7" cy="13.2" r=".8" fill="#fff"/><circle cx="22.1" cy="13.2" r=".8" fill="#fff"/>' +
+        '<ellipse cx="16" cy="23.4" rx="4.2" ry="5.2" fill="#3F2A05"/><ellipse cx="16" cy="26" rx="2.6" ry="1.6" fill="#F0284A"/></symbol>' +
+      '<symbol id="cx-khoc" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gVang)"/>' + vien +
+        '<path d="M6.6 12q3.8-3.4 7.6-1.4M17.8 10.6q3.8-2 7.6 1.4" fill="none" stroke="#3F2A05" stroke-width="2.1" stroke-linecap="round"/>' +
+        '<ellipse cx="11" cy="16" rx="2.2" ry="2.9" fill="#3F2A05"/><ellipse cx="21" cy="16" rx="2.2" ry="2.9" fill="#3F2A05"/>' +
+        '<path d="M10.6 25.2q5.4-4.8 10.8 0" fill="none" stroke="#3F2A05" stroke-width="2.4" stroke-linecap="round"/>' +
+        '<path d="M25 16.8c0 0-3.8 5-3.8 7.4a3.8 3.8 0 0 0 7.6 0c0-2.4-3.8-7.4-3.8-7.4z" fill="#3D8BFF"/><ellipse cx="24" cy="23.6" rx="1" ry="1.6" fill="#fff" opacity=".55"/></symbol>' +
+      '<symbol id="cx-gaCon" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gGa)"/>' + vien +
+        '<path d="M12.8 5.4q2.6-4 5.4-.2M16.2 4.6q1.8-3.4 4.2-.8" fill="none" stroke="#F07E12" stroke-width="2.3" stroke-linecap="round"/>' +
+        '<ellipse cx="10.8" cy="14.6" rx="2.3" ry="3" fill="#3F2A05"/><ellipse cx="21.2" cy="14.6" rx="2.3" ry="3" fill="#3F2A05"/>' +
+        '<circle cx="11.6" cy="13.4" r=".8" fill="#fff"/><circle cx="22" cy="13.4" r=".8" fill="#fff"/>' +
+        '<path d="M11.6 19h8.8L16 24.6z" fill="#F07E12"/><path d="M11.6 19h8.8l-4.4 2.2z" fill="#FFB347"/>' +
+        '<circle cx="7" cy="19.6" r="2.2" fill="#FF8FA3" opacity=".9"/><circle cx="25" cy="19.6" r="2.2" fill="#FF8FA3" opacity=".9"/></symbol>' +
+      '</svg>';
+    var hop = document.createElement('div'); hop.innerHTML = html;
+    document.body.insertBefore(hop.firstChild, document.body.firstChild);
+  };
+  if (document.body) NW.napCamXuc(); else document.addEventListener('DOMContentLoaded', NW.napCamXuc);
   NW.kyCamXuc = function (ma) {
     for (var i = 0; i < NW.CAM_XUC.length; i++) if (NW.CAM_XUC[i].ma === ma) return NW.CAM_XUC[i].ky;
     return '';
@@ -547,7 +602,7 @@
     $$('button', m).forEach(function (b) {
       b.onclick = function (e) { e.stopPropagation(); var it = items[+b.getAttribute('data-i')]; NW.menuDong(); if (it.onclick) it.onclick(); };
     });
-    var phu = document.createElement('div'); phu.className = 'phu'; phu.onclick = NW.menuDong;
+    var phu = document.createElement('div'); phu.className = 'phu-nen'; phu.onclick = NW.menuDong;
     document.body.appendChild(phu);
     _menu = m; _menuPhu = phu;
     requestAnimationFrame(function () { m.classList.add('mo'); });

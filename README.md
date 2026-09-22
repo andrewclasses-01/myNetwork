@@ -9,7 +9,24 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 
 ⭐ Thầy chốt 20/09: **phiên sau THIẾT KẾ THÊM giao diện trước, gắn chức năng thật sau** — chưa dán luật, chưa tạo tài khoản.
 
-## Bản hiện tại — v0.1.0 (20/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+## Bản hiện tại — v0.2.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+
+### v0.2.0 — 22/09/2026: GIAO DIỆN THANH + CẢM XÚC theo mẫu thầy duyệt (mẫu v1→v4 ở `D:\OTHERS\CLAUDE\myNetwork - thiet ke\`)
+- **Thanh trên**: TRÁI avatar EM + huy hiệu sao (chép y myLesson `.av.me` + `.sao-hieu`, sao = 0 vì chưa có kho) → bấm = **trang cá nhân**;
+  GIỮA 5 **icon không chữ**, thứ tự thầy chốt *trang bài tập · khám phá · tin nhắn · bảng tin · thông báo*, icon đang chọn **sáng lên**
+  (nền tròn + quầng, bỏ gạch chân), rê chuột hiện tên; PHẢI nút **☰ tròn** → **sidebar trượt từ phải** (đầu: avatar·tên·lớp · ô VÍ SAO · trang cá nhân · đổi mật khẩu · trang bài tập · quản lý (thầy) · đăng xuất).
+  Chuông = icon trong 5 icon, bấm mở hộp thả ngay dưới. **Điện thoại: cả thanh xuống ĐÁY** (avatar · 5 icon · ☰), phía trên không còn thanh.
+- **Bộ cảm xúc mới** thay emoji hệ thống: 6 huy hiệu tròn vẽ SVG (sprite `NW.napCamXuc()` trong `loi.js`, `NW.cxHtml(mã)`), giống nhau mọi máy —
+  dùng ở cụm đếm (xếp chồng viền trắng), nút Thích (đổi màu theo loại + tên: Yêu/Thích/Haha/Wow/Buồn/Gà con), bảng chọn (giữ nút/rê chuột), bình luận, danh sách "ai thả".
+  Chữ thông báo vẫn dùng ký tự emoji (`ky`) vì là văn bản.
+- **Ô soạn thu gọn**: một dòng "Em đang nghĩ gì, TÊN?" + nút ảnh; bấm mới bung; phạm vi chọn bằng **menu thả** 2 mục có giải thích.
+- ⛔ **Vá 2 lỗi có từ v0.1.0 (lộ ra khi bấm chuột thật trên bàn thử):** (1) lớp `.phu` dùng cho CẢ dòng giờ dưới tên lẫn tấm phủ toàn màn
+  ⇒ mỗi thẻ bài thành một tấm phủ vô hình che cả trang, chữ giờ bị ném ra mép trái — đổi tấm phủ thành `.phu-nen` (nw.css + loi.js + thanh.js + bai.js);
+  (2) khối bài gốc là `<a class="bai-goc">` chứa `<a>` tên tác giả ⇒ HTML cấm lồng, ruột rơi ra ngoài khung — đổi thành `<div role="link" data-goc>` + bấm bằng JS.
+- Đã thử trên bàn thử `?thu=1` cả 5 trang (console sạch, bấm chuột thật: ☰, chuông, ô soạn, menu phạm vi, bảng cảm xúc, chọn Haha) + 375px không tràn.
+- Bẫy khi build: `.tabs` fixed `bottom:0` nằm trong `.thanh` có `backdrop-filter` thì neo vào đáy THANH TRÊN ⇒ điện thoại dời CẢ `.thanh` xuống đáy.
+
+### v0.1.0 — 20/09/2026: dựng khung 7 trang + lõi + luật + công cụ
 
 | File | Việc |
 |---|---|
@@ -21,8 +38,8 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 | `baidang.html?id=` | Một bài + bình luận (đích của thông báo/chia sẻ) |
 | `quanly.html` | Thầy: báo cáo · bài đã ẩn · từ cấm · khoá tài khoản · danh sách lớp |
 | `js/loi.js` | Lõi: Firebase (một app), phiên, hồ sơ đệm, nén ảnh, toast/pop-up/menu, từ cấm, thông báo |
-| `js/thanh.js` | Thanh 5 tab + chuông + avatar + cửa vào trang + 2 kênh nghe dùng chung |
-| `js/bai.js` | Thẻ bài, cảm xúc (giữ nút ra bảng 6 loại), bình luận, chia sẻ, báo cáo, sửa/xoá/ẩn/ghim |
+| `js/thanh.js` | Thanh: avatar+sao (= cá nhân) · 5 icon · ☰ sidebar phải + hộp thông báo + cửa vào trang + 2 kênh nghe dùng chung |
+| `js/bai.js` | Ô soạn thu gọn, thẻ bài, cảm xúc huy hiệu SVG (giữ nút ra bảng 6 loại), bình luận, chia sẻ, báo cáo, sửa/xoá/ẩn/ghim |
 | `js/chat.js` | Tin nhắn riêng + nhóm |
 | `tai-lieu/` | Luật Firestore (7 khối) · luật Storage · chỉ mục |
 | `tools/` | `tao-tai-khoan.mjs` (tạo/cập nhật/đặt lại mật khẩu) · `kiem-luat.mjs` (28 phép thử thật, tự dọn) |

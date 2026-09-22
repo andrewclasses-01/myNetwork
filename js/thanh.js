@@ -1,13 +1,15 @@
 /* ============================================================
-   thanh.js — THANH TRÊN CÙNG + CỬA VÀO TRANG (v0.1.0)
+   thanh.js — THANH TRÊN CÙNG + CỬA VÀO TRANG (v0.2.0)
 
    Mọi trang (trừ index.html) gọi:
        NW.dungThanh({ tab: 'bangTin' }).then(function (phien) { ... })
    Hàm này:
      1. Kiểm phiên: chưa đăng nhập → về index.html · chưa đặt mật khẩu → index.html#doimk
         · tài khoản bị khoá → màn báo · thiếu hồ sơ → màn báo.
-     2. Vẽ thanh 5 tab thầy chốt: TRANG BÀI TẬP · BẢNG TIN · TIN NHẮN · KHÁM PHÁ · CÁ NHÂN
-        + chuông thông báo + avatar (menu: trang cá nhân · đổi mật khẩu · quản lý · đăng xuất).
+     2. Vẽ thanh (thầy chốt 22/09/2026, mẫu v4): TRÁI avatar EM + huy hiệu sao = trang cá nhân ·
+        GIỮA 5 icon không chữ: trang bài tập · khám phá · tin nhắn · bảng tin · thông báo (chuông = hộp thả) ·
+        PHẢI nút ☰ → sidebar trượt từ phải (ví sao · trang cá nhân · đổi mật khẩu · quản lý · đăng xuất).
+        Điện thoại: cả thanh nằm ĐÁY màn hình (CSS .thanh @640px).
      3. Mở HAI kênh nghe dùng chung cho cả trang (mỗi trang chỉ MỘT lần, nơi khác đăng ký
         nhận qua NW.ngheThongBao / NW.nghePhong — không mở kênh trùng, tiền đọc Firestore):
           · nwUsers/{uid}/thongBao  (20 tin gần nhất)  → chấm đỏ chuông
@@ -17,13 +19,21 @@
   'use strict';
   var NW = window.NW, CFG = NW.CFG, $ = NW.$, $$ = NW.$$, IC = NW.IC, an = NW.chuAnToan;
 
+  // Thứ tự 5 icon thầy chốt 22/09. `chuong` không đổi trang — bấm mở hộp thông báo.
   var TABS = [
     { ma: 'baiTap', chu: 'TRANG BÀI TẬP', ic: IC.baiTap, href: CFG.LINK_BAI_TAP, ngoai: true },
-    { ma: 'bangTin', chu: 'BẢNG TIN', ic: IC.bangTin, href: 'bangtin.html' },
-    { ma: 'tinNhan', chu: 'TIN NHẮN', ic: IC.tinNhan, href: 'tinnhan.html' },
     { ma: 'khamPha', chu: 'KHÁM PHÁ', ic: IC.khamPha, href: 'khampha.html' },
-    { ma: 'caNhan', chu: 'CÁ NHÂN', ic: IC.caNhan, href: 'canhan.html' }
+    { ma: 'tinNhan', chu: 'TIN NHẮN', ic: IC.tinNhan, href: 'tinnhan.html' },
+    { ma: 'bangTin', chu: 'BẢNG TIN', ic: IC.bangTin, href: 'bangtin.html' },
+    { ma: 'chuong', chu: 'THÔNG BÁO', ic: IC.chuong, href: '#' }
   ];
+  var SAO_SVG = '<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg>';
+  var LAP = '<path d="M5 0l1.1 3.9L10 5l-3.9 1.1L5 10 3.9 6.1 0 5l3.9-1.1z"/>';
+  // Huy hiệu số sao dưới avatar — chép myLesson lop.html. Số sao thật chưa có kho ⇒ 0 (⛔ đừng gõ số giả).
+  function saoHieu(so) {
+    return '<span class="sao-hieu">' + (Number(so) || 0) + SAO_SVG +
+      '<svg class="lap l1" viewBox="0 0 10 10">' + LAP + '</svg><svg class="lap l2" viewBox="0 0 10 10">' + LAP + '</svg><svg class="lap l3" viewBox="0 0 10 10">' + LAP + '</svg></span>';
+  }
 
   var TB_DS = [];            // thông báo đang có
   var PHONG_DS = [];         // phòng chat đang có (xếp mới → cũ)
@@ -45,19 +55,54 @@
     var hop = $('#nwThanh');
     if (!hop) { hop = document.createElement('header'); hop.id = 'nwThanh'; document.body.insertBefore(hop, document.body.firstChild); }
     hop.className = 'thanh';
+    var toi = NW.toi || {};
+    // avatar em: .av.me (nền gradient) + ảnh thật nếu có + huy hiệu sao; bấm = trang cá nhân
+    var avEm = '<a class="av me" id="nutAv" href="canhan.html" title="Trang cá nhân của em">' + an(NW.chuTat(toi.ten || '?')) +
+      (toi.anh ? '<img src="' + an(toi.anh) + '" alt="" loading="lazy" onerror="this.remove()">' : '') + saoHieu(toi.sao) + '</a>';
     hop.innerHTML = '<div class="thanh-in">' +
-      '<a class="logo" href="bangtin.html"><img src="assets/avatar-tron.jpg" alt=""><b>Andrew Classes</b></a>' +
+      '<div class="trai">' + avEm + '</div>' +
       '<nav class="tabs">' + TABS.map(function (t) {
-        return '<a class="tab' + (t.ma === tab ? ' chon' : '') + '" data-tab="' + t.ma + '" href="' + an(t.href) + '"' +
-          (t.ngoai ? '' : '') + '>' + t.ic + '<span class="chu">' + t.chu + '</span></a>';
+        return '<a class="tab' + (t.ma === tab ? ' chon' : '') + '" data-tab="' + t.ma + '" data-nh="' + t.chu + '" href="' + an(t.href) + '" title="' + t.chu + '" aria-label="' + t.chu + '">' + t.ic + '</a>';
       }).join('') + '</nav>' +
-      '<div class="phai">' +
-        '<button class="nut-tron" id="nutChuong" title="Thông báo" aria-label="Thông báo">' + IC.chuong + '</button>' +
-        '<button class="nut-tron nut-av" id="nutAv" title="Menu của em" aria-label="Menu">' + NW.avHtml(NW.toi) + '</button>' +
-      '</div></div>';
-    $('#nutChuong').onclick = moChuong;
-    $('#nutAv').onclick = moMenuAv;
+      '<div class="phai"><button class="nut-menu" id="nutMenu" title="Menu" aria-label="Menu">' + IC.menu3 + '</button></div>' +
+      '</div>';
+    $('.tab[data-tab="chuong"]').onclick = function (e) { e.preventDefault(); if (_thaMo) dongTha(); else moChuong(this); };
+    $('#nutMenu').onclick = moSide;
+    veSide();
   }
+
+  // ---------- sidebar phải (☰) — hình chép myLesson; ví sao 0 vì chưa có kho ----------
+  function veSide() {
+    if ($('#nwSide')) return;
+    var toi = NW.toi || {};
+    var LAPC = function (c) { return '<svg class="sao-con ' + c + '" viewBox="0 0 10 10">' + LAP + '</svg>'; };
+    var items = [
+      { ic: IC.caNhan, nh: 'Trang cá nhân của em', mo: 'Bìa · giới thiệu · bài của em', onclick: function () { location.href = 'canhan.html'; } },
+      { ic: IC.khoa, nh: 'Đổi mật khẩu', mo: 'Mật khẩu đăng nhập My ID', onclick: moDoiMk },
+      { ic: IC.baiTap, nh: 'Trang bài tập', mo: 'andrewclasses.com', onclick: function () { location.href = CFG.LINK_BAI_TAP; } }
+    ];
+    if (toi.laThay) items.push({ ic: IC.caiDat, nh: 'Trang quản lý', mo: 'Báo cáo · bài ẩn · từ cấm · tài khoản', onclick: function () { location.href = 'quanly.html'; } });
+    items.push({ ic: IC.thoat, nh: 'Đăng xuất', mo: 'Đăng xuất ID Andrew Classes', nguy: true, onclick: function () {
+      NW.thoat().then(function () { location.replace('index.html?vao=1'); });
+    } });
+    var phu = document.createElement('div'); phu.className = 'phu-mo'; phu.id = 'nwSidePhu'; phu.onclick = dongSide;
+    var side = document.createElement('nav'); side.className = 'side'; side.id = 'nwSide';
+    side.innerHTML = '<div class="side-head">' + NW.avHtml(toi) + '<div><div class="ten">' + an(toi.ten || '') + '</div><div class="phu2">' +
+        an(toi.laThay ? 'THẦY' : ('Lớp ' + ((toi.cacLop || [toi.lop]).filter(Boolean).join(' · ') || '?'))) + '</div></div>' +
+        '<button class="dong" data-dong title="Đóng" aria-label="Đóng">' + IC.dong + '</button></div>' +
+      '<div class="vi-to"><div class="sao-ve"><svg class="sao-lon" viewBox="0 0 24 24"><path d="M12 2.2l3 6.2 6.8.9-4.9 4.8 1.2 6.7L12 17.6l-6.1 3.2 1.2-6.7L2.2 9.3l6.8-.9z"/></svg>' +
+        LAPC('c1') + LAPC('c2') + LAPC('c3') + LAPC('c4') + LAPC('c5') + '</div><div class="so">' + (Number(toi.sao) || 0) + '</div><div class="nh">SAO ĐANG CÓ</div></div>' +
+      '<div class="side-ds">' + items.map(function (it, i) {
+        return '<button type="button" data-i="' + i + '"' + (it.nguy ? ' class="nguy"' : '') + '><span class="ico">' + it.ic + '</span><span><span class="nh">' + an(it.nh) + '</span><br><span class="mo-ta">' + an(it.mo) + '</span></span></button>';
+      }).join('') + '</div>' +
+      '<div class="side-foot">Andrew Classes Network · v' + an(CFG.PHIEN_BAN) + '</div>';
+    document.body.appendChild(phu); document.body.appendChild(side);
+    $('[data-dong]', side).onclick = dongSide;
+    $$('.side-ds button', side).forEach(function (b) { b.onclick = function () { dongSide(); var it = items[+b.getAttribute('data-i')]; if (it.onclick) it.onclick(); }; });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') dongSide(); });
+  }
+  function moSide() { document.body.classList.add('mo-menu'); }
+  function dongSide() { document.body.classList.remove('mo-menu'); }
 
   function datCham(nut, so) {
     if (!nut) return;
@@ -67,25 +112,31 @@
     c.textContent = so > 99 ? '99+' : String(so);
   }
   function capNhatCham() {
-    datCham($('#nutChuong'), soChuaDoc(TB_DS));
+    datCham($('.tab[data-tab="chuong"]'), soChuaDoc(TB_DS));
     datCham($('.tab[data-tab="tinNhan"]'), soPhongChua(PHONG_DS));
   }
 
   // ---------- chuông ----------
   var _thaMo = null;
   function dongTha() { if (_thaMo) { _thaMo.tha.remove(); _thaMo.phu.remove(); _thaMo = null; } }
-  function moTha(html) {
+  function moTha(html, neo) {
     dongTha();
     var tha = document.createElement('div'); tha.className = 'tha'; tha.innerHTML = html;
-    var phu = document.createElement('div'); phu.className = 'phu'; phu.onclick = dongTha;
+    var phu = document.createElement('div'); phu.className = 'phu-nen'; phu.onclick = dongTha;
     document.body.appendChild(phu); document.body.appendChild(tha);
+    // máy tính: hộp thả nằm ngay DƯỚI icon chuông (điện thoại: CSS đặt trên thanh đáy, bỏ qua left)
+    if (neo && window.innerWidth > 640) {
+      var r = neo.getBoundingClientRect();
+      tha.style.left = Math.max(12, Math.min(window.innerWidth - 372, r.left + r.width / 2 - 180)) + 'px';
+      tha.style.right = 'auto';
+    }
     requestAnimationFrame(function () { tha.classList.add('mo'); });
     _thaMo = { tha: tha, phu: phu };
     return tha;
   }
   var CHU_LOAI = { camXuc: 'đã thả cảm xúc vào bài của em', binhLuan: 'đã bình luận vào bài của em', chiaSe: 'đã chia sẻ bài của em',
                    ketBan: 'muốn kết bạn với em', dongY: 'đã đồng ý kết bạn', nhac: 'đã nhắc tới em', nhom: 'đã thêm em vào nhóm', chung: '' };
-  function moChuong() {
+  function moChuong(neo) {
     var ds = TB_DS;
     var html = '<div class="tha-head"><span>Thông báo</span>' +
       (soChuaDoc(ds) ? '<button class="tiny" id="tbDocHet" style="color:var(--accent)">Đánh dấu đã đọc</button>' : '') + '</div><div class="tha-ds">' +
@@ -95,7 +146,7 @@
           '<span class="chu"><b>' + an(t.tuTen) + '</b> ' + an(CHU_LOAI[t.loai] || t.loai) +
           (t.chu ? '<small>' + an(t.chu) + '</small>' : '') + '<small>' + an(NW.chuGio(t.luc)) + '</small></span></button>';
       }).join('') : '<div class="tha-trong">Chưa có thông báo nào.</div>') + '</div>';
-    var tha = moTha(html);
+    var tha = moTha(html, neo);
     $$('.tha-muc', tha).forEach(function (b) {
       b.onclick = function () {
         var t = ds.filter(function (x) { return x.id === b.getAttribute('data-id'); })[0];
@@ -116,18 +167,7 @@
     try { await b.commit(); } catch (e) { console.warn(e); }
   }
 
-  // ---------- menu avatar ----------
-  function moMenuAv() {
-    var items = [
-      { ic: IC.caNhan, chu: 'Trang cá nhân của em', onclick: function () { location.href = 'canhan.html'; } },
-      { ic: IC.khoa, chu: 'Đổi mật khẩu', onclick: moDoiMk }
-    ];
-    if (NW.toi && NW.toi.laThay) items.push({ ic: IC.caiDat, chu: 'Trang quản lý', onclick: function () { location.href = 'quanly.html'; } });
-    items.push({ ic: IC.thoat, chu: 'Đăng xuất', nguy: true, onclick: function () {
-      NW.thoat().then(function () { location.replace('index.html?vao=1'); });
-    } });
-    NW.menuNho($('#nutAv'), items);
-  }
+  // ---------- đổi mật khẩu (gọi từ sidebar) ----------
   function moDoiMk() {
     var p = NW.popMo({ tieuDe: 'Đổi mật khẩu', html:
       '<label class="lbl">Mật khẩu hiện tại</label><input type="password" id="mkCu" autocomplete="current-password">' +

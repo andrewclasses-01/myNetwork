@@ -1,4 +1,10 @@
-# BÀN GIAO myNetwork — phiên 20/09/2026 (v0.1.0 `dc03133`)
+# BÀN GIAO myNetwork — cập nhật 22/09/2026 (v0.2.0) · gốc phiên 20/09 (v0.1.0 `dc03133`)
+
+> **22/09/2026 — phiên thiết kế đợt 1 đã BUILD v0.2.0** (xem nhật ký trong `README.md`): thanh chỉ icon + avatar/sao = cá nhân
+> + ☰ sidebar phải + điện thoại thanh đáy + bộ cảm xúc huy hiệu SVG + ô soạn thu gọn + vá 2 lỗi `.phu` / `<a>` lồng.
+> Mẫu đã duyệt: `D:\OTHERS\CLAUDE\myNetwork - thiet ke\mau-v4\mau-v4.html` (cổng 8799 trong launch.json phiên Claude).
+> Mảng thầy chốt làm TIẾP THEO: **TRANG CÁ NHÂN** (vì avatar giờ trỏ thẳng vào đây), rồi tin nhắn · khám phá · đăng nhập.
+> Mục 4 bên dưới: các dòng "Thanh tab" · "Ô soạn" · "Thông báo (chuông)" đã XONG; còn lại vẫn mở.
 
 > Phiên mới đọc file này TRƯỚC, rồi `KE HOACH XAY DUNG.md` (lý do từng quyết định), rồi `README.md`.
 > Thầy chốt cuối phiên: **"thiết kế thêm trong phiên sau rồi sau đó mới gắn những chức năng thật"**
