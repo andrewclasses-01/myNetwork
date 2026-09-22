@@ -9,7 +9,9 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 
 ⭐ Thầy chốt 20/09: **phiên sau THIẾT KẾ THÊM giao diện trước, gắn chức năng thật sau** — chưa dán luật, chưa tạo tài khoản.
 
-## Bản hiện tại — v0.3.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+## Bản hiện tại — v0.3.1 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+
+### v0.3.1 — 22/09/2026: icon TIN NHẮN vẽ lại theo mẫu Flaticon thầy gửi (bong bóng tròn, đuôi nhọn dưới trái, 3 chấm đậm); `?v=4`.
 
 ### v0.3.0 — 22/09/2026: TRANG CÁ NHÂN theo mẫu v8 + 7 CẢM XÚC FACEBOOK 2D + icon tin nhắn mới
 - **canhan.html**: bìa rộng 240px (điện thoại 160) · avatar 128px chồng góc trái + huy hiệu sao · tên · lớp (chip từng lớp) · "Tham gia m/yyyy" (từ `luc`)

@@ -7,7 +7,7 @@ window.NW_CONFIG = {
 
   // Phiên bản — hiện nhỏ ở chân trang / menu. GitHub Pages giữ cache ~10 phút,
   // nhìn số này là biết máy đang chạy bản nào.
-  PHIEN_BAN: '0.3.0',
+  PHIEN_BAN: '0.3.1',
 
   // Tab đầu tiên "TRANG BÀI TẬP" trỏ về myLesson web. Chạy thử trên máy thì trỏ
   // sang bản local của myLesson (nếu đang mở), lên mạng thì domain thật.
