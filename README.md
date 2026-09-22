@@ -9,7 +9,18 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 
 ⭐ Thầy chốt 20/09: **phiên sau THIẾT KẾ THÊM giao diện trước, gắn chức năng thật sau** — chưa dán luật, chưa tạo tài khoản.
 
-## Bản hiện tại — v0.2.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+## Bản hiện tại — v0.3.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+
+### v0.3.0 — 22/09/2026: TRANG CÁ NHÂN theo mẫu v8 + 7 CẢM XÚC FACEBOOK 2D + icon tin nhắn mới
+- **canhan.html**: bìa rộng 240px (điện thoại 160) · avatar 128px chồng góc trái + huy hiệu sao · tên · lớp (chip từng lớp) · "Tham gia m/yyyy" (từ `luc`)
+  · câu giới thiệu; **trang mình**: nút "Đổi ảnh bìa" góc dưới phải bìa, nút máy ảnh trên avatar, "Sửa giới thiệu" (sửa được CÂU GIỚI THIỆU + SỞ THÍCH `soThich`,
+  lớp/ngày tham gia tự động); **trang bạn**: 2 nút icon tròn **Nhắn tin** (+ **Kết bạn** khi bật cờ) ở **góc dưới phải bìa**; không dải thành tích (thầy bỏ).
+  3 tab **căn giữa**: BÀI VIẾT · ẢNH (lưới 3 cột, gom ảnh từ bài đã tải — `dongBai({sauTai})` mới) · GIỚI THIỆU (lớp đang/cũng học · tham gia · sở thích · câu giới thiệu).
+- **Cảm xúc**: đổi sang **7 kiểu đúng thứ tự Facebook, vẽ 2D phẳng** (thầy chê bản bóng khối): `like` Thích · `tim` Yêu thích · `cuoi` Cười (ra nước mắt) · `haha` · `ngac` Oa · `khoc` Buồn · `gian` Phẫn nộ.
+  Bỏ `gaCon` (chưa có dữ liệu thật). Sprite trong `NW.napCamXuc()`.
+- **Icon TIN NHẮN** đổi thành bong bóng tròn 3 chấm (`IC.tinNhan`) — dùng ở tab, nút nhắn tin, cột "Lớp của em".
+- Đã thử `?thu=1`: canhan (mình + bạn), bangtin (bảng chọn 7, chọn Cười), 375px; console sạch.
+
 
 ### v0.2.0 — 22/09/2026: GIAO DIỆN THANH + CẢM XÚC theo mẫu thầy duyệt (mẫu v1→v4 ở `D:\OTHERS\CLAUDE\myNetwork - thiet ke\`)
 - **Thanh trên**: TRÁI avatar EM + huy hiệu sao (chép y myLesson `.av.me` + `.sao-hieu`, sao = 0 vì chưa có kho) → bấm = **trang cá nhân**;
@@ -34,7 +45,7 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 | `bangtin.html` | Ô soạn (chữ + tối đa 4 ảnh + phạm vi Mọi người/Chỉ lớp) + dòng bài phân trang + cột "Lớp của em" |
 | `tinnhan.html` | Danh sách phòng · phòng chat · nhắn mới · tạo nhóm · gửi ảnh · thành viên/rời nhóm |
 | `khampha.html` | Tìm theo tên (bỏ dấu) · lọc theo lớp · (lời mời kết bạn khi bật `BAT_KET_BAN`) |
-| `canhan.html?uid=` | Ảnh bìa · avatar · giới thiệu · bài của người đó · nút Nhắn tin |
+| `canhan.html?uid=` | Bìa rộng · avatar+sao · giới thiệu/sở thích · tab BÀI VIẾT/ẢNH/GIỚI THIỆU · trang bạn: nút icon Nhắn tin/Kết bạn trong bìa |
 | `baidang.html?id=` | Một bài + bình luận (đích của thông báo/chia sẻ) |
 | `quanly.html` | Thầy: báo cáo · bài đã ẩn · từ cấm · khoá tài khoản · danh sách lớp |
 | `js/loi.js` | Lõi: Firebase (một app), phiên, hồ sơ đệm, nén ảnh, toast/pop-up/menu, từ cấm, thông báo |

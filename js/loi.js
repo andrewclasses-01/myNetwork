@@ -107,7 +107,7 @@
   NW.IC = {
     baiTap: P('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'),
     bangTin: P('<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>'),
-    tinNhan: P('<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.9 8.9 0 0 1-3.9-.9L3 20l1-4.9a8.4 8.4 0 1 1 17-3.6z"/>'),
+    tinNhan: P('<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/>'),  // v0.3.0: bong bóng tròn 3 chấm (thầy chê icon cũ)
     khamPha: P('<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>'),
     caNhan: P('<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'),
     chuong: P('<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>'),
@@ -145,9 +145,11 @@
   // Cảm xúc — cùng bộ với chat lớp bên myLesson (lop.html CAM_XUC)
   // `ky` = chữ emoji dự phòng (dùng trong CHỮ thông báo); HÌNH hiện trên trang là huy hiệu SVG (NW.cxHtml) —
   // v0.2.0 thầy chốt 22/09: bỏ emoji hệ thống (mỗi máy vẽ một kiểu), dùng bộ vẽ tay giống nhau mọi máy.
+  // v0.3.0 (thầy chốt 22/09): 7 cảm xúc ĐÚNG THỨ TỰ Facebook — Thích · Yêu thích · Cười (ra nước mắt) · Haha · Oa · Buồn · Phẫn nộ.
+  // (bộ 6 cũ có "gà con" đã bỏ; chưa có dữ liệu thật nên không phải chuyển đổi)
   NW.CAM_XUC = [
-    { ma: 'tim', ky: '❤️', nh: 'Yêu' }, { ma: 'like', ky: '👍', nh: 'Thích' }, { ma: 'haha', ky: '😆', nh: 'Haha' },
-    { ma: 'ngac', ky: '😮', nh: 'Wow' }, { ma: 'khoc', ky: '😢', nh: 'Buồn' }, { ma: 'gaCon', ky: '🐥', nh: 'Gà con' }
+    { ma: 'like', ky: '👍', nh: 'Thích' }, { ma: 'tim', ky: '❤️', nh: 'Yêu thích' }, { ma: 'cuoi', ky: '😂', nh: 'Cười' },
+    { ma: 'haha', ky: '😆', nh: 'Haha' }, { ma: 'ngac', ky: '😮', nh: 'Oa' }, { ma: 'khoc', ky: '😢', nh: 'Buồn' }, { ma: 'gian', ky: '😡', nh: 'Phẫn nộ' }
   ];
   NW.tenCamXuc = function (ma) {
     for (var i = 0; i < NW.CAM_XUC.length; i++) if (NW.CAM_XUC[i].ma === ma) return NW.CAM_XUC[i].nh;
@@ -159,42 +161,39 @@
     if (!co) return '';
     return '<svg class="cx' + (lop ? ' ' + lop : '') + '" aria-label="' + chuAnToan(NW.tenCamXuc(ma)) + '"><use href="#cx-' + ma + '"/></svg>';
   };
-  // Sprite 6 huy hiệu (vẽ tay, phong cách huy hiệu tròn bóng khối) — chèn MỘT lần vào đầu <body>.
+  // Sprite 7 huy hiệu Facebook vẽ 2D phẳng (thầy chốt 22/09: 2D, không bóng khối) — chèn MỘT lần vào đầu <body>.
   NW.napCamXuc = function () {
     if (document.getElementById('nwCxSprite')) return;
-    var sao = '<path d="M5 0l1.1 3.9L10 5l-3.9 1.1L5 10 3.9 6.1 0 5l3.9-1.1z"/>';
-    var vien = '<circle cx="16" cy="16" r="15.3" fill="none" stroke="#000" stroke-opacity=".13" stroke-width="1.4"/><ellipse cx="13" cy="7.6" rx="8.5" ry="4.4" fill="url(#gSang)"/>';
+    var TIM = 'M16 27.2S4.6 20.2 4.6 12.6c0-3.6 2.8-6.3 6.2-6.3 2.2 0 4.1 1.2 5.2 3 1.1-1.8 3-3 5.2-3 3.4 0 6.2 2.7 6.2 6.3 0 7.6-11.4 14.6-11.4 14.6z';
     var html = '<svg id="nwCxSprite" width="0" height="0" style="position:absolute" aria-hidden="true"><defs>' +
-      '<radialGradient id="gLike" cx="38%" cy="30%" r="80%"><stop offset="0" stop-color="#6FB1FF"/><stop offset=".55" stop-color="#2B86F5"/><stop offset="1" stop-color="#0F55BD"/></radialGradient>' +
-      '<radialGradient id="gTim" cx="38%" cy="30%" r="80%"><stop offset="0" stop-color="#FF8DA0"/><stop offset=".55" stop-color="#F43B5A"/><stop offset="1" stop-color="#C40F2E"/></radialGradient>' +
-      '<radialGradient id="gVang" cx="38%" cy="28%" r="82%"><stop offset="0" stop-color="#FFF0A6"/><stop offset=".5" stop-color="#FFD24A"/><stop offset="1" stop-color="#E8950A"/></radialGradient>' +
-      '<radialGradient id="gGa" cx="38%" cy="28%" r="82%"><stop offset="0" stop-color="#FFF6C8"/><stop offset=".5" stop-color="#FFDA66"/><stop offset="1" stop-color="#F0A81C"/></radialGradient>' +
-      '<linearGradient id="gSang" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>' +
-      '<filter id="bongTrang" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="1" stdDeviation=".8" flood-color="#000" flood-opacity=".25"/></filter></defs>' +
-      '<symbol id="cx-like" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gLike)"/>' + vien +
-        '<g transform="translate(16 16) scale(.74) translate(-16 -16)" fill="#fff" filter="url(#bongTrang)"><path d="M5 14.5h4.2v12H5a1.6 1.6 0 0 1-1.6-1.6v-8.8A1.6 1.6 0 0 1 5 14.5z"/>' +
+      '<linearGradient id="gLike" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3D94FF"/><stop offset="1" stop-color="#1467D8"/></linearGradient>' +
+      '<linearGradient id="gTim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF6B84"/><stop offset="1" stop-color="#E5203F"/></linearGradient>' +
+      '<linearGradient id="gVang" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE178"/><stop offset="1" stop-color="#F5B21D"/></linearGradient>' +
+      '<linearGradient id="gGian" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFA24A"/><stop offset="1" stop-color="#E8432A"/></linearGradient></defs>' +
+      '<symbol id="cx-like" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gLike)"/>' +
+        '<g transform="translate(16 16) scale(.72) translate(-16 -16)" fill="#fff"><path d="M5 14.5h4.2v12H5a1.6 1.6 0 0 1-1.6-1.6v-8.8A1.6 1.6 0 0 1 5 14.5z"/>' +
         '<path d="M10.4 26.5V14.7l4.6-8.6c.5-1 1.6-1.4 2.6-1 1.3.5 2 1.9 1.7 3.3l-1 4.6h6.8c1.6 0 2.7 1.4 2.3 2.9l-2.1 8.3c-.3 1.3-1.4 2.3-2.8 2.3z"/></g></symbol>' +
-      '<symbol id="cx-tim" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gTim)"/>' + vien +
-        '<path transform="translate(16 16) scale(.76) translate(-16 -16)" fill="#fff" filter="url(#bongTrang)" d="M16 27.2S4.6 20.2 4.6 12.6c0-3.6 2.8-6.3 6.2-6.3 2.2 0 4.1 1.2 5.2 3 1.1-1.8 3-3 5.2-3 3.4 0 6.2 2.7 6.2 6.3 0 7.6-11.4 14.6-11.4 14.6z"/></symbol>' +
-      '<symbol id="cx-haha" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gVang)"/>' + vien +
-        '<path d="M6.8 12.6q3.4-4.2 6.8 0M18.4 12.6q3.4-4.2 6.8 0" fill="none" stroke="#3F2A05" stroke-width="2.3" stroke-linecap="round"/>' +
-        '<path d="M6.4 16.6h19.2c0 6.4-4.3 10.4-9.6 10.4S6.4 23 6.4 16.6z" fill="#3F2A05"/><path d="M8.2 17.4h15.6v1.2q0 1-1 1H9.2q-1 0-1-1z" fill="#fff"/><ellipse cx="16" cy="24.2" rx="5.4" ry="2.8" fill="#F0284A"/></symbol>' +
-      '<symbol id="cx-ngac" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gVang)"/>' + vien +
-        '<path d="M7.2 8.8q3.4-3 6.8-.4M18 8.4q3.4-2.6 6.8.4" fill="none" stroke="#3F2A05" stroke-width="2.1" stroke-linecap="round"/>' +
-        '<ellipse cx="10.8" cy="14.4" rx="2.5" ry="3.4" fill="#3F2A05"/><ellipse cx="21.2" cy="14.4" rx="2.5" ry="3.4" fill="#3F2A05"/>' +
-        '<circle cx="11.7" cy="13.2" r=".8" fill="#fff"/><circle cx="22.1" cy="13.2" r=".8" fill="#fff"/>' +
-        '<ellipse cx="16" cy="23.4" rx="4.2" ry="5.2" fill="#3F2A05"/><ellipse cx="16" cy="26" rx="2.6" ry="1.6" fill="#F0284A"/></symbol>' +
-      '<symbol id="cx-khoc" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gVang)"/>' + vien +
-        '<path d="M6.6 12q3.8-3.4 7.6-1.4M17.8 10.6q3.8-2 7.6 1.4" fill="none" stroke="#3F2A05" stroke-width="2.1" stroke-linecap="round"/>' +
-        '<ellipse cx="11" cy="16" rx="2.2" ry="2.9" fill="#3F2A05"/><ellipse cx="21" cy="16" rx="2.2" ry="2.9" fill="#3F2A05"/>' +
-        '<path d="M10.6 25.2q5.4-4.8 10.8 0" fill="none" stroke="#3F2A05" stroke-width="2.4" stroke-linecap="round"/>' +
-        '<path d="M25 16.8c0 0-3.8 5-3.8 7.4a3.8 3.8 0 0 0 7.6 0c0-2.4-3.8-7.4-3.8-7.4z" fill="#3D8BFF"/><ellipse cx="24" cy="23.6" rx="1" ry="1.6" fill="#fff" opacity=".55"/></symbol>' +
-      '<symbol id="cx-gaCon" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gGa)"/>' + vien +
-        '<path d="M12.8 5.4q2.6-4 5.4-.2M16.2 4.6q1.8-3.4 4.2-.8" fill="none" stroke="#F07E12" stroke-width="2.3" stroke-linecap="round"/>' +
-        '<ellipse cx="10.8" cy="14.6" rx="2.3" ry="3" fill="#3F2A05"/><ellipse cx="21.2" cy="14.6" rx="2.3" ry="3" fill="#3F2A05"/>' +
-        '<circle cx="11.6" cy="13.4" r=".8" fill="#fff"/><circle cx="22" cy="13.4" r=".8" fill="#fff"/>' +
-        '<path d="M11.6 19h8.8L16 24.6z" fill="#F07E12"/><path d="M11.6 19h8.8l-4.4 2.2z" fill="#FFB347"/>' +
-        '<circle cx="7" cy="19.6" r="2.2" fill="#FF8FA3" opacity=".9"/><circle cx="25" cy="19.6" r="2.2" fill="#FF8FA3" opacity=".9"/></symbol>' +
+      '<symbol id="cx-tim" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gTim)"/><path transform="translate(16 16) scale(.74) translate(-16 -16)" fill="#fff" d="' + TIM + '"/></symbol>' +
+      '<symbol id="cx-cuoi" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gVang)"/>' +
+        '<path d="M8.2 13.2q3-3.6 6 0M17.8 13.2q3-3.6 6 0" fill="none" stroke="#5B3A0A" stroke-width="2.1" stroke-linecap="round"/>' +
+        '<path d="M7.6 17.6h16.8c0 5.4-3.8 8.8-8.4 8.8s-8.4-3.4-8.4-8.8z" fill="#5B3A0A"/><path d="M9.2 18.4h13.6v1.1q0 1-1 1H10.2q-1 0-1-1z" fill="#fff"/>' +
+        '<ellipse cx="16" cy="24.2" rx="4.2" ry="2.1" fill="#F0284A"/>' +
+        '<path d="M5.2 13.2c0 0-2.6 3.4-2.6 5.2a2.6 2.6 0 0 0 5.2 0c0-1.8-2.6-5.2-2.6-5.2z" fill="#4A90F5"/><path d="M26.8 13.2c0 0-2.6 3.4-2.6 5.2a2.6 2.6 0 0 0 5.2 0c0-1.8-2.6-5.2-2.6-5.2z" fill="#4A90F5"/></symbol>' +
+      '<symbol id="cx-haha" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gVang)"/>' +
+        '<path d="M7.5 12.2q3.2-3.4 6.4 0M18.1 12.2q3.2-3.4 6.4 0" fill="none" stroke="#5B3A0A" stroke-width="2" stroke-linecap="round"/>' +
+        '<path d="M7.2 17.2h17.6c0 5.6-3.9 9.1-8.8 9.1s-8.8-3.5-8.8-9.1z" fill="#5B3A0A"/><ellipse cx="16" cy="24" rx="4.6" ry="2.4" fill="#F0284A"/></symbol>' +
+      '<symbol id="cx-ngac" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gVang)"/>' +
+        '<path d="M7.6 9.4q3.2-2.6 6.4-.2M18 9.2q3.2-2.4 6.4.2" fill="none" stroke="#5B3A0A" stroke-width="1.9" stroke-linecap="round"/>' +
+        '<ellipse cx="10.9" cy="14.2" rx="2.1" ry="2.9" fill="#5B3A0A"/><ellipse cx="21.1" cy="14.2" rx="2.1" ry="2.9" fill="#5B3A0A"/><ellipse cx="16" cy="23.2" rx="3.6" ry="4.6" fill="#5B3A0A"/></symbol>' +
+      '<symbol id="cx-khoc" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gVang)"/>' +
+        '<path d="M7 11.6q3.6-2.8 7-1.2M18 10.4q3.4-1.6 7 1.2" fill="none" stroke="#5B3A0A" stroke-width="1.9" stroke-linecap="round"/>' +
+        '<ellipse cx="11.2" cy="15.6" rx="1.9" ry="2.5" fill="#5B3A0A"/><ellipse cx="20.8" cy="15.6" rx="1.9" ry="2.5" fill="#5B3A0A"/>' +
+        '<path d="M11 24.6q5-4.2 10 0" fill="none" stroke="#5B3A0A" stroke-width="2.1" stroke-linecap="round"/>' +
+        '<path d="M24.6 17.4c0 0-3.2 4.3-3.2 6.4a3.2 3.2 0 0 0 6.4 0c0-2.1-3.2-6.4-3.2-6.4z" fill="#4A90F5"/></symbol>' +
+      '<symbol id="cx-gian" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="url(#gGian)"/>' +
+        '<path d="M7.4 11.8l6.2 2.6M24.6 11.8l-6.2 2.6" fill="none" stroke="#4A1E0A" stroke-width="2.2" stroke-linecap="round"/>' +
+        '<ellipse cx="11.4" cy="16.6" rx="1.7" ry="2" fill="#4A1E0A"/><ellipse cx="20.6" cy="16.6" rx="1.7" ry="2" fill="#4A1E0A"/>' +
+        '<path d="M10.8 24.2q5.2-2.6 10.4 0" fill="none" stroke="#4A1E0A" stroke-width="2.2" stroke-linecap="round"/></symbol>' +
       '</svg>';
     var hop = document.createElement('div'); hop.innerHTML = html;
     document.body.insertBefore(hop.firstChild, document.body.firstChild);

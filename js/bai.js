@@ -1,5 +1,5 @@
 /* ============================================================
-   bai.js — BÀI ĐĂNG (v0.2.0): ô soạn · thẻ bài · cảm xúc · bình luận · chia sẻ ·
+   bai.js — BÀI ĐĂNG (v0.3.0): ô soạn · thẻ bài · cảm xúc · bình luận · chia sẻ ·
    báo cáo · menu sửa/xoá/ẩn/ghim · dòng bài có phân trang.
    Dùng chung cho bangtin.html · canhan.html · baidang.html · quanly.html.
 
@@ -487,6 +487,7 @@
         }
         var soHien = 0;
         ds.forEach(function (x) { if (hienDuoc(x.bai)) { hop.appendChild(Bai.dung(x.bai, x.id, { gon: true })); soHien++; } });
+        if (o.sauTai) o.sauTai(ds.filter(function (x) { return hienDuoc(x.bai); }));  // v0.3.0: trang cá nhân gom ảnh cho tab ẢNH
         if (!hop.children.length && het) hop.innerHTML = '<div class="card trong">' + IC.bangTin + '<br>' + an(o.chuTrong || 'Chưa có bài nào. Em đăng bài đầu tiên nhé!') + '</div>';
         // Trang toàn bài bị lọc (chỉ-lớp của lớp khác) thì tự tải tiếp cho đỡ trống.
         if (!soHien && !het && ds.length) { dangTai = false; return tai(); }
@@ -534,7 +535,7 @@
     return [
       { id: 'm1', bai: { uid: 'gv', tacGia: tg2, chu: 'Chào cả mạng! Đây là bảng tin của Andrew Classes. Các em đăng bài lịch sự, thân thiện nhé. 😊', anh: [], pham: 'mang', lop: 'GV', luc: t - 3600e3, an: false, ghim: true, camXuc: { hs_1: 'tim', hs_2: 'like', hs_3: 'haha' }, soBinhLuan: 2, soChiaSe: 1, chiaSeTu: null, goc: null,
         _blMau: [{ id: 'b1', uid: 'hs_1', tacGia: tg1, chu: 'Dạ vâng ạ!', luc: t - 3000e3, camXuc: {} }, { id: 'b2', uid: 'hs_2', tacGia: tg3, chu: 'Em chào thầy 🙌', luc: t - 2000e3, camXuc: { hs_1: 'tim' } }] } },
-      { id: 'm2', bai: { uid: 'hs_1', tacGia: tg1, chu: 'Hôm nay em làm xong hết bài WORDS 2 rồi, 100% luôn 🎉 Bạn nào chưa làm thì làm nhanh kẻo hết hạn nha https://andrewclasses.com', anh: [], pham: 'lop', lop: 'A1C', luc: t - 1800e3, an: false, ghim: false, camXuc: { hs_0: 'tim', hs_2: 'gaCon' }, soBinhLuan: 0, soChiaSe: 0, chiaSeTu: null, goc: null } },
+      { id: 'm2', bai: { uid: 'hs_1', tacGia: tg1, chu: 'Hôm nay em làm xong hết bài WORDS 2 rồi, 100% luôn 🎉 Bạn nào chưa làm thì làm nhanh kẻo hết hạn nha https://andrewclasses.com', anh: [], pham: 'lop', lop: 'A1C', luc: t - 1800e3, an: false, ghim: false, camXuc: { hs_0: 'tim', hs_2: 'cuoi' }, soBinhLuan: 0, soChiaSe: 0, chiaSeTu: null, goc: null } },
       { id: 'm3', bai: { uid: 'hs_2', tacGia: tg3, chu: 'Chia sẻ lại bài của thầy cho lớp mình xem.', anh: [], pham: 'mang', lop: 'B2B', luc: t - 600e3, an: false, ghim: false, camXuc: {}, soBinhLuan: 0, soChiaSe: 0, chiaSeTu: 'm1', goc: { uid: 'gv', tacGia: tg2, chu: 'Chào cả mạng! Đây là bảng tin của Andrew Classes.', anh: [], luc: t - 3600e3 } } }
     ];
   };

@@ -6,35 +6,39 @@
 <title>Trang cá nhân · Andrew Classes Network</title>
 <link rel="icon" href="assets/avatar-tron.jpg">
 <link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="css/nw.css?v=2">
+<link rel="stylesheet" href="css/nw.css?v=3">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
 </head>
 <body>
 <main class="main hep">
   <section>
-    <div class="card" id="hoSo" style="margin-bottom:14px"><div class="trong"><div class="xoay"></div></div></div>
-    <div id="soan" style="margin-bottom:14px" hidden></div>
-    <div id="dong"></div>
+    <div class="card hoso" id="hoSo" style="margin-bottom:14px"><div class="trong"><div class="xoay"></div></div></div>
+    <div id="khuBai">
+      <div id="soan" style="margin-bottom:14px" hidden></div>
+      <div id="dong"></div>
+    </div>
+    <div class="card" id="khuAnh" hidden><div class="luoi-anh" id="luoiAnh"></div></div>
+    <div class="card" id="khuGt" hidden><div class="gioi-thieu" id="gioiThieu"></div></div>
   </section>
 </main>
 <input type="file" id="fileAv" accept="image/*" hidden>
 <input type="file" id="fileBia" accept="image/*" hidden>
-<script src="config.js?v=2"></script>
-<script src="js/loi.js?v=2"></script>
-<script src="js/thanh.js?v=2"></script>
-<script src="js/bai.js?v=2"></script>
-<script src="js/chat.js?v=2"></script>
+<script src="config.js?v=3"></script>
+<script src="js/loi.js?v=3"></script>
+<script src="js/thanh.js?v=3"></script>
+<script src="js/bai.js?v=3"></script>
+<script src="js/chat.js?v=3"></script>
 <script>
 (function () {
   'use strict';
-  var $ = NW.$, IC = NW.IC, an = NW.chuAnToan, CFG = NW.CFG;
+  var $ = NW.$, $$ = NW.$$, IC = NW.IC, an = NW.chuAnToan, CFG = NW.CFG;
 
   NW.dungThanh({ tab: 'caNhan' }).then(async function (ph) {
     var toi = NW.toi;
     var uid = NW.thamSo('uid') || toi.uid;
     var cuaToi = uid === toi.uid;
-    var hs = cuaToi ? toi : (ph.banThu ? { uid: uid, ten: 'MINH ANH', lop: 'A1C', cacLop: ['A1C'], vaiTro: 'hs', gioiThieu: 'Em thích tiếng Anh 🌟' } : await NW.hoSo(uid, true).catch(function () { return null; }));
+    var hs = cuaToi ? toi : (ph.banThu ? { uid: uid, ten: 'MINH ANH', lop: 'A1C', cacLop: ['A1C', 'NNTNGK9'], vaiTro: 'hs', gioiThieu: 'Em thích tiếng Anh 🌟', soThich: 'vẽ · mèo', luc: Date.now() - 40 * 864e5 } : await NW.hoSo(uid, true).catch(function () { return null; }));
     var hop = $('#hoSo');
     if (!hs) { hop.innerHTML = '<div class="trong">Không tìm thấy người này.</div>'; return; }
     hs.uid = uid;
@@ -44,31 +48,72 @@
     var nhanDuoc = cuaToi ? false : (toi.laThay || hs.vaiTro === 'gv' ||
       (toi.cacLop || [toi.lop]).some(function (l) { return (hs.cacLop || [hs.lop]).indexOf(l) >= 0; }));
 
+    var SAO = '<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg>';
+    function thang(ms) { var d = new Date(Number(ms) || Date.now()); return (d.getMonth() + 1) + '/' + d.getFullYear(); }
+    // v0.3.0 — mẫu v8 thầy chốt: bìa rộng · avatar to + huy hiệu sao · nút theo người xem · 3 tab căn giữa
     function ve() {
+      var lops = (hs.cacLop && hs.cacLop.length ? hs.cacLop : [hs.lop]).filter(Boolean);
       hop.innerHTML =
         '<div class="bia">' + (hs.bia ? '<img src="' + an(hs.bia) + '" alt="">' : '') +
-          (cuaToi ? '<button class="btn soft nho doi" id="doiBia">' + IC.camera + ' Đổi ảnh bìa</button>' : '') + '</div>' +
+          (cuaToi ? '<button class="doi-bia" id="doiBia" type="button">' + IC.camera + 'Đổi ảnh bìa</button>' : '') +
+          (!cuaToi ? '<div class="nut-ban">' +
+            (nhanDuoc ? '<a class="chinh" data-nh="Nhắn tin" href="tinnhan.html?voi=' + an(uid) + '" aria-label="Nhắn tin">' + IC.tinNhan + '</a>' : '') +
+            (CFG.BAT_KET_BAN && hs.vaiTro !== 'gv' ? '<button type="button" id="ketBan" data-nh="Kết bạn" aria-label="Kết bạn">' + IC.ketBan + '</button>' : '') + '</div>' : '') +
+        '</div>' +
         '<div class="ho-so">' +
           '<span class="av kho' + (hs.vaiTro === 'gv' ? ' gv' : '') + '" style="background:' + NW.itMau(hs.ten) + '">' + an(NW.chuTat(hs.ten)) +
             (hs.anh ? '<img src="' + an(hs.anh) + '" alt="" onerror="this.remove()">' : '') +
-            (cuaToi ? '<button class="doi-av" id="doiAv" type="button">ĐỔI</button>' : '') + '</span>' +
+            (hs.vaiTro !== 'gv' ? '<span class="sao-hieu">' + (Number(hs.sao) || 0) + SAO + '</span>' : '') +
+            (cuaToi ? '<button class="doi-av" id="doiAv" type="button" title="Đổi ảnh đại diện" aria-label="Đổi ảnh đại diện">' + IC.camera + '</button>' : '') + '</span>' +
           '<div class="tt"><h1>' + an(hs.ten) + (hs.vaiTro === 'gv' ? '<span class="nhan-gv">THẦY</span>' : '') + '</h1>' +
-            '<div class="lop">' + an(hs.vaiTro === 'gv' ? 'Giáo viên Andrew Classes' : ('Lớp ' + (hs.cacLop && hs.cacLop.length ? hs.cacLop.join(' · ') : hs.lop))) + '</div>' +
+            '<div class="lop">' + (hs.vaiTro === 'gv' ? '<span>Giáo viên Andrew Classes</span>' :
+              '<span>Lớp ' + an(lops.join(' · ')) + '</span>' + lops.map(function (l) { return '<span class="nhan-lop">' + an(l) + '</span>'; }).join('')) +
+              (hs.luc ? '<span>· Tham gia ' + thang(hs.luc) + '</span>' : '') + '</div>' +
             (hs.gioiThieu ? '<div class="gt">' + NW.chuCoLink(hs.gioiThieu) + '</div>' : (cuaToi ? '<div class="gt tiny">Em chưa viết giới thiệu.</div>' : '')) + '</div>' +
           '<div class="nut">' +
-            (cuaToi ? '<button class="btn soft nho" id="suaGt">' + IC.sua + ' Sửa giới thiệu</button>' : '') +
-            (nhanDuoc ? '<a class="btn primary nho" href="tinnhan.html?voi=' + an(uid) + '">' + IC.tinNhan + ' Nhắn tin</a>' : '') +
-            (!cuaToi && CFG.BAT_KET_BAN && hs.vaiTro !== 'gv' ? '<button class="btn ghost nho" id="ketBan">' + IC.ketBan + ' Kết bạn</button>' : '') +
+            (cuaToi ? '<button class="btn soft nho" id="suaGt" type="button">' + IC.sua + ' Sửa giới thiệu</button>' : '') +
             (!cuaToi && !nhanDuoc && !CFG.BAT_KET_BAN ? '<span class="tiny">Chỉ nhắn được với bạn cùng lớp và thầy.</span>' : '') +
-          '</div></div>';
+          '</div></div>' +
+        '<div class="cn-tabs" id="cnTabs"><button type="button" class="chon" data-t="bai">BÀI VIẾT</button><button type="button" data-t="anh">ẢNH</button><button type="button" data-t="gt">GIỚI THIỆU</button></div>';
       if (cuaToi) {
         $('#doiAv').onclick = function () { $('#fileAv').click(); };
         $('#doiBia').onclick = function () { $('#fileBia').click(); };
         $('#suaGt').onclick = suaGt;
       }
       var kb = $('#ketBan'); if (kb) kb.onclick = guiKetBan;
+      $$('#cnTabs button').forEach(function (b) {
+        b.onclick = function () {
+          $$('#cnTabs button').forEach(function (x) { x.classList.toggle('chon', x === b); });
+          var t = b.getAttribute('data-t');
+          $('#khuBai').hidden = t !== 'bai'; $('#khuAnh').hidden = t !== 'anh'; $('#khuGt').hidden = t !== 'gt';
+        };
+      });
+      veGioiThieu();
+    }
+    function veGioiThieu() {
+      var lops = (hs.cacLop && hs.cacLop.length ? hs.cacLop : [hs.lop]).filter(Boolean);
+      $('#gioiThieu').innerHTML =
+        '<div class="dong">' + IC.lopHoc + '<span>' + (hs.vaiTro === 'gv' ? 'Giáo viên Andrew Classes' : 'Đang học lớp <b>' + an(lops[0] || '?') + '</b>' + (lops.length > 1 ? ' · cũng học <b>' + an(lops.slice(1).join(', ')) + '</b>' : '')) + '</span></div>' +
+        (hs.luc ? '<div class="dong">' + IC.caNhan + '<span>Tham gia mạng <b>' + thang(hs.luc) + '</b></span></div>' : '') +
+        '<div class="dong">' + IC.tim + '<span>Sở thích: ' + (hs.soThich ? '<b>' + an(hs.soThich) + '</b>' : '<span class="tiny">' + (cuaToi ? 'Em chưa ghi — bấm Sửa giới thiệu.' : 'Chưa ghi.') + '</span>') + '</span></div>' +
+        (hs.gioiThieu ? '<div class="dong">' + IC.sua + '<span>' + NW.chuCoLink(hs.gioiThieu) + '</span></div>' : '');
     }
     ve();
+    // tab ẢNH: gom ảnh từ các bài đã tải của người này
+    var anhDaCo = {};
+    function gomAnh(ds) {
+      var luoi = $('#luoiAnh');
+      ds.forEach(function (x) {
+        (x.bai.anh || []).forEach(function (u) {
+          if (anhDaCo[u]) return; anhDaCo[u] = 1;
+          var b = document.createElement('button'); b.type = 'button'; b.innerHTML = '<img src="' + an(u) + '" alt="" loading="lazy">';
+          b.onclick = function () { NW.xemAnh(u); };
+          luoi.appendChild(b);
+        });
+      });
+      if (!luoi.children.length) luoi.innerHTML = '<div class="trong" style="grid-column:1/-1">' + (cuaToi ? 'Em chưa đăng ảnh nào.' : 'Chưa có ảnh.') + '</div>';
+      else { var t = $('.trong', luoi); if (t) t.remove(); }
+    }
 
     async function capNhatHoSo(patch) {
       if (ph.banThu) { Object.assign(hs, patch); ve(); return; }
@@ -98,15 +143,18 @@
         await capNhatHoSo({ bia: url }); NW.toast('Đã đổi ảnh bìa.');
       } catch (e) { NW.toast(NW.chuLoiKho(e), true); }
     };
+    // thầy chốt 22/09: em chỉ sửa được CÂU GIỚI THIỆU + SỞ THÍCH (lớp, ngày tham gia lấy tự động từ hồ sơ)
     function suaGt() {
-      var p = NW.popMo({ tieuDe: 'Giới thiệu về em', html: '<textarea id="gt" rows="4" maxlength="300" placeholder="Vài dòng về em: sở thích, môn yêu thích…">' + an(hs.gioiThieu || '') + '</textarea>',
+      var p = NW.popMo({ tieuDe: 'Giới thiệu về em', html:
+        '<label class="lbl">Vài dòng về em</label><textarea id="gt" rows="4" maxlength="300" placeholder="Sở thích, môn yêu thích, mục tiêu…">' + an(hs.gioiThieu || '') + '</textarea>' +
+        '<label class="lbl" style="margin-top:12px">Sở thích (ngắn gọn)</label><input type="text" id="gtSt" maxlength="80" placeholder="vẽ · bóng đá · mèo" value="' + an(hs.soThich || '') + '">',
         chan: '<button class="btn soft" data-dong>Thôi</button><button class="btn primary" id="gtOk">Lưu</button>' });
       $('[data-dong]', p).onclick = NW.popDong;
       $('#gtOk', p).onclick = async function () {
-        var chu = $('#gt', p).value.trim().slice(0, 300);
-        var tu = await NW.kiemTuCam(chu); if (tu) { NW.toast('Có từ không phù hợp ("' + tu + '").', true); return; }
+        var chu = $('#gt', p).value.trim().slice(0, 300), st = $('#gtSt', p).value.trim().slice(0, 80);
+        var tu = await NW.kiemTuCam(chu + ' ' + st); if (tu) { NW.toast('Có từ không phù hợp ("' + tu + '").', true); return; }
         NW.popDong();
-        try { await capNhatHoSo({ gioiThieu: chu }); NW.toast('Đã lưu.'); } catch (e) { NW.toast(NW.chuLoiKho(e), true); }
+        try { await capNhatHoSo({ gioiThieu: chu, soThich: st }); NW.toast('Đã lưu.'); } catch (e) { NW.toast(NW.chuLoiKho(e), true); }
       };
     }
     async function guiKetBan() {
@@ -122,8 +170,8 @@
 
     // Bài của người này
     if (cuaToi) { $('#soan').hidden = false; }
-    var dong = NW.Bai.dongBai({ hop: $('#dong'), loai: 'cuaNguoi', uid: uid, chuTrong: cuaToi ? 'Em chưa đăng bài nào. Viết gì đó ở ô trên nhé!' : (hs.ten + ' chưa đăng bài nào.') });
-    if (cuaToi) NW.Bai.soan({ hop: $('#soan'), sauKhiDang: function (bai, id) { dong.chenDau(bai, id); } });
+    var dong = NW.Bai.dongBai({ hop: $('#dong'), loai: 'cuaNguoi', uid: uid, sauTai: gomAnh, chuTrong: cuaToi ? 'Em chưa đăng bài nào. Viết gì đó ở ô trên nhé!' : (hs.ten + ' chưa đăng bài nào.') });
+    if (cuaToi) NW.Bai.soan({ hop: $('#soan'), sauKhiDang: function (bai, id) { dong.chenDau(bai, id); gomAnh([{ bai: bai, id: id }]); } });
   });
 })();
 </script>

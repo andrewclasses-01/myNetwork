@@ -1,5 +1,5 @@
 /* ============================================================
-   nw.css — bộ giao diện chung của myNetwork (v0.2.0)
+   nw.css — bộ giao diện chung của myNetwork (v0.3.0)
    Cùng "họ" với myLesson web: Montserrat, xanh ngọc #0E7C6E, nền #F7FAF9,
    bo góc 18, bóng mềm, easing cubic-bezier(.22,.9,.3,1).
    ============================================================ */
@@ -324,7 +324,8 @@ body.mo-menu .side{transform:none; visibility:visible; transition:transform .3s 
 .bai-nut button.da{color:var(--accent)}
 .bai-nut button.da.like{color:#1877F2}
 .bai-nut button.da.tim{color:#F0284A}
-.bai-nut button.da.haha,.bai-nut button.da.ngac,.bai-nut button.da.khoc,.bai-nut button.da.gaCon{color:#C98A05}
+.bai-nut button.da.haha,.bai-nut button.da.ngac,.bai-nut button.da.khoc,.bai-nut button.da.cuoi{color:#C98A05}
+.bai-nut button.da.gian{color:#E8432A}
 .bai-nut .cx{width:20px; height:20px}
 .bai-nut .ic{width:19px; height:19px}
 .bai-menu{margin-left:auto}
@@ -412,23 +413,55 @@ body.mo-menu .side{transform:none; visibility:visible; transition:transform .3s 
 /* ============================================================
    TRANG CÁ NHÂN
    ============================================================ */
-.bia{position:relative; height:220px; border-radius:18px 18px 0 0; overflow:hidden;
-  background:linear-gradient(135deg,#0E7C6E,#3E7BFA 60%,#8CC63F)}
+/* ---------- TRANG CÁ NHÂN — v0.3.0 theo mẫu v8 thầy chốt 22/09: bìa rộng · avatar to chồng góc trái · không dải thành tích ·
+   3 tab BÀI VIẾT/ẢNH/GIỚI THIỆU căn giữa · trang BẠN: 2 nút icon tròn (nhắn tin · kết bạn) ở GÓC DƯỚI PHẢI bìa ---------- */
+.hoso{overflow:hidden}
+.bia{position:relative; height:240px; background:linear-gradient(120deg,#0E7C6E,#3E7BFA 55%,#9BE15D); overflow:hidden}
 .bia img{width:100%; height:100%; object-fit:cover}
-.bia .doi{position:absolute; right:12px; bottom:12px}
-.ho-so{padding:0 20px 18px; display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap}
-.ho-so .av.kho{margin-top:-52px; border:4px solid #fff; box-shadow:var(--shadow)}
-.ho-so .av.kho .doi-av{position:absolute; inset:auto 0 0 0; height:34%; background:rgba(22,35,42,.55); color:#fff;
-  display:grid; place-items:center; font-size:11px; font-weight:800; letter-spacing:.06em}
-.ho-so .tt{flex:1; min-width:200px; padding-top:10px}
-.ho-so h1{margin:0; font-size:22px; letter-spacing:-.01em; display:flex; align-items:center; gap:8px; flex-wrap:wrap}
-.ho-so .lop{font-size:12.5px; color:var(--muted); font-weight:700; margin-top:2px}
-.ho-so .gt{margin-top:8px; font-size:14px; white-space:pre-wrap}
-.ho-so .nut{display:flex; gap:8px; flex-wrap:wrap; padding-bottom:6px}
-.ho-so .so{display:flex; gap:18px; margin-top:8px; font-size:12px; color:var(--muted); font-weight:700}
-.ho-so .so b{color:var(--ink); font-size:15px; margin-right:3px}
-@media (max-width:640px){ .bia{height:150px} .ho-so{padding:0 14px 14px} .ho-so h1{font-size:19px}
-  .ho-so .av.kho{width:96px; height:96px; font-size:32px; margin-top:-40px} }
+.bia .doi-bia{position:absolute; right:12px; bottom:12px; display:inline-flex; gap:6px; align-items:center; padding:8px 12px; border-radius:10px;
+  background:rgba(255,255,255,.92); font-size:12px; font-weight:800; color:var(--ink)}
+.bia .doi-bia .ic{width:16px; height:16px}
+.bia .nut-ban{position:absolute; right:12px; bottom:12px; display:flex; gap:8px}
+.bia .nut-ban a,.bia .nut-ban button{position:relative; width:42px; height:42px; border-radius:50%; display:grid; place-items:center; background:rgba(255,255,255,.94);
+  color:var(--ink); box-shadow:0 2px 8px rgba(22,35,42,.18); transition:transform .15s var(--em), background-color .15s}
+.bia .nut-ban .chinh{background:var(--accent); color:#fff}
+.bia .nut-ban a:hover,.bia .nut-ban button:hover{transform:scale(1.08)}
+.bia .nut-ban .ic{width:20px; height:20px; stroke-width:2.1}
+.bia .nut-ban [data-nh]::after{content:attr(data-nh); position:absolute; top:-26px; left:50%; transform:translateX(-50%); padding:3px 8px; border-radius:7px;
+  background:var(--ink); color:#fff; font-size:10px; font-weight:800; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s}
+.bia .nut-ban [data-nh]:hover::after{opacity:1}
+.ho-so{padding:0 22px 16px; display:flex; gap:18px; align-items:flex-end; flex-wrap:wrap}
+.av.kho{width:128px; height:128px; font-size:42px; margin-top:-56px; border:4px solid #fff; box-shadow:var(--shadow); overflow:visible}
+.av.kho img{border-radius:50%}
+.av.kho .sao-hieu{font-size:12px; padding:1px 7px; bottom:2px}
+.av.kho .sao-hieu > svg:not(.lap){width:12px; height:12px}
+.av.kho .doi-av{position:absolute; right:2px; bottom:8px; width:34px; height:34px; border-radius:50%; background:#fff; border:1px solid var(--line);
+  display:grid; place-items:center; color:var(--ink); box-shadow:var(--shadow)}
+.av.kho .doi-av .ic{width:17px; height:17px}
+.ho-so .tt{flex:1; min-width:220px; padding-top:12px}
+.ho-so h1{margin:0; font-size:24px; letter-spacing:-.01em; display:flex; align-items:center; gap:8px; flex-wrap:wrap; line-height:1.2}
+.ho-so .lop{font-size:12.5px; color:var(--muted); font-weight:700; margin-top:3px; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.ho-so .gt{margin-top:8px; font-size:14px; white-space:pre-wrap; line-height:1.5}
+.ho-so .nut{display:flex; gap:8px; flex-wrap:wrap; padding-bottom:4px}
+.cn-tabs{display:flex; gap:4px; padding:6px 10px 0; border-top:1px solid var(--line); justify-content:center}
+.cn-tabs button{padding:12px 14px; font-size:12px; font-weight:800; letter-spacing:.08em; color:var(--muted); border-bottom:3px solid transparent; margin-bottom:-1px}
+.cn-tabs button.chon{color:var(--accent); border-bottom-color:var(--accent)}
+.cn-tabs button:hover{color:var(--ink)}
+.luoi-anh{display:grid; grid-template-columns:repeat(3,1fr); gap:4px; padding:4px}
+.luoi-anh button{aspect-ratio:1; overflow:hidden; border-radius:8px; background:var(--ground)}
+.luoi-anh img{width:100%; height:100%; object-fit:cover}
+.gioi-thieu{padding:16px 20px; display:grid; gap:10px}
+.gioi-thieu .dong{display:flex; gap:12px; align-items:center; font-size:14px}
+.gioi-thieu .dong .ic{color:var(--muted)}
+.gioi-thieu .dong b{font-weight:700}
+@media (max-width:640px){
+  .bia{height:160px}
+  .bia .nut-ban a,.bia .nut-ban button{width:38px; height:38px}
+  .ho-so{padding:0 14px 14px; gap:12px}
+  .av.kho{width:96px; height:96px; font-size:32px; margin-top:-44px}
+  .ho-so h1{font-size:20px}
+  .cn-tabs button{padding:11px 10px; font-size:11px}
+}
 
 /* ============================================================
    KHÁM PHÁ
