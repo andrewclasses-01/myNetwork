@@ -9,7 +9,16 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 
 ⭐ 22/09: phiên thiết kế đợt 1 đã build v0.2.0→v0.4.0 (xem `BAN GIAO.md` mục A). Thầy dừng cuối phiên, ⬜ chưa bấm tay; còn mở: tin nhắn · khám phá · đăng nhập. Vẫn chưa dán luật, chưa tạo tài khoản.
 
-## Bản hiện tại — v0.7.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+## Bản hiện tại — v0.8.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+
+### v0.8.0 — 22/09/2026: MÀN ĐĂNG NHẬP làm lại (mẫu v20 → v27, 8 vòng, thầy "ok build") — `?v=10`
+Chốt của thầy (không hỏi lại): **tiếng Việt hết** · **bỏ mọi hướng dẫn thừa** (học sinh tự hiểu) · ô nhập **không icon**, chữ mờ "Andrew Classes ID" / "Mật khẩu" **nhỏ, mảnh, bấm vào là ẩn** (chưa gõ cũng ẩn) · **không có nút "Thầy đăng nhập"** — thầy gõ ID của mình (`CFG.ID_THAY` = `ANDREW`) → sang màn *"Xin chào thầy Andrew"* + nút *Đăng nhập bằng Google* · *Quên mật khẩu?* chính giữa · **bỏ chữ "Đăng nhập"** trong thẻ · **logo luôn trong thẻ** · máy tính: cột trái = **hình minh hoạ thầy gửi** (`assets/dang-nhap.webp`, nén từ PNG 1,4 MB → 180 KB, 960 px, nền trong) + slogan **"Cùng khám phá những *bài học thú vị.*"** (đoạn sau xanh dương), hình 440 px, slogan 22 px, **mép dưới slogan = mép dưới thẻ** ở mọi bề ngang (lưới `align-items:end`, không dịch cứng) · điện thoại chỉ có thẻ.
+- Màn đặt mật khẩu lần đầu: thanh 3 bước · hai ô không icon/không chữ mờ (chỉ nhãn nhỏ) · thanh độ mạnh 3 vạch · 3 điều kiện tick sống (≥6 ký tự · khác ID · 2 lần giống) — nút *XONG, VÀO MẠNG* chỉ sáng khi đủ; "khác ID" so với ID đang gõ hoặc `uid` bỏ `hs_`.
+- Luồng thật giữ nguyên: `NW.dangNhap` → `NW.phien(true)` → `phaiDoiMk` → `NW.datMatKhau`; thầy: `NW.dangNhapThay()` (Google popup, kiểm đúng email thầy). `?vao=1` ép đăng xuất để gõ mã khác; `#doimk` mở màn đổi mật khẩu.
+- CSS: khối `.dn-*` (v20→v27) nối vào `nw.css`; lớp cũ `.login-card/.brand/.man/.nut-thay` vẫn dùng.
+- Kiểm: bản thật cổng 8795 `index.html?vao=1` — console sạch, gõ ANDREW → màn Google; 375 px chỉ thẻ, rộng đủ. ⬜ Thầy chưa bấm tay (chưa có tài khoản thật để đăng nhập).
+
+## Bản trước — v0.7.0 (22/09/2026)
 
 ### v0.7.0 — 22/09/2026: KHÁM PHÁ = cổng hoạt động của trung tâm (mẫu v17 → thảo luận → v18 → v19, thầy "ok build") — `?v=9`
 Thầy chốt: Khám phá không phải "bài hay/ảnh mới" nữa mà là nơi gắn **trò chơi tiếng Anh · giải đấu online · khoá học · chương trình trung tâm · thông báo quan trọng**; nội dung **thầy tự đăng** (kho `nwKhamPha`); **Nổi bật = bài thầy ghim**; bố cục phối hợp (nổi bật cuộn ngang, còn lại là ô to); giải đấu **làm vỏ trước**.

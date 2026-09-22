@@ -7,7 +7,7 @@ window.NW_CONFIG = {
 
   // Phiên bản — hiện nhỏ ở chân trang / menu. GitHub Pages giữ cache ~10 phút,
   // nhìn số này là biết máy đang chạy bản nào.
-  PHIEN_BAN: '0.7.0',
+  PHIEN_BAN: '0.8.0',
 
   // Tab đầu tiên "TRANG BÀI TẬP" trỏ về myLesson web. Chạy thử trên máy thì trỏ
   // sang bản local của myLesson (nếu đang mở), lên mạng thì domain thật.
@@ -30,6 +30,7 @@ window.NW_CONFIG = {
 
   // Email của thầy (đăng nhập Google) — phải khớp hàm laThay() trong luật Firestore.
   EMAIL_THAY: 'namdaptrai01@gmail.com',
+  ID_THAY: 'ANDREW',           // v0.8.0: gõ ID này ở màn đăng nhập → sang màn Google của thầy (không hỏi mật khẩu)
 
   // Tài khoản học sinh trên Firebase Auth có email GIẢ dạng <băm mã>@id.andrewclasses.com
   // (không phải hộp thư thật). Đuôi này phải khớp tools/tao-tai-khoan.mjs.

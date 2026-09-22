@@ -1224,3 +1224,146 @@ body.mo-menu .side{transform:none; visibility:visible; transition:transform .3s 
 
 /* v0.7.0: ô chọn/ngày trong pop-up Thêm mục Khám phá */
 .chon-o{width:100%; padding:10px 12px; border-radius:12px; border:1.5px solid var(--line); font:600 14px var(--sans); background:#fff; color:var(--ink)}
+
+
+/* ============================================================
+   v20 — MÀN ĐĂNG NHẬP làm lại: 2 cột máy tính (giới thiệu + thẻ), 1 cột điện thoại;
+   ô nhập có nhãn + icon, hộp gợi ý lần đầu, màn đặt mật khẩu có bước + kiểm sống + độ mạnh
+   ============================================================ */
+body.dn{min-height:100dvh}
+.dn-khung{min-height:100dvh; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); max-width:1120px; margin:0 auto; padding:24px 16px; gap:24px; align-items:center}
+.dn-trai{padding:24px 28px; color:var(--ink)}
+.dn-brand{display:flex; align-items:center; gap:12px; margin-bottom:34px}
+.dn-brand img{width:52px; height:52px; border-radius:50%; box-shadow:0 6px 18px rgba(14,124,110,.25)}
+.dn-brand b{display:block; font-size:19px; line-height:1.1}
+.dn-brand small{display:block; font-size:10.5px; letter-spacing:.16em; color:var(--accent); font-weight:800; margin-top:3px}
+.dn-trai h1{margin:0 0 12px; font-size:38px; line-height:1.1; letter-spacing:-.02em}
+.dn-trai .mo{margin:0 0 26px; font-size:15px; line-height:1.6; color:var(--muted); font-weight:600; max-width:440px}
+.dn-diem{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px}
+.dn-diem li{display:flex; align-items:center; gap:14px}
+.dn-diem .ic-o{width:46px; height:46px; border-radius:14px; background:#fff; box-shadow:var(--shadow); display:grid; place-items:center; color:var(--accent); flex:none}
+.dn-diem .ic-o .ic{width:22px; height:22px}
+.dn-diem b{display:block; font-size:14.5px}
+.dn-diem small{display:block; font-size:12.5px; color:var(--muted); font-weight:600; margin-top:1px}
+.dn-chan{margin:34px 0 0; font-size:12px; color:var(--muted); font-weight:700; letter-spacing:.02em}
+.dn-phai{display:flex; flex-direction:column; align-items:center}
+.dn-card{max-width:420px; padding:28px 26px 24px}
+.dn-brand-nho{display:none}
+.dn-card h2{font-size:22px; margin-bottom:4px}
+.dn-card p.mo-ta{margin-bottom:18px}
+/* ô nhập có nhãn + icon */
+.dn-o{display:block; position:relative; margin-bottom:12px}
+.dn-o .lb{display:block; font-size:11.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:0 0 5px 2px}
+.dn-o > .ic{position:absolute; left:14px; bottom:14px; width:19px; height:19px; color:var(--muted); pointer-events:none}
+.dn-o input{padding-left:42px; padding-right:46px; font-size:16px; font-weight:700}
+.dn-o input::placeholder{font-weight:500}
+.dn-o input:focus + .ic,.dn-o:focus-within > .ic{color:var(--accent)}
+.dn-o .id-eye{top:auto; bottom:5px; transform:none}
+.dn-card .btn.wide{margin-top:8px; padding:14px; font-size:14.5px; letter-spacing:.06em}
+.dn-card .tiny.warn{text-align:left; padding:8px 12px; border-radius:10px; background:var(--do-soft); margin-top:10px}
+/* hộp gợi ý lần đầu */
+.dn-goi{display:flex; gap:10px; align-items:flex-start; margin-top:14px; padding:11px 12px; border-radius:12px; background:var(--accent-soft); font-size:12.5px; line-height:1.5; color:var(--ink)}
+.dn-goi .ky{font-size:18px; line-height:1; flex:none; margin-top:1px}
+.dn-goi b{display:block}
+.dn-goi span{color:var(--muted); font-weight:600}
+.dn-goi span b{display:inline; color:var(--ink)}
+.dn-card .nut-thay{gap:4px; align-items:center; margin-top:12px}
+.dn-card .nut-thay .gach{width:1px; height:14px; background:var(--line)}
+.dn-card .nut-thay button{display:inline-flex; align-items:center; gap:6px}
+.dn-card .nut-thay .ic{width:15px; height:15px; fill:currentColor; stroke:none}
+/* màn đặt mật khẩu: bước · độ mạnh · kiểm sống */
+.dn-buoc{list-style:none; margin:0 0 18px; padding:0; display:flex; align-items:center; gap:0}
+.dn-buoc li{display:flex; align-items:center; gap:6px; font-size:11px; font-weight:800; color:var(--muted); letter-spacing:.02em; flex:1; position:relative}
+.dn-buoc li i{width:22px; height:22px; border-radius:50%; display:grid; place-items:center; font-style:normal; font-size:10.5px; background:var(--ground); color:var(--muted); border:1.5px solid var(--line); flex:none}
+.dn-buoc li.xong i{background:var(--accent); border-color:var(--accent); color:#fff}
+.dn-buoc li.dang{color:var(--accent)}
+.dn-buoc li.dang i{border-color:var(--accent); color:var(--accent); background:var(--accent-soft)}
+.dn-buoc li:not(:last-child)::after{content:""; flex:1; height:1.5px; background:var(--line); margin:0 8px}
+.dn-buoc li.xong::after{background:var(--accent)}
+.dn-manh{display:flex; align-items:center; gap:4px; margin:-4px 2px 12px}
+.dn-manh i{flex:1; height:5px; border-radius:999px; background:var(--line); transition:background-color .2s}
+.dn-manh span{font-size:11px; font-weight:800; color:var(--muted); margin-left:6px; min-width:96px; text-align:right}
+.dn-manh.m1 i:nth-child(1){background:var(--do)} .dn-manh.m1 span{color:var(--do)}
+.dn-manh.m2 i:nth-child(-n+2){background:var(--amber)} .dn-manh.m2 span{color:#B67612}
+.dn-manh.m3 i{background:var(--xanh-la)} .dn-manh.m3 span{color:var(--xanh-la)}
+.dn-kiem{list-style:none; margin:2px 0 8px; padding:0; display:flex; flex-direction:column; gap:5px}
+.dn-kiem li{display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:600; color:var(--muted)}
+.dn-kiem li i{width:18px; height:18px; border-radius:50%; border:1.5px solid var(--line); display:grid; place-items:center; flex:none; font-style:normal}
+.dn-kiem li.ok{color:var(--ink)}
+.dn-kiem li.ok i{background:var(--xanh-la); border-color:var(--xanh-la)}
+.dn-kiem li.ok i::after{content:""; width:5px; height:9px; border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg) translate(-1px,-1px)}
+.dn-cho{display:flex; flex-direction:column; align-items:center; gap:12px; padding:30px 0}
+.dn-foot{max-width:420px}
+@media (max-width:900px){
+  .dn-khung{grid-template-columns:minmax(0,1fr); padding:20px 16px; align-content:start; gap:0}
+  .dn-trai{display:none}
+  .dn-brand-nho{display:flex}
+  .dn-card{max-width:440px}
+}
+.dn-buoc li{white-space:nowrap; font-size:10.5px}
+.dn-buoc li:not(:last-child)::after{margin:0 6px; min-width:10px}
+@media (max-width:640px){
+  .dn-buoc li:not(.dang) span{display:none}
+  .dn-buoc li:not(.dang){flex:0 0 auto}
+  .dn-card .nut-thay button{white-space:nowrap; font-size:11.5px; padding:6px 6px}
+}
+
+
+/* ---------- v21: ô nhập gọn (không icon, chữ mờ nhỏ & mảnh, bấm vào là ẩn) · màn thầy Google ---------- */
+.dn-o.gon input{padding-left:14px; padding-right:46px; font-weight:700}
+.dn-o.gon input::placeholder{font-size:13px; font-weight:400; color:#9fb0ac; letter-spacing:.01em}
+.dn-o.gon .lb{font-size:11px}
+.dn-card h2{margin-bottom:14px}
+.dn-card .nut-thay{justify-content:center}
+.dn-thay{display:flex; flex-direction:column; align-items:center; text-align:center; padding:6px 0 2px}
+.dn-thay img{width:72px; height:72px; border-radius:50%; box-shadow:0 8px 22px rgba(14,124,110,.25); margin-bottom:12px}
+.dn-thay h2{margin:0 0 16px}
+.dn-thay .btn .ic{fill:currentColor; stroke:none; width:18px; height:18px}
+.dn-thay .btn.wide{width:100%}
+
+
+/* ---------- v22: cột trái = logo + hình minh hoạ + slogan (bỏ mô tả) ---------- */
+.dn-trai{display:flex; flex-direction:column; align-items:center; text-align:center; padding:12px 20px}
+.dn-brand{margin-bottom:6px; align-self:center}
+.dn-brand div{text-align:left}
+.dn-hinh{width:min(100%, 440px); height:auto; display:block; margin:0 auto}
+.dn-slogan{margin:2px 0 0; font-size:19px; font-weight:800; color:var(--ink); letter-spacing:-.01em}
+
+
+/* ---------- v23: logo LUÔN trong thẻ; cột trái = hình to + slogan to, canh giữa theo tâm thẻ; điện thoại chỉ thẻ ---------- */
+.dn-brand-nho{display:flex}
+.dn-khung{align-items:center; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
+.dn-trai{justify-content:center; padding:0 12px}
+.dn-hinh{width:min(100%, 560px)}
+.dn-slogan{font-size:28px; line-height:1.2; margin-top:4px; max-width:520px}
+.dn-card{margin:0 auto}
+@media (max-width:900px){ .dn-trai{display:none} }
+/* v23b: chân trang tách khỏi luồng để cột phải = đúng thẻ ⇒ hình canh đúng tâm thẻ; slogan 1 dòng */
+.dn-khung{position:relative; padding-bottom:70px}
+.dn-foot{position:absolute; left:0; right:0; bottom:16px; max-width:none; margin:0}
+.dn-slogan{white-space:nowrap; max-width:none; font-size:26px}
+@media (max-width:1100px){ .dn-slogan{font-size:22px} }
+@media (max-width:900px){ .dn-khung{grid-template-columns:minmax(0,1fr); align-items:start} .dn-card{max-width:440px} }
+
+/* v24: cả cụm hình + slogan đẩy cao lên; slogan sát hình, căn giữa hình; "bài học thú vị." xanh dương */
+.dn-trai{transform:translateY(-36px)}
+.dn-hinh{width:min(100%, 580px)}
+.dn-slogan{margin-top:-30px; font-size:27px}
+.dn-slogan .xanh{color:var(--m-duong)}
+
+/* v25: cụm hình + slogan cao hơn nữa */
+.dn-trai{transform:translateY(-80px)}
+
+/* v26: bỏ chữ "Đăng nhập" trong thẻ; slogan ngang mép dưới thẻ (đo rồi chỉnh) */
+.dn-card .dn-brand-nho{margin-bottom:18px}
+.dn-trai{transform:translateY(var(--dnY, -80px))}
+/* v26b: canh MÉP DƯỚI slogan = mép dưới thẻ ở mọi bề ngang (không dùng dịch cứng) */
+.dn-khung{align-items:end; align-content:center}
+.dn-trai{transform:none}
+.dn-slogan{margin-bottom:0; line-height:1}
+@media (max-width:900px){ .dn-khung{align-items:start} }
+
+/* v27: hình + slogan nhỏ lại cho cân với thẻ */
+.dn-hinh{width:min(100%, 440px)}
+.dn-slogan{font-size:22px; margin-top:-22px}
+@media (max-width:1100px){ .dn-slogan{font-size:19px} }

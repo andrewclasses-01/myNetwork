@@ -6,71 +6,87 @@
 <title>Andrew Classes Network</title>
 <link rel="icon" href="assets/avatar-tron.jpg">
 <link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="css/nw.css?v=9">
+<link rel="stylesheet" href="css/nw.css?v=10">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
 </head>
-<body>
+<body class="dn">
+<!-- MÀN ĐĂNG NHẬP — v0.8.0 (mẫu v20→v27 thầy chốt 22/09): máy tính 2 cột (hình + slogan | thẻ), điện thoại chỉ thẻ;
+     logo LUÔN trong thẻ; không hướng dẫn thừa; chữ mờ trong ô bấm vào là ẩn; gõ ID của thầy (CFG.ID_THAY) → màn Google;
+     màn đặt mật khẩu lần đầu: 3 bước + độ mạnh + 3 điều kiện tick. -->
 <div class="login-bg"></div>
-<div class="login-wrap">
-  <div class="card login-card">
-    <div class="brand">
-      <img src="assets/avatar-tron.jpg" alt="">
-      <h1>Andrew Classes<small>NETWORK</small></h1>
+<div class="dn-khung">
+  <aside class="dn-trai">
+    <img class="dn-hinh" src="assets/dang-nhap.webp" alt="" width="960" height="960">
+    <p class="dn-slogan">Cùng khám phá những <span class="xanh">bài học thú vị.</span></p>
+  </aside>
+
+  <div class="dn-phai">
+    <div class="card login-card dn-card">
+      <div class="brand dn-brand-nho"><img src="assets/avatar-tron.jpg" alt=""><h1>Andrew Classes<small>NETWORK</small></h1></div>
+
+      <!-- MÀN 1: đăng nhập -->
+      <section class="man hien" id="manVao">
+        <label class="dn-o gon"><input id="inMa" type="text" autocomplete="username" placeholder="Andrew Classes ID" data-goi="Andrew Classes ID" autocapitalize="characters" spellcheck="false"></label>
+        <label class="dn-o gon"><input id="inMk" type="password" autocomplete="current-password" placeholder="Mật khẩu" data-goi="Mật khẩu">
+          <button type="button" class="id-eye" id="btnEye" aria-label="Hiện mật khẩu">
+            <svg class="ic eye-on" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="ic eye-off" viewBox="0 0 24 24" hidden><path d="M3 3l18 18"/><path d="M10.6 5.2A11 11 0 0 1 12 5c7 0 11 7 11 7a13.2 13.2 0 0 1-3.4 4"/><path d="M6.6 6.6C3.9 8.3 2 12 2 12s4 7 11 7a10.4 10.4 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+          </button></label>
+        <button class="btn primary wide" id="btnVao">ĐĂNG NHẬP</button>
+        <p class="tiny warn" id="loiVao" hidden></p>
+        <div class="nut-thay"><button type="button" id="btnQuen">Quên mật khẩu?</button></div>
+      </section>
+
+      <!-- MÀN 1b: nhận ra ID của thầy → đăng nhập Google -->
+      <section class="man" id="manThay">
+        <div class="dn-thay"><img src="assets/avatar-tron.jpg" alt=""><h2>Xin chào thầy Andrew</h2>
+          <button class="btn primary wide" id="btnGoogle"><svg class="ic" viewBox="0 0 24 24"><path d="M21.35 11.1H12v3.8h5.4c-.5 2.5-2.6 3.9-5.4 3.9a6 6 0 1 1 0-12c1.5 0 2.8.5 3.9 1.4l2.8-2.8A10 10 0 1 0 12 22c5.6 0 9.6-3.9 9.6-9.5 0-.5-.1-1-.25-1.4z"/></svg>Đăng nhập bằng Google</button>
+          <p class="tiny warn" id="loiThay" hidden></p>
+          <div class="nut-thay"><button type="button" id="btnKhongPhaiThay">Không phải thầy? Quay lại</button></div></div>
+      </section>
+
+      <!-- MÀN 2: đặt mật khẩu lần đầu -->
+      <section class="man" id="manDoiMk">
+        <ol class="dn-buoc"><li class="xong"><i>✓</i><span>Đăng nhập</span></li><li class="dang"><i>2</i><span>Đặt mật khẩu</span></li><li><i>3</i><span>Vào mạng</span></li></ol>
+        <h2>Đặt mật khẩu riêng của em</h2>
+        <label class="dn-o gon"><span class="lb">Mật khẩu mới</span><input id="mkMoi" type="password" autocomplete="new-password"></label>
+        <div class="dn-manh" id="dnManh"><i></i><i></i><i></i><span id="dnManhChu">Độ mạnh</span></div>
+        <label class="dn-o gon"><span class="lb">Gõ lại mật khẩu mới</span><input id="mkMoi2" type="password" autocomplete="new-password"></label>
+        <ul class="dn-kiem" id="dnKiem">
+          <li data-k="dai"><i></i>Ít nhất 6 ký tự</li>
+          <li data-k="khac"><i></i>Khác ID của em</li>
+          <li data-k="giong"><i></i>Hai lần gõ giống nhau</li>
+        </ul>
+        <button class="btn primary wide" id="btnDatMk" disabled>XONG, VÀO MẠNG</button>
+        <p class="tiny warn" id="loiMk" hidden></p>
+        <div class="nut-thay"><button type="button" id="btnThoatMk">Đăng xuất</button></div>
+      </section>
+
+      <!-- MÀN 3: đang kiểm tra -->
+      <section class="man" id="manCho"><div class="dn-cho"><div class="xoay"></div><p class="tiny" id="choChu">Đang kiểm tra…</p></div></section>
     </div>
-
-    <!-- MÀN 1: đăng nhập -->
-    <section class="man hien" id="manVao">
-      <div class="id-wrap">
-        <input id="inMa" type="text" autocomplete="username" placeholder="My ID" autocapitalize="characters" spellcheck="false">
-      </div>
-      <div class="id-wrap">
-        <input id="inMk" type="password" autocomplete="current-password" placeholder="Mật khẩu">
-        <button type="button" class="id-eye" id="btnEye" aria-label="Hiện mật khẩu">
-          <svg class="ic eye-on" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-          <svg class="ic eye-off" viewBox="0 0 24 24" hidden><path d="M3 3l18 18"/><path d="M10.6 5.2A11 11 0 0 1 12 5c7 0 11 7 11 7a13.2 13.2 0 0 1-3.4 4"/><path d="M6.6 6.6C3.9 8.3 2 12 2 12s4 7 11 7a10.4 10.4 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
-        </button>
-      </div>
-      <button class="btn primary wide" id="btnVao">SIGN IN</button>
-      <p class="tiny" id="loiVao" hidden></p>
-      <p class="tiny">Lần đầu vào mạng? <b>Mật khẩu = chính My ID của em.</b><br>Vào xong em sẽ được đặt mật khẩu riêng.</p>
-      <div class="nut-thay">
-        <button type="button" id="btnQuen">Quên mật khẩu?</button>
-        <button type="button" id="btnThay">Thầy Andrew đăng nhập</button>
-      </div>
-    </section>
-
-    <!-- MÀN 2: đặt mật khẩu lần đầu -->
-    <section class="man" id="manDoiMk">
-      <h2>Đặt mật khẩu riêng của em</h2>
-      <p class="mo-ta">Từ giờ em vào mạng bằng <b>My ID + mật khẩu này</b>. Đừng cho bạn biết mật khẩu nhé — ai có nó là đăng bài, nhắn tin dưới tên em được.</p>
-      <div class="id-wrap"><input id="mkMoi" type="password" autocomplete="new-password" placeholder="Mật khẩu mới (ít nhất 6 ký tự)"></div>
-      <div class="id-wrap"><input id="mkMoi2" type="password" autocomplete="new-password" placeholder="Gõ lại mật khẩu mới"></div>
-      <button class="btn primary wide" id="btnDatMk">XONG, VÀO MẠNG</button>
-      <p class="tiny" id="loiMk" hidden></p>
-      <div class="nut-thay"><button type="button" id="btnThoatMk">Đăng xuất</button></div>
-    </section>
-
-    <!-- MÀN 3: đang kiểm tra -->
-    <section class="man" id="manCho"><div class="xoay"></div><p class="tiny" id="choChu">Đang kiểm tra…</p></section>
+    <footer class="login-foot dn-foot"><p>Copyright © 2016 - 2026 by ANDREW · Phone &amp; Zalo: 0359.769.765</p><p id="verFoot"></p></footer>
   </div>
-  <footer class="login-foot">
-    <p>Copyright © 2016 - 2026 by ANDREW · Phone &amp; Zalo: 0359.769.765</p>
-    <p id="verFoot"></p>
-  </footer>
 </div>
 
-<script src="config.js?v=9"></script>
-<script src="js/loi.js?v=9"></script>
+<script src="config.js?v=10"></script>
+<script src="js/loi.js?v=10"></script>
 <script>
 (function () {
   'use strict';
-  var $ = NW.$;
-  $('#verFoot').textContent = 'Andrew Classes Network · v' + NW.CFG.PHIEN_BAN;
+  var $ = NW.$, $$ = NW.$$, CFG = NW.CFG;
+  $('#verFoot').textContent = 'Andrew Classes Network · v' + CFG.PHIEN_BAN;
 
-  function man(ten) { NW.$$('.man').forEach(function (m) { m.classList.toggle('hien', m.id === ten); }); }
-  function loi(id, chu) { var p = $(id); p.hidden = !chu; p.className = 'tiny warn'; p.textContent = chu || ''; }
+  function man(ten) { $$('.man').forEach(function (m) { m.classList.toggle('hien', m.id === ten); }); }
+  function loi(id, chu) { var p = $(id); p.hidden = !chu; p.textContent = chu || ''; }
 
+  // chữ mờ trong ô: bấm vào là ẩn ngay (kể cả chưa gõ), rời ô mà còn trống thì hiện lại
+  $$('[data-goi]').forEach(function (inp) {
+    inp.addEventListener('focus', function () { inp.placeholder = ''; });
+    inp.addEventListener('blur', function () { if (!inp.value) inp.placeholder = inp.getAttribute('data-goi'); });
+  });
+  $('#inMa').addEventListener('input', function () { this.value = this.value.toUpperCase(); });
   // con mắt
   (function () {
     var inp = $('#inMk'), nut = $('#btnEye'), mo = nut.querySelector('.eye-on'), dong = nut.querySelector('.eye-off'), dangAn = true;
@@ -81,45 +97,58 @@
   async function sauKhiVao() {
     var ph = await NW.phien(true);
     if (!ph) { man('manVao'); return; }
-    if (ph.thieuHoSo) { man('manVao'); loi('#loiVao', 'Tài khoản này chưa có hồ sơ trên mạng. Thầy Andrew cần chạy công cụ tạo tài khoản rồi em vào lại nhé.'); return; }
-    if (ph.hoSo.phaiDoiMk && !ph.laThay) { man('manDoiMk'); $('#mkMoi').focus(); return; }
+    if (ph.thieuHoSo) { man('manVao'); loi('#loiVao', 'Tài khoản này chưa có hồ sơ trên mạng. Em gặp thầy Andrew nhé.'); return; }
+    if (ph.hoSo.phaiDoiMk && !ph.laThay) { man('manDoiMk'); kiem(); $('#mkMoi').focus(); return; }
     location.replace('bangtin.html');
   }
-
+  var ID_THAY = NW.chuanMa(CFG.ID_THAY || 'ANDREW');
   async function vao() {
     var ma = NW.chuanMa($('#inMa').value), mk = $('#inMk').value;
     loi('#loiVao', '');
-    if (!ma) { loi('#loiVao', 'Em gõ My ID trước nhé.'); return; }
-    if (!mk) { loi('#loiVao', 'Em gõ mật khẩu (lần đầu = chính My ID).'); return; }
+    if (!ma) { $('#inMa').focus(); return; }
+    if (ma === ID_THAY) { loi('#loiThay', ''); man('manThay'); return; }   // ID của thầy → màn Google, không hỏi mật khẩu
+    if (!mk) { $('#inMk').focus(); return; }
     var nut = $('#btnVao'); nut.disabled = true; nut.textContent = 'ĐANG VÀO…';
     try { await NW.dangNhap(ma, mk); await sauKhiVao(); }
     catch (e) { loi('#loiVao', NW.chuLoiAuth(e)); }
-    nut.disabled = false; nut.textContent = 'SIGN IN';
+    nut.disabled = false; nut.textContent = 'ĐĂNG NHẬP';
   }
   $('#btnVao').onclick = vao;
-  $('#inMa').onkeydown = function (e) { if (e.key === 'Enter') $('#inMk').focus(); };
+  $('#inMa').onkeydown = function (e) { if (e.key === 'Enter') { if (NW.chuanMa($('#inMa').value) === ID_THAY) vao(); else $('#inMk').focus(); } };
   $('#inMk').onkeydown = function (e) { if (e.key === 'Enter') vao(); };
 
-  $('#btnThay').onclick = async function () {
-    loi('#loiVao', '');
+  $('#btnGoogle').onclick = async function () {
+    loi('#loiThay', ''); this.disabled = true;
     try { await NW.dangNhapThay(); await sauKhiVao(); }
-    catch (e) { loi('#loiVao', e.message || NW.chuLoiAuth(e)); }
+    catch (e) { loi('#loiThay', e.message || NW.chuLoiAuth(e)); }
+    this.disabled = false;
   };
+  $('#btnKhongPhaiThay').onclick = function () { $('#inMa').value = ''; man('manVao'); $('#inMa').focus(); };
   $('#btnQuen').onclick = function () {
-    NW.popMo({ tieuDe: 'Quên mật khẩu', html: '<p style="margin:0;font-size:14px;line-height:1.55">Em nhắn Zalo hoặc gặp thầy Andrew để được đặt lại mật khẩu. Sau khi thầy đặt lại, mật khẩu tạm = chính My ID của em, vào xong em đặt mật khẩu mới.</p>',
-      chan: '<button class="btn primary" data-dong>Đã hiểu</button>' });
+    NW.popMo({ tieuDe: 'Quên mật khẩu', html: '<p style="margin:0;font-size:14px;line-height:1.55">Em nhắn Zalo hoặc gặp thầy Andrew để được đặt lại mật khẩu. Sau khi thầy đặt lại, mật khẩu tạm = chính <b>ID</b> của em, vào xong em đặt mật khẩu mới.</p>',
+      chan: '<a class="btn soft" href="https://zalo.me/0359769765" target="_blank" rel="noopener">Nhắn Zalo thầy</a><button class="btn primary" data-dong>Đã hiểu</button>' });
     $('[data-dong]', $('#nwPop')).onclick = NW.popDong;
   };
 
-  $('#btnDatMk').onclick = async function () {
-    var a = $('#mkMoi').value, b = $('#mkMoi2').value;
+  // màn 2: kiểm sống + độ mạnh
+  var a = $('#mkMoi'), b = $('#mkMoi2'), nutOk = $('#btnDatMk'), manh = $('#dnManh'), manhChu = $('#dnManhChu');
+  function maCuaEm() { var t = NW.toi; return NW.chuanMa($('#inMa').value || (t && t.uid ? String(t.uid).replace(/^hs_/, '') : '')); }
+  function kiem() {
+    var v = a.value, ma = maCuaEm();
+    var ok = { dai: v.length >= 6, khac: !!v && (!ma || NW.chuanMa(v) !== ma), giong: !!v && v === b.value };
+    $$('#dnKiem li').forEach(function (li) { li.classList.toggle('ok', !!ok[li.getAttribute('data-k')]); });
+    var diem = 0; if (v.length >= 6) diem++; if (v.length >= 10) diem++; if (/[A-Z]/.test(v) && /[a-z]/.test(v)) diem++; if (/\d/.test(v)) diem++; if (/[^A-Za-z0-9]/.test(v)) diem++;
+    var muc = !v ? 0 : diem <= 1 ? 1 : diem <= 3 ? 2 : 3;
+    manh.className = 'dn-manh m' + muc; manhChu.textContent = ['Độ mạnh', 'Yếu — dễ đoán', 'Vừa', 'Mạnh'][muc];
+    nutOk.disabled = !(ok.dai && ok.khac && ok.giong);
+  }
+  a.addEventListener('input', kiem); b.addEventListener('input', kiem);
+  b.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !nutOk.disabled) nutOk.click(); });
+  nutOk.onclick = async function () {
     loi('#loiMk', '');
-    if (a.length < 6) { loi('#loiMk', 'Mật khẩu phải có ít nhất 6 ký tự.'); return; }
-    if (a !== b) { loi('#loiMk', 'Hai lần gõ chưa giống nhau.'); return; }
-    if (NW.chuanMa(a) === NW.chuanMa($('#inMa').value) && $('#inMa').value) { loi('#loiMk', 'Mật khẩu mới phải khác My ID.'); return; }
-    this.disabled = true;
-    try { await NW.datMatKhau(a); location.replace('bangtin.html'); }
-    catch (e) { loi('#loiMk', NW.chuLoiAuth(e)); this.disabled = false; }
+    this.disabled = true; this.textContent = 'ĐANG LƯU…';
+    try { await NW.datMatKhau(a.value); location.replace('bangtin.html'); }
+    catch (e) { loi('#loiMk', NW.chuLoiAuth(e)); this.textContent = 'XONG, VÀO MẠNG'; kiem(); }
   };
   $('#btnThoatMk').onclick = function () { NW.thoat().then(function () { man('manVao'); }); };
 
@@ -131,8 +160,8 @@
     try {
       var ph = await NW.phien();
       if (!ph) { man('manVao'); return; }
-      if (ph.thieuHoSo) { man('manVao'); loi('#loiVao', 'Tài khoản này chưa có hồ sơ trên mạng. Thầy Andrew cần chạy công cụ tạo tài khoản rồi em vào lại nhé.'); return; }
-      if ((ph.hoSo.phaiDoiMk && !ph.laThay) || location.hash === '#doimk') { man('manDoiMk'); return; }
+      if (ph.thieuHoSo) { man('manVao'); loi('#loiVao', 'Tài khoản này chưa có hồ sơ trên mạng. Em gặp thầy Andrew nhé.'); return; }
+      if ((ph.hoSo.phaiDoiMk && !ph.laThay) || location.hash === '#doimk') { man('manDoiMk'); kiem(); return; }
       location.replace('bangtin.html');
     } catch (e) { man('manVao'); loi('#loiVao', 'Không nối được kho: ' + (e.message || e)); }
   })();
