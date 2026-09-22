@@ -51,7 +51,7 @@
       allow create: if laThay() && uid == nwToi() && request.resource.data.vaiTro == 'gv';
       allow update: if nwVao() && (
            (uid == nwToi() && request.resource.data.diff(resource.data).affectedKeys()
-               .hasOnly(['anh', 'bia', 'gioiThieu', 'phaiDoiMk', 'capNhat'])
+               .hasOnly(['anh', 'bia', 'gioiThieu', 'soThich', 'phaiDoiMk', 'capNhat', 'hoatDongLuc'])   // v0.5.0: hoatDongLuc = nhịp online
              && request.resource.data.gioiThieu.size() <= 300)
         || (laThay() && request.resource.data.diff(resource.data).affectedKeys()
                .hasOnly(['khoa', 'canhBao', 'capNhat', 'ten', 'anh', 'bia', 'gioiThieu'])));
@@ -75,9 +75,10 @@
       allow read: if nwVao() && (resource.data.pham != 'minh' || resource.data.uid == nwToi() || laThay());
       allow create: if nwVao() && request.resource.data.uid == nwToi()
         && request.resource.data.keys().hasOnly(['uid', 'tacGia', 'chu', 'anh', 'pham', 'lop', 'luc',
-             'an', 'ghim', 'camXuc', 'soBinhLuan', 'soChiaSe', 'chiaSeTu', 'goc'])
+             'an', 'ghim', 'camXuc', 'soBinhLuan', 'soChiaSe', 'chiaSeTu', 'goc', 'gan', 'camGiac'])   // v0.5.0: gan (gắn thẻ) + camGiac
         && request.resource.data.chu is string && request.resource.data.chu.size() <= 2000
-        && request.resource.data.anh is list && request.resource.data.anh.size() <= 4
+        && request.resource.data.anh is list && request.resource.data.anh.size() <= 10                // v0.5.0: 10 ảnh
+        && (!('gan' in request.resource.data) || (request.resource.data.gan is list && request.resource.data.gan.size() <= 20))
         && request.resource.data.pham in ['mang', 'ban', 'lop', 'minh']   // v0.4.0: 4 phạm vi
         && request.resource.data.an == false
         && (request.resource.data.ghim == false || laThay())
@@ -94,7 +95,8 @@
              && request.resource.data.camXuc.diff(resource.data.camXuc).affectedKeys().hasOnly([nwToi()]))
            // đếm bình luận: chỉ ±1 · đếm chia sẻ: chỉ +1
         || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['soBinhLuan'])
-             && (request.resource.data.soBinhLuan - resource.data.soBinhLuan) in [1, -1])
+             && (request.resource.data.soBinhLuan - resource.data.soBinhLuan == 1
+                 || (request.resource.data.soBinhLuan < resource.data.soBinhLuan && request.resource.data.soBinhLuan >= 0)))   // v0.5.0: xoá bình luận gốc kéo theo N trả lời
         || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['soChiaSe'])
              && request.resource.data.soChiaSe == resource.data.soChiaSe + 1)
            // thầy: ẩn / hiện / ghim
@@ -104,9 +106,10 @@
       match /binhLuan/{cid} {
         allow read: if nwVao();
         allow create: if nwVao() && request.resource.data.uid == nwToi()
-          && request.resource.data.keys().hasOnly(['uid', 'tacGia', 'chu', 'luc', 'camXuc'])
-          && request.resource.data.chu is string
-          && request.resource.data.chu.size() > 0 && request.resource.data.chu.size() <= 500
+          && request.resource.data.keys().hasOnly(['uid', 'tacGia', 'chu', 'luc', 'camXuc', 'anh', 'traLoiCho'])   // v0.5.0: ảnh + trả lời 1 cấp
+          && request.resource.data.chu is string && request.resource.data.chu.size() <= 500
+          && request.resource.data.anh is string && request.resource.data.anh.size() <= 500
+          && (request.resource.data.chu.size() > 0 || request.resource.data.anh.size() > 0)
           && request.resource.data.luc is number;
         allow update: if nwVao() && (
              (resource.data.uid == nwToi()

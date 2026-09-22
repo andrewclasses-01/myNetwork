@@ -75,6 +75,27 @@
     return id;
   };
 
+  // v0.5.0 — dùng chung cho trang tin nhắn + hộp chat nổi (chatnoi.js)
+  Chat.danhDauDoc = async function (phongId) {
+    if (NW.laBanThu()) return;
+    try { var f = await NW.fb(); var patch = {}; patch['docLuc.' + NW.toi.uid] = Date.now(); await f.fs.updateDoc(f.fs.doc(f.db, 'nwChats', phongId), patch); } catch (e) { }
+  };
+  // Gửi một tin vào phòng: tin = {chu} | {hinh}. Trả tin đã dựng (bàn thử: không ghi, trả để hiện tại chỗ); null nếu bị chặn từ cấm.
+  Chat.guiTin = async function (phongId, tin) {
+    var toi = NW.toi;
+    if (tin.chu) { var tu = await NW.kiemTuCam(tin.chu); if (tu) { NW.toast('Tin có từ không phù hợp ("' + tu + '").', true); return null; } }
+    var t = { uid: toi.uid, ten: toi.ten, anh: toi.anh || '', chu: String(tin.chu || '').slice(0, CFG.TOI_DA_CHU_TIN), hinh: tin.hinh || '', luc: Date.now() };
+    if (NW.laBanThu()) return t;
+    try {
+      var f = await NW.fb();
+      await f.fs.addDoc(f.fs.collection(f.db, 'nwChats', phongId, 'tin'), t);
+      var patch = { tinCuoi: { chu: t.chu ? t.chu.slice(0, 80) : '', hinh: !!t.hinh, uid: toi.uid, ten: toi.ten, luc: t.luc }, capNhat: t.luc };
+      patch['docLuc.' + toi.uid] = t.luc;
+      await f.fs.updateDoc(f.fs.doc(f.db, 'nwChats', phongId), patch);
+      return t;
+    } catch (e) { NW.toast(NW.chuLoiKho(e), true); return null; }
+  };
+
   // ---------- giao diện hai cột ----------
   Chat.dung = function (hop) {
     var toi = NW.toi;
@@ -206,20 +227,11 @@
     }
     async function danhDauDoc(p) {
       if (!chuaDoc(p) && (p.docLuc || {})[toi.uid]) return;
-      if (NW.laBanThu()) return;
-      try { var f = await NW.fb(); var patch = {}; patch['docLuc.' + toi.uid] = Date.now(); await f.fs.updateDoc(f.fs.doc(f.db, 'nwChats', p.id), patch); } catch (e) { }
+      Chat.danhDauDoc(p.id);
     }
     async function guiTin(p, tin) {
-      if (tin.chu) { var tu = await NW.kiemTuCam(tin.chu); if (tu) { NW.toast('Tin có từ không phù hợp ("' + tu + '").', true); return; } }
-      var t = { uid: toi.uid, ten: toi.ten, anh: toi.anh || '', chu: String(tin.chu || '').slice(0, CFG.TOI_DA_CHU_TIN), hinh: tin.hinh || '', luc: Date.now() };
-      if (NW.laBanThu()) { TIN.push(t); veTin(); return; }
-      try {
-        var f = await NW.fb();
-        await f.fs.addDoc(f.fs.collection(f.db, 'nwChats', p.id, 'tin'), t);
-        var patch = { tinCuoi: { chu: t.chu ? t.chu.slice(0, 80) : '', hinh: !!t.hinh, uid: toi.uid, ten: toi.ten, luc: t.luc }, capNhat: t.luc };
-        patch['docLuc.' + toi.uid] = t.luc;
-        await f.fs.updateDoc(f.fs.doc(f.db, 'nwChats', p.id), patch);
-      } catch (e) { NW.toast(NW.chuLoiKho(e), true); }
+      var t = await Chat.guiTin(p.id, tin);
+      if (t && NW.laBanThu()) { TIN.push(t); veTin(); }
     }
 
     // ---------- menu phòng ----------

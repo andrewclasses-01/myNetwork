@@ -58,13 +58,22 @@
     nguoi = nguoi || {};
     var ten = nguoi.ten || '?';
     var gv = nguoi.vaiTro === 'gv' ? ' gv' : '';
-    return '<span class="av' + (lop ? ' ' + lop : '') + gv + '" style="background:' + itMau(ten) + '" title="' + chuAnToan(ten) + '">' +
+    // v0.5.0 (thầy 22/09): chấm xanh "đang online" góc dưới phải avatar như Facebook — thầy KHÔNG hiện dù trạng thái nào
+    var on = NW.dangOnline(nguoi) ? ' co-on' : '';
+    return '<span class="av' + (lop ? ' ' + lop : '') + gv + on + '" style="background:' + itMau(ten) + '" title="' + chuAnToan(ten) + '">' +
       chuAnToan(chuTat(ten)) +
       (nguoi.anh ? '<img src="' + chuAnToan(nguoi.anh) + '" alt="" loading="lazy" onerror="this.remove()">' : '') +
-      '</span>';
+      (on ? '<i class="on" title="Đang hoạt động"></i>' : '') + '</span>';
   }
   NW.chuAnToan = chuAnToan; NW.chuanMa = chuanMa; NW.khongDau = khongDau;
   NW.chuTat = chuTat; NW.itMau = itMau; NW.avHtml = avHtml;
+  // Online = có nhịp `hoatDongLuc` trong 5 phút (thanh.js ghi nhịp 3 phút/lần khi tab đang mở); bàn thử dùng cờ `online`.
+  NW.ONLINE_MS = 5 * 60 * 1000;
+  NW.dangOnline = function (hs) {
+    if (!hs || hs.vaiTro === 'gv') return false;
+    if (hs.online === true) return true;
+    return !!(hs.hoatDongLuc && (Date.now() - hs.hoatDongLuc) < NW.ONLINE_MS);
+  };
 
   // "vừa xong" / "5 phút" / "Hôm nay 16:02" / "Hôm qua 20:15" / "18/8 20:15" / "18/8/2025"
   function chuGio(ms, kieu) {
@@ -105,7 +114,7 @@
   // ---------- ICON (Lucide-style, stroke) ----------
   var P = function (d) { return '<svg class="ic" viewBox="0 0 24 24">' + d + '</svg>'; };
   NW.IC = {
-    baiTap: P('<path d="M2.5 4h5.5a3.5 3.5 0 0 1 3.5 3.5V20a2.5 2.5 0 0 0-2.5-2.5h-6.5z"/><path d="M21.5 4H16a3.5 3.5 0 0 0-3.5 3.5V20a2.5 2.5 0 0 1 2.5-2.5h6.5z"/>'),  // v0.4.0 sách mở
+    baiTap: P('<path d="M8.5 21H5.2A1.7 1.7 0 0 1 3.5 19.3V4.2A1.7 1.7 0 0 1 5.2 2.5h8.3l5 5v3.3"/><path d="M13.5 2.5v4.2a1 1 0 0 0 1 1h4"/><path d="M6.8 9.6h4M6.8 12.6h7M6.8 15.6h5.2"/><path d="M11.3 21.5l.9-3.5 6.5-6.5a1.85 1.85 0 0 1 2.6 2.6l-6.5 6.5z"/><path d="M17.4 12.8l2.6 2.6"/>'),  // v14 theo mẫu Flaticon paper_10538038 (giấy gấp góc + bút chì)
     bangTin: P('<path d="M3 10.8 12 3.5l9 7.3"/><path d="M5.5 9.3V20.5h13V9.3"/><path d="M10 20.5v-5.5h4v5.5"/>'),  // v0.4.0 ngôi nhà (bảng tin)
     tinNhan: P('<path d="M12.5 2.5a8.5 8.5 0 1 1-4.6 15.6L3 21.5l1.6-5.2A8.5 8.5 0 0 1 12.5 2.5z"/><circle cx="8.8" cy="11" r="1.2" fill="currentColor" stroke="none"/><circle cx="12.5" cy="11" r="1.2" fill="currentColor" stroke="none"/><circle cx="16.2" cy="11" r="1.2" fill="currentColor" stroke="none"/>'),  // v0.3.1 theo mẫu Flaticon thầy gửi
     khamPha: P('<circle cx="12" cy="12" r="9.5"/><path d="m15.8 8.2-2.2 5.4-5.4 2.2 2.2-5.4z"/>'),
@@ -140,7 +149,12 @@
     ketBan: P('<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>'),
     menu3: P('<line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>'),
     sao: P('<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/>'),
-    tinMoi: P('<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>')
+    tinMoi: P('<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>'),
+    // v13 (mẫu bảng tin)
+    traLoi: P('<polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/>'),
+    gan: P('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 4v6M22 7h-6"/>'),
+    camGiac: P('<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>'),
+    tien: P('<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>')
   };
 
   // Cảm xúc — cùng bộ với chat lớp bên myLesson (lop.html CAM_XUC)
@@ -403,6 +417,18 @@
     { ma: 'lop', ky: '🏫', nh: 'Chỉ lớp', mo: 'Chỉ lớp của em và thầy' },
     { ma: 'minh', ky: '🔒', nh: 'Chỉ mình tôi', mo: 'Chỉ em xem được (nháp, kỷ niệm riêng)' }
   ];
+  // v14 (thầy 22/09): icon phạm vi ĐƠN SẮC, nét mảnh kiểu Facebook thay cho emoji (`ky` giữ cho CHỮ thông báo)
+  var PHAM_IC = {
+    mang: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a13.5 13.5 0 0 1 0 18a13.5 13.5 0 0 1 0-18z"/>',
+    ban: '<circle cx="9" cy="8" r="3.4"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.6"/><path d="M16.2 15.2a5 5 0 0 1 5.3 4.8"/>',
+    lop: '<path d="M3 21V9.5l9-5.5 9 5.5V21"/><path d="M3 21h18"/><path d="M9.5 21v-5.5h5V21"/><path d="M7 12.5h.01M17 12.5h.01"/>',
+    minh: '<rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor" stroke="none"/>'
+  };
+  NW.PHAM.forEach(function (x) { x.ic = P(PHAM_IC[x.ma]); });
+  // (2) huy hiệu "đã xác minh" kiểu Facebook nhưng MÀU VÀNG — dùng cho thầy (thay chữ THẦY)
+  NW.tichHtml = function (lop) {
+    return '<svg class="tich-vang' + (lop ? ' ' + lop : '') + '" viewBox="0 0 24 24" aria-label="Đã xác minh"><path fill="currentColor" fill-rule="evenodd" d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"/></svg>';
+  };
   NW.phamCua = function (ma) { for (var i = 0; i < NW.PHAM.length; i++) if (NW.PHAM[i].ma === ma) return NW.PHAM[i]; return NW.PHAM[0]; };
 
   // ---------- v0.4.0 — BẠN BÈ: cùng lớp = bạn sẵn · khác lớp phải kết bạn (kho nwBanBe) ----------
@@ -449,17 +475,17 @@
 
   // Danh sách người theo lớp — 1 lượt đọc mỗi tài liệu (lớp ~20 em) + đệm 10 phút.
   var DS_LOP = {};
-  async function nguoiTheoLop(lop) {
+  async function nguoiTheoLop(lop, tuoiToiDa) {
     var khoa = 'nwLop:' + lop;
     try {
       var o = JSON.parse(sessionStorage.getItem(khoa) || 'null');
-      if (o && (Date.now() - o.luc) < 10 * 60 * 1000) return o.ds;
+      if (o && (Date.now() - o.luc) < (tuoiToiDa == null ? 10 * 60 * 1000 : tuoiToiDa)) return o.ds;
     } catch (e) { }
     var f = await fb();
     var q = f.fs.query(f.fs.collection(f.db, 'nwUsers'), f.fs.where('cacLop', 'array-contains', lop), f.fs.limit(60));
     var snap = await f.fs.getDocs(q);
     var ds = [];
-    snap.forEach(function (d) { var x = d.data(); ds.push({ uid: d.id, ten: x.ten, anh: x.anh || '', lop: x.lop, cacLop: x.cacLop || [], vaiTro: x.vaiTro }); });
+    snap.forEach(function (d) { var x = d.data(); ds.push({ uid: d.id, ten: x.ten, anh: x.anh || '', lop: x.lop, cacLop: x.cacLop || [], vaiTro: x.vaiTro, hoatDongLuc: x.hoatDongLuc || 0 }); });
     ds.sort(function (a, b) { return khongDau(a.ten).localeCompare(khongDau(b.ten)); });
     try { sessionStorage.setItem(khoa, JSON.stringify({ luc: Date.now(), ds: ds })); } catch (e) { }
     ds.forEach(function (n) { if (!HS_RAM[n.uid]) HS_RAM[n.uid] = n; });
@@ -630,11 +656,110 @@
       $('[data-ok]', p).onclick = function () { NW._popDong = null; NW.popDong(); res(true); };
     });
   };
-  NW.xemAnh = function (url) {
-    NW.popMo({ lop: 'anh', html: '<img src="' + chuAnToan(url) + '" alt="">' });
-    var p = $('#nwPop .pop'); p.querySelector('.pop-body').style.padding = '0';
-    p.onclick = NW.popDong;
+  // v13: xemAnh(url, ds) — ds = cả bộ ảnh của bài thì có ‹ › + "2 / 5" + phím mũi tên; bấm ngoài ảnh = đóng.
+  NW.xemAnh = function (url, ds) {
+    ds = (ds && ds.length) ? ds : [url];
+    var i = Math.max(0, ds.indexOf(url)), nhieu = ds.length > 1;
+    var p = NW.popMo({ lop: 'anh', html: '<img src="" alt="">' + (nhieu ?
+      '<button class="gal-nut trai" type="button" aria-label="Ảnh trước">' + NW.IC.lui + '</button>' +
+      '<button class="gal-nut phai" type="button" aria-label="Ảnh sau">' + NW.IC.tien + '</button><span class="gal-dem"></span>' : '') });
+    p.querySelector('.pop-body').style.padding = '0';
+    var img = $('img', p), dem = $('.gal-dem', p), tr = $('.trai', p), ph = $('.phai', p);
+    function ve() { img.src = ds[i]; if (dem) dem.textContent = (i + 1) + ' / ' + ds.length; }
+    ve();
+    if (tr) { tr.onclick = function (e) { e.stopPropagation(); i = (i - 1 + ds.length) % ds.length; ve(); }; }
+    if (ph) { ph.onclick = function (e) { e.stopPropagation(); i = (i + 1) % ds.length; ve(); }; }
+    p.onclick = function (e) { if (e.target.closest('.gal-nut')) return; NW.popDong(); };
+    var phim = function (e) { if (e.key === 'ArrowLeft' && tr) tr.click(); else if (e.key === 'ArrowRight' && ph) ph.click(); };
+    document.addEventListener('keydown', phim);
+    NW._popDong = function () { document.removeEventListener('keydown', phim); };
   };
+
+  // v13 — gắn cách chọn cảm xúc lên MỘT nút, dùng chung cho bài + bình luận (sau này cả chat):
+  // bấm = thả mặc định (tim) hoặc GỠ nếu đã thả; giữ 450ms / rê chuột 650ms = bảng 7 cảm xúc.
+  // o = { hienTai(): mã đang thả hoặc '', chon(ma): '' = gỡ, macDinh: 'tim' }
+  NW.ganCamXuc = function (nut, o) {
+    var giu = null, daGiu = false;
+    function dong() { var m = $('#nwCxMenu'); if (m) m.classList.remove('mo'); var p = $('#nwCxPhu'); if (p) p.remove(); }
+    function mo() {
+      var m = $('#nwCxMenu');
+      if (!m) { m = document.createElement('div'); m.id = 'nwCxMenu'; m.className = 'cx-menu'; document.body.appendChild(m); }
+      var ht = o.hienTai() || '';
+      m.innerHTML = NW.CAM_XUC.map(function (c) {
+        return '<button type="button" data-ma="' + c.ma + '" data-nh="' + c.nh + '" aria-label="' + c.nh + '"' + (c.ma === ht ? ' class="dang"' : '') + '>' + NW.cxHtml(c.ma) + '</button>';
+      }).join('') + (ht ? '<button type="button" class="bo" data-ma="">Gỡ</button>' : '');
+      var r = nut.getBoundingClientRect();
+      m.style.left = Math.max(8, Math.min(window.innerWidth - 300, r.left)) + 'px';
+      m.style.top = (r.top - 58) + 'px';
+      m.classList.add('mo');
+      $$('button', m).forEach(function (b) { b.onclick = function (e) { e.stopPropagation(); o.chon(b.getAttribute('data-ma')); dong(); }; });
+      var phu = document.createElement('div'); phu.className = 'phu-nen'; phu.id = 'nwCxPhu'; phu.onclick = dong; document.body.appendChild(phu);
+    }
+    nut.addEventListener('pointerdown', function () { daGiu = false; clearTimeout(giu); giu = setTimeout(function () { daGiu = true; mo(); }, 450); });
+    nut.addEventListener('pointerup', function () { clearTimeout(giu); });
+    nut.addEventListener('pointerleave', function () { clearTimeout(giu); });
+    nut.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    nut.onclick = function () { if (daGiu) { daGiu = false; return; } var ht = o.hienTai() || ''; o.chon(ht ? '' : (o.macDinh || 'tim')); };
+    nut.onmouseenter = function () { if (window.matchMedia('(hover:hover)').matches) { clearTimeout(nut._h); nut._h = setTimeout(mo, 650); } };
+    nut.onmouseleave = function () { clearTimeout(nut._h); };
+  };
+
+  // v13 — CẢM XÚC / HOẠT ĐỘNG gắn vào bài ("đang cảm thấy vui" · "đang học bài")
+  // v14 (thầy 22/09): HÌNH = huy hiệu 2D vẽ tay (sprite #cg-<mã>) thay emoji; `ky` chỉ để CHỮ thông báo.
+  NW.CAM_GIAC = [
+    { ma: 'vui', ky: '😊', chu: 'vui', loai: 'cam' }, { ma: 'tuyetVoi', ky: '🥳', chu: 'tuyệt vời', loai: 'cam' }, { ma: 'yeuDoi', ky: '😍', chu: 'yêu đời', loai: 'cam' },
+    { ma: 'tuTin', ky: '😎', chu: 'tự tin', loai: 'cam' }, { ma: 'buonNgu', ky: '😴', chu: 'buồn ngủ', loai: 'cam' }, { ma: 'buon', ky: '😢', chu: 'buồn', loai: 'cam' },
+    { ma: 'bucMinh', ky: '😤', chu: 'bực mình', loai: 'cam' }, { ma: 'om', ky: '🤒', chu: 'ốm', loai: 'cam' },
+    { ma: 'hocBai', ky: '📚', chu: 'học bài', loai: 'hd' }, { ma: 'lamBaiTap', ky: '📝', chu: 'làm bài tập', loai: 'hd' }, { ma: 'ngheNhac', ky: '🎧', chu: 'nghe nhạc', loai: 'hd' },
+    { ma: 'choiGame', ky: '🎮', chu: 'chơi game', loai: 'hd' }, { ma: 'theThao', ky: '⚽', chu: 'chơi thể thao', loai: 'hd' }, { ma: 'an', ky: '🍜', chu: 'ăn', loai: 'hd' },
+    { ma: 'diChoi', ky: '✈️', chu: 'đi chơi', loai: 'hd' }, { ma: 'anMung', ky: '🎂', chu: 'ăn mừng', loai: 'hd' }, { ma: 'docSach', ky: '📖', chu: 'đọc sách', loai: 'hd' },
+    { ma: 'xemPhim', ky: '🎬', chu: 'xem phim', loai: 'hd' }, { ma: 've', ky: '🎨', chu: 'vẽ', loai: 'hd' }, { ma: 'oLop', ky: '🏫', chu: 'ở lớp', loai: 'hd' }
+  ];
+  NW.camGiacCua = function (ma) { for (var i = 0; i < NW.CAM_GIAC.length; i++) if (NW.CAM_GIAC[i].ma === ma) return NW.CAM_GIAC[i]; return null; };
+  NW.cgHtml = function (ma, lop) {
+    if (!NW.camGiacCua(ma)) return '';
+    return '<svg class="cg-ic' + (lop ? ' ' + lop : '') + '" aria-hidden="true"><use href="#cg-' + ma + '"/></svg>';
+  };
+  // "đang cảm thấy [icon] vui" / "đang [icon] học bài" — HTML an toàn
+  NW.chuCamGiac = function (cg) {
+    if (!cg || !cg.chu) return '';
+    var hinh = cg.ma ? NW.cgHtml(cg.ma) : '<span class="ky">' + chuAnToan(cg.ky || '') + '</span>';
+    return (cg.loai === 'hd' ? 'đang ' : 'đang cảm thấy ') + hinh + ' ' + chuAnToan(cg.chu);
+  };
+  // Sprite 20 huy hiệu cảm xúc/hoạt động — 2D phẳng cùng họ với 7 cảm xúc (mặt vàng · vòng màu + nét trắng)
+  NW.napCamGiac = function () {
+    if (document.getElementById('nwCgSprite')) return;
+    var MAT = '<circle cx="16" cy="16" r="15" fill="url(#gVang)"/>';
+    var MAT2 = '<circle cx="16" cy="16" r="15" fill="#F3B23E"/><circle cx="16" cy="16" r="13" fill="#FFD84D"/>';
+    var mat2 = '<circle cx="11" cy="13" r="2" fill="#5A3A00"/><circle cx="21" cy="13" r="2" fill="#5A3A00"/>';
+    var cuoi = '<path d="M10 19.3c1.5 2.6 3.5 3.8 6 3.8s4.5-1.2 6-3.8" stroke="#5A3A00" stroke-width="2.2" fill="none" stroke-linecap="round"/>';
+    function vong(mau, path) { return '<circle cx="16" cy="16" r="15" fill="' + mau + '"/><g transform="translate(16 16) scale(.62) translate(-12 -12)" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' + path + '</g>'; }
+    function sym(ma, ruot) { return '<symbol id="cg-' + ma + '" viewBox="0 0 32 32">' + ruot + '</symbol>'; }
+    var html = '<svg id="nwCgSprite" width="0" height="0" style="position:absolute" aria-hidden="true">' +
+      sym('vui', MAT2 + mat2 + cuoi) +
+      sym('tuyetVoi', MAT2 + '<path d="M20 3.5l7.5 8.5-10.5-2.5z" fill="#7C4DFF"/><circle cx="20.5" cy="3.5" r="1.6" fill="#FF6B84"/><circle cx="5" cy="7" r="1.3" fill="#3D94FF"/><circle cx="8" cy="4" r="1" fill="#18A957"/><circle cx="26" cy="15" r="1.2" fill="#FF6B84"/>' + mat2 + '<path d="M9.5 19a6.5 6.5 0 0 0 13 0z" fill="#5A3A00"/><path d="M12 23.2c2.2-1.6 5.8-1.6 8 0a6.5 6.5 0 0 1-8 0z" fill="#FF6B84"/>') +
+      sym('yeuDoi', MAT2 + '<path d="M11 17.2S6.2 14 6.2 10.8c0-1.6 1.2-2.8 2.7-2.8.9 0 1.7.5 2.1 1.2.4-.7 1.2-1.2 2.1-1.2 1.5 0 2.7 1.2 2.7 2.8 0 3.2-4.8 6.4-4.8 6.4z" fill="#E5203F"/><path d="M21 17.2S16.2 14 16.2 10.8c0-1.6 1.2-2.8 2.7-2.8.9 0 1.7.5 2.1 1.2.4-.7 1.2-1.2 2.1-1.2 1.5 0 2.7 1.2 2.7 2.8 0 3.2-4.8 6.4-4.8 6.4z" fill="#E5203F"/><path d="M10 21c1.5 2.4 3.5 3.5 6 3.5s4.5-1.1 6-3.5" stroke="#5A3A00" stroke-width="2.2" fill="none" stroke-linecap="round"/>') +
+      sym('tuTin', MAT2 + '<path d="M4.5 11.5h23" stroke="#1B2530" stroke-width="1.6" stroke-linecap="round"/><rect x="6" y="11" width="8.5" height="5.5" rx="2.4" fill="#1B2530"/><rect x="17.5" y="11" width="8.5" height="5.5" rx="2.4" fill="#1B2530"/><path d="M11 21c2 2.2 4.5 3 7.5 2.4 1.7-.4 3-1.2 4-2.4" stroke="#5A3A00" stroke-width="2.2" fill="none" stroke-linecap="round"/>') +
+      sym('buonNgu', MAT2 + '<path d="M8.5 14c1.5-1.4 3.5-1.4 5 0M18.5 14c1.5-1.4 3.5-1.4 5 0" stroke="#5A3A00" stroke-width="2.2" fill="none" stroke-linecap="round"/><ellipse cx="16" cy="21.5" rx="2.2" ry="2.6" fill="#5A3A00"/><path d="M21.5 2.5h5l-5 5.2h5" stroke="#3E7BFA" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>') +
+      sym('buon', MAT2 + '<path d="M8.5 11.5c1.5.8 2.8 1.2 4.5 1.4M23.5 11.5c-1.5.8-2.8 1.2-4.5 1.4" stroke="#5A3A00" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="11" cy="15.5" r="1.8" fill="#5A3A00"/><circle cx="21" cy="15.5" r="1.8" fill="#5A3A00"/><path d="M10.5 24c1.4-2.2 3.3-3.2 5.5-3.2s4.1 1 5.5 3.2" stroke="#5A3A00" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M23.5 16.5c1.6 2.4 2.4 4 2.4 5.1a2.4 2.4 0 0 1-4.8 0c0-1.1.8-2.7 2.4-5.1z" fill="#3D94FF"/>') +
+      sym('bucMinh', '<circle cx="16" cy="16" r="15" fill="url(#gGian)"/><path d="M8 11.5l5 2.2M24 11.5l-5 2.2" stroke="#4A1B10" stroke-width="2.2" fill="none" stroke-linecap="round"/><circle cx="11" cy="16" r="1.8" fill="#4A1B10"/><circle cx="21" cy="16" r="1.8" fill="#4A1B10"/><path d="M11 23h10" stroke="#4A1B10" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M24 22c1.2-.6 2.6-.4 3.6.4M26 25.2c.9-.5 2-.3 2.8.3" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".9"/>') +
+      sym('om', '<circle cx="16" cy="16" r="15" fill="#B8D8A0"/><circle cx="16" cy="16" r="13" fill="#D5EFC2"/><path d="M8.5 12c1.5-1.2 3.5-1.2 5 0M18.5 12c1.5-1.2 3.5-1.2 5 0" stroke="#3E5A2E" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M11 21.5c1.4-1.4 3.2-2 5-2s3.6.6 5 2" stroke="#3E5A2E" stroke-width="2.2" fill="none" stroke-linecap="round"/><g transform="rotate(-28 20 20.5)"><rect x="13" y="19" width="14" height="3.2" rx="1.6" fill="#fff"/><rect x="21" y="19" width="6" height="3.2" rx="1.6" fill="#E5203F"/></g><path d="M9 6.5l4-2.8M19 3.7l4 2.8" stroke="#E5203F" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0"/>') +
+      sym('hocBai', vong('#3E7BFA', '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7M9 11h5"/>')) +
+      sym('lamBaiTap', vong('#0E7C6E', '<path d="M8.5 21H5.2A1.7 1.7 0 0 1 3.5 19.3V4.2A1.7 1.7 0 0 1 5.2 2.5h8.3l5 5v3.3"/><path d="M13.5 2.5v4.2a1 1 0 0 0 1 1h4"/><path d="M6.8 9.6h4M6.8 12.6h7M6.8 15.6h5.2"/><path d="M11.3 21.5l.9-3.5 6.5-6.5a1.85 1.85 0 0 1 2.6 2.6l-6.5 6.5z"/>')) +
+      sym('ngheNhac', vong('#6C5CE7', '<path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>')) +
+      sym('choiGame', vong('#18A957', '<rect x="2" y="6" width="20" height="12" rx="3"/><path d="M6 12h4M8 10v4"/><path d="M15 13h.01M18 11h.01"/>')) +
+      sym('theThao', vong('#F0821E', '<circle cx="12" cy="12" r="9.5"/><path d="M12 2.5a9.5 9.5 0 0 0 0 19"/><path d="M3 9c4 1.2 14 1.2 18 0M3 15c4-1.2 14-1.2 18 0"/>')) +
+      sym('an', vong('#E0575B', '<path d="M3 11.5h18a9 9 0 0 1-18 0z"/><path d="M8 3l3 7M17.5 2.5l-4.5 8"/>')) +
+      sym('diChoi', vong('#0984E3', '<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>')) +
+      sym('anMung', vong('#E84393', '<path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20M7 8v3M12 8v3M17 8v3"/><path d="M7 4h.01M12 4h.01M17 4h.01"/>')) +
+      sym('docSach', vong('#A0522D', '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>')) +
+      sym('xemPhim', vong('#2D3436', '<path d="M20.2 6 3 11l-.9-2.4a2 2 0 0 1 1.2-2.6L17.2 1.4a2 2 0 0 1 2.5 1.2z"/><path d="M6.2 5.3l3.1 3.9M12.4 3.4l3.1 4"/><path d="M3 11v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9z"/>')) +
+      sym('ve', vong('#D63384', '<path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.8-.7 1.8-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-1 .8-1.8 1.8-1.8H17c2.8 0 5-2.2 5-5 0-4.9-4.5-9-10-9z"/><path d="M13.5 6.5h.01M17.5 10.5h.01M8.5 7.5h.01M6.5 12.5h.01"/>')) +
+      sym('oLop', vong('#00B894', '<path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6M3 21h18"/><path d="M7 12h.01M17 12h.01"/>')) +
+      '</svg>';
+    document.body.insertAdjacentHTML('afterbegin', html);
+  };
+  if (document.body) NW.napCamGiac(); else document.addEventListener('DOMContentLoaded', NW.napCamGiac);
 
   // Menu nhỏ neo dưới một nút: items = [{ic, chu, nguy, onclick}]
   var _menu = null, _menuPhu = null;

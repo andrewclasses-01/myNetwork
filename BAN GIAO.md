@@ -1,6 +1,16 @@
-# BÀN GIAO myNetwork — phiên 22/09/2026 (v0.4.0 `b6b4c6c`) · gốc phiên 20/09 (v0.1.0 `dc03133`)
+# BÀN GIAO myNetwork — phiên 22/09/2026 (v0.5.0) · trước đó v0.4.0 `b6b4c6c` · gốc phiên 20/09 (v0.1.0 `dc03133`)
 
-> **Phiên mới đọc MỤC A này trước** (tình trạng + chốt của thầy + việc mở), rồi `README.md` (nhật ký từng bản), rồi các mục cũ bên dưới.
+> **Phiên mới đọc MỤC A0 này trước**, rồi mục A (phiên thiết kế đợt 1), rồi `README.md` (nhật ký từng bản).
+
+## A0. Phiên 22/09/2026 đợt 2 — thầy đổi ý: BUILD TIẾP BẢNG TIN (chưa làm tin nhắn) → v0.5.0
+
+- Thầy chọn 4 mảng bảng tin (thẻ bài · cột phải · bình luận · ô soạn/pop-up) → mẫu **v13** (cổng 8808) → thầy gửi **12 điều chỉnh** → mẫu **v14** (8809) → **"ok build"** + 2 chốt thêm: *Thầy Andrew luôn đứng đầu danh sách lớp* · *chấm xanh online TRÊN avatar như Facebook, thầy không hiện dù trạng thái nào*.
+- Mẫu v13/v14 là **bản chép repo có sửa** (`css/ js/ config.js + mau-vN.html`) trong `D:\OTHERS\CLAUDE\myNetwork - thiet ke\` — đợt sau muốn làm mẫu kiểu này: chép repo → sửa → thầy duyệt → chép về. Script vá nằm ở scratchpad phiên (`va_v13.py`, `va_v14.py`, `build_v050.py`) — mất cũng không sao, kết quả đã nằm trong repo.
+- Chi tiết từng thứ đã làm: `README.md` mục v0.5.0. Chốt của thầy đợt này (KHÔNG hỏi lại): icon phạm vi đơn sắc · tích VÀNG thay chữ THẦY · không lớp cạnh tên, không nhãn LỚP trên bài · "TÊN ơi, em đang nghĩ gì thế?" · cảm xúc/hoạt động = huy hiệu 2D vẽ tay · ⋯ + ✕ ẩn bài, dịch vào · cột phải chỉ Lớp (đủ, thầy đầu) + Nếp · bấm tên = hộp chat nổi, bấm avatar = cá nhân · icon Bài tập theo Flaticon paper_10538038 · điện thoại giấu cột phải · lời mời kết bạn trong THÔNG BÁO · 10 ảnh/bài · chấm xanh online trên avatar (thầy không).
+- **Bàn thử cho thầy bấm** (cổng 8795, `?thu=1`): `bangtin.html?thu=1` (chuông có lời mời kết bạn · bấm tên MINH ANH ở cột phải → hộp chat · bài "Speaking Test" mở bình luận có trả lời lồng · ô "BẠN THỬ ơi…" → pop-up gắn thẻ/cảm xúc/kéo ảnh) · `baidang.html?thu=1&id=m1` · `canhan.html?thu=1&uid=hs_1`.
+- **CÒN MỞ** (thứ tự thầy nói từ phiên trước, chưa đổi): tin nhắn (trang `tinnhan.html` chưa thiết kế lại; hộp chat nổi đã có) → khám phá → đăng nhập → kỹ thuật dán luật (⚠ luật `tai-lieu/` đã sửa thêm cho v0.5.0: `soThich`, `hoatDongLuc`, `gan`, `camGiac`, ảnh ≤10, `binhLuan.anh/traLoiCho`, `soBinhLuan` giảm N) → chỉ mục → tài khoản → `kiem-luat.mjs` (cần thêm ca mới) → domain → gắn myLesson.
+- Bẫy đợt này: (1) `python -c` in tiếng Việt ra console cp1252 ⇒ `UnicodeEncodeError` — in bằng `.encode('ascii','backslashreplace')`; (2) chuỗi tìm trong script vá phải chép NGUYÊN VĂN từ file (đoán thiếu một dấu `"` là 0 kết quả); (3) mẫu dùng lớp `.bang` trùng với bảng `.bang` của nw.css ⇒ đặt tên riêng `.bang-mau`; (4) `input.files` phải chép ra mảng TRƯỚC khi `this.value=''`; (5) Browser pane có lúc `innerWidth=0` — `resize_window` cỡ cố định rồi mới đo/chụp.
+
 
 ## A. Phiên 22/09/2026 — PHIÊN THIẾT KẾ GIAO DIỆN, 4 bản đã push
 

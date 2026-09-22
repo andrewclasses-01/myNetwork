@@ -7,7 +7,7 @@ window.NW_CONFIG = {
 
   // Phiên bản — hiện nhỏ ở chân trang / menu. GitHub Pages giữ cache ~10 phút,
   // nhìn số này là biết máy đang chạy bản nào.
-  PHIEN_BAN: '0.4.0',
+  PHIEN_BAN: '0.5.0',
 
   // Tab đầu tiên "TRANG BÀI TẬP" trỏ về myLesson web. Chạy thử trên máy thì trỏ
   // sang bản local của myLesson (nếu đang mở), lên mạng thì domain thật.
@@ -39,7 +39,7 @@ window.NW_CONFIG = {
   TOI_DA_CHU_BAI: 2000,       // một bài đăng
   TOI_DA_CHU_BINH_LUAN: 500,  // một bình luận
   TOI_DA_CHU_TIN: 1000,       // một tin nhắn
-  TOI_DA_ANH_BAI: 4,          // số ảnh mỗi bài
+  TOI_DA_ANH_BAI: 10,          // số ảnh mỗi bài
   TOI_DA_THANH_VIEN_NHOM: 30, // nhóm chat
 
   // ---- Nhắn tin riêng ----

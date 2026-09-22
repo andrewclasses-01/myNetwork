@@ -9,7 +9,22 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 
 ⭐ 22/09: phiên thiết kế đợt 1 đã build v0.2.0→v0.4.0 (xem `BAN GIAO.md` mục A). Thầy dừng cuối phiên, ⬜ chưa bấm tay; còn mở: tin nhắn · khám phá · đăng nhập. Vẫn chưa dán luật, chưa tạo tài khoản.
 
-## Bản hiện tại — v0.4.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+## Bản hiện tại — v0.5.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+
+### v0.5.0 — 22/09/2026: BẢNG TIN đợt 2 theo mẫu v13 + v14 thầy chốt ("ok build" 22/09) — `?v=7`
+Mẫu: `D:\OTHERS\CLAUDE\myNetwork - thiet ke\mau-v13\` (cổng 8808) và `mau-v14\` (8809) — là BẢN CHÉP repo có sửa, nên đợt này chép thẳng `js/bai.js` `js/loi.js` `js/thanh.js` `css/nw.css` `config.js` + `mau-v14.html` → `bangtin.html` về, rồi gắn phần thật.
+- **Thẻ bài**: dòng tên có *"đang cảm thấy [icon] vui"* (`camGiac{ma,ky,chu,loai}`) và *"— cùng với MINH ANH và N người khác"* (`gan[{uid,ten}]`, bấm "N người khác" → danh sách); **bỏ lớp cạnh tên · bỏ chữ THẦY → tích VÀNG** `NW.tichHtml()` · **bỏ nhãn LỚP** · phạm vi = **icon đơn sắc** `NW.PHAM[].ic` cạnh giờ · bài **>4 ảnh** → ô thứ 4 phủ "+N" (tối đa **10 ảnh/bài**) · bấm ảnh → **xem cả bộ** (‹ › + "2 / 6" + phím ← →, `NW.xemAnh(url, ds)`) · cụm **⋯ + ✕** góc phải dịch vào 14px, ✕ = ẩn bài khỏi bảng tin CỦA EM (`localStorage nwAnBai_<uid>`, có Hoàn tác).
+- **Bình luận**: **trả lời 1 cấp** (`traLoiCho` = id gốc; "↳ Xem N câu trả lời" khi >2; trả lời một câu trả lời tự điền `@TÊN`) · **7 cảm xúc** cho bình luận (giữ/rê nút Thích, helper chung `NW.ganCamXuc(nut, {hienTai, chon})` — bài cũng dùng) · cụm cảm xúc góc dưới phải bong bóng · **gửi ảnh** trong bình luận (`anh` = url, nén 1200px, tên `_c`) · xoá bình luận gốc xoá luôn trả lời (đếm trừ N).
+- **Pop-up tạo bài**: câu gợi ý *"TÊN ơi, em đang nghĩ gì thế?"* · **kéo-thả / Ctrl+V dán ảnh** · xem trước **lưới như thẻ bài** (+ dải ảnh nhỏ khi >4) · hàng "Thêm vào bài viết" 3 nút màu: Ảnh · **Gắn thẻ bạn** (bảng trượt: tìm tên, tick; nguồn `NW.dsNguoiGanDuoc()` = cùng lớp + bạn đã kết; gửi thông báo `nhac`) · **Cảm xúc/hoạt động** (20 huy hiệu **2D vẽ tay** sprite `#cg-<ma>`, `NW.CAM_GIAC` · `NW.cgHtml`) · bàn thử bấm ĐĂNG thì bài hiện ngay đầu trang.
+- **Cột phải** chỉ còn **Lớp của em** (đủ cả lớp, thầy đứng đầu có tích vàng, không nhãn lớp, không icon tin nhắn; bấm AVATAR → trang cá nhân, bấm TÊN → **hộp chat nổi**) + Nếp của mạng. Điện thoại/tablet ≤900px **giấu hẳn cột phải**.
+- **Hộp chat nổi** `js/chatnoi.js` (`NW.ChatNoi.mo(nguoi)`, kiểu Facebook, tối đa 3 hộp, nút — thu nhỏ thành avatar tròn): kho thật = phòng riêng `nwChats/{uidA__uidB}` qua `NW.Chat.moRieng`, nghe 30 tin mới nhất, gửi qua **`NW.Chat.guiTin(phongId, tin)`** + `NW.Chat.danhDauDoc` (tách từ `chat.js` để dùng chung; bangtin.html nay nạp `js/chat.js`). ≤640px → chuyển `tinnhan.html?voi=`.
+- **Chấm xanh online** trên avatar như Facebook (`.av .on`, `NW.dangOnline(hs)`): học sinh có `hoatDongLuc` trong 5 phút; thanh.js ghi nhịp `hoatDongLuc` vào hồ sơ mình **3 phút/lần** khi tab mở (`nhipOnline`); cột phải đọc lại danh sách lớp (đệm 2 phút, `NW.nguoiTheoLop(lop, tuoiToiDa)`) 3 phút/lần. **Thầy KHÔNG có chấm dù trạng thái nào** (đã bỏ luôn chấm cam `.av.gv::after`).
+- **Lời mời kết bạn nằm trong hộp THÔNG BÁO** (máy tính + điện thoại): mục `loai:'ketBan'` có nút **Đồng ý / Xoá** ngay trong mục (`xuLyKetBan`: cập nhật `nwBanBe/{uidA__uidB}` trangThai ok hoặc xoá, ghi `xuLy` + `daDoc` vào thông báo, gửi `dongY`).
+- **Icon Bài tập** vẽ lại theo mẫu Flaticon `paper_10538038` thầy gửi (giấy gấp góc + 3 dòng + bút chì; vẽ lại SVG, không tải file).
+- **Luật Firestore** (`tai-lieu/`, ⬜ vẫn chưa dán) sửa theo: `nwUsers` tự sửa thêm `soThich` (thiếu từ v0.3.0!) + `hoatDongLuc`; `nwPosts` create thêm `gan`, `camGiac`, ảnh ≤10; `soBinhLuan` cho phép giảm N; `binhLuan` create thêm `anh`, `traLoiCho`, chữ HOẶC ảnh.
+- Kiểm: bàn thử `?thu=1` 5 trang console sạch, bấm thật (bình luận/trả lời/cảm xúc/gắn thẻ/cảm giác/đăng/xem bộ ảnh/chat nổi/lời mời), 375px không tràn. ⬜ Thầy chưa bấm tay; ⚠ chưa có lượt ghi thật nào (chưa dán luật).
+
+## Bản trước — v0.4.0 (22/09/2026)
 
 ### v0.4.0 — 22/09/2026: theo mẫu v10→v12 thầy chốt (BẠN BÈ · KHOÁ TRANG · TÌM KIẾM · POP-UP TẠO BÀI · ICON MẢNH)
 - **Thanh**: bộ icon MẢNH (nét 1.55; sách mở · la bàn · bong bóng 3 chấm · ngôi nhà · chuông · **kính lúp CUỐI**) → `timkiem.html` mới.

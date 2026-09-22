@@ -142,23 +142,50 @@
     var html = '<div class="tha-head"><span>Thông báo</span>' +
       (soChuaDoc(ds) ? '<button class="tiny" id="tbDocHet" style="color:var(--accent)">Đánh dấu đã đọc</button>' : '') + '</div><div class="tha-ds">' +
       (ds.length ? ds.map(function (t) {
-        return '<button class="tha-muc' + (t.daDoc ? '' : ' chua') + '" data-id="' + an(t.id) + '">' +
+        var laMoi = t.loai === 'ketBan' && !t.xuLy;   // v14: lời mời kết bạn xử lý ngay trong thông báo
+        return '<div class="tha-muc' + (t.daDoc ? '' : ' chua') + (laMoi ? ' moi' : '') + '" data-id="' + an(t.id) + '" role="button" tabindex="0">' +
           NW.avHtml({ ten: t.tuTen, anh: t.tuAnh }, 'nho') +
           '<span class="chu"><b>' + an(t.tuTen) + '</b> ' + an(CHU_LOAI[t.loai] || t.loai) +
-          (t.chu ? '<small>' + an(t.chu) + '</small>' : '') + '<small>' + an(NW.chuGio(t.luc)) + '</small></span></button>';
+          (t.chu ? '<small>' + an(t.chu) + '</small>' : '') + '<small>' + an(NW.chuGio(t.luc)) + '</small>' +
+          (laMoi ? '<span class="nut2"><button class="btn primary nho" type="button" data-kbok>Đồng ý</button><button class="btn soft nho" type="button" data-kbxoa>Xoá</button></span>' : '') +
+          (t.loai === 'ketBan' && t.xuLy ? '<small class="da">' + (t.xuLy === 'ok' ? 'Đã là bạn bè' : 'Đã xoá lời mời') + '</small>' : '') +
+          '</span></div>';
       }).join('') : '<div class="tha-trong">Chưa có thông báo nào.</div>') + '</div>';
     var tha = moTha(html, neo);
     $$('.tha-muc', tha).forEach(function (b) {
-      b.onclick = function () {
-        var t = ds.filter(function (x) { return x.id === b.getAttribute('data-id'); })[0];
+      var t = ds.filter(function (x) { return x.id === b.getAttribute('data-id'); })[0];
+      b.onclick = function (e) {
+        if (e.target.closest('[data-kbok],[data-kbxoa]')) return;
         dongTha();
         if (!t) return;
         if (!t.daDoc) danhDauDoc([t.id]);
         if (t.link) location.href = t.link;
       };
+      var ok = $('[data-kbok]', b), xoa = $('[data-kbxoa]', b);
+      if (ok) ok.onclick = function () { xuLyKetBan(t, 'ok', neo); };
+      if (xoa) xoa.onclick = function () { xuLyKetBan(t, 'xoa', neo); };
     });
     var het = $('#tbDocHet', tha);
     if (het) het.onclick = function () { danhDauDoc(ds.filter(function (t) { return !t.daDoc; }).map(function (t) { return t.id; })); dongTha(); };
+  }
+  // v0.5.0: Đồng ý / Xoá lời mời kết bạn NGAY trong hộp thông báo (kho nwBanBe id = uidA__uidB, tạo ở canhan.html)
+  async function xuLyKetBan(t, cach, neo) {
+    var toi = NW.toi;
+    t.xuLy = cach; t.daDoc = true; capNhatCham(); moChuong(neo);
+    if (NW.laBanThu()) { NW.toast(cach === 'ok' ? 'Bàn thử: đã là bạn với ' + t.tuTen + ' (không ghi thật).' : 'Đã xoá lời mời.'); return; }
+    try {
+      var f = await NW.fb();
+      var id = toi.uid < t.tu ? toi.uid + '__' + t.tu : t.tu + '__' + toi.uid;
+      if (cach === 'ok') {
+        await f.fs.updateDoc(f.fs.doc(f.db, 'nwBanBe', id), { trangThai: 'ok', luc: Date.now() });
+        NW.guiThongBao(t.tu, { loai: 'dongY', link: 'canhan.html?uid=' + toi.uid });
+        if (NW.xoaDemBan) NW.xoaDemBan();
+        NW.toast('Đã kết bạn với ' + t.tuTen + '.');
+      } else {
+        try { await f.fs.deleteDoc(f.fs.doc(f.db, 'nwBanBe', id)); } catch (e) { }
+      }
+      await f.fs.updateDoc(f.fs.doc(f.db, 'nwUsers', toi.uid, 'thongBao', t.id), { xuLy: cach, daDoc: true });
+    } catch (e) { NW.toast(NW.chuLoiKho(e), true); }
   }
   async function danhDauDoc(ids) {
     if (!ids.length || NW.laBanThu()) return;
@@ -188,9 +215,25 @@
     };
   }
 
+  // ---------- nhịp "đang hoạt động" (v0.5.0): ghi hoatDongLuc vào hồ sơ mình 3 phút/lần khi tab đang mở ----------
+  var NHIP_MS = 3 * 60 * 1000, _nhipCuoi = 0;
+  async function nhipOnline() {
+    if (NW.laBanThu() || document.hidden || !NW.toi || NW.toi.laThay) return;
+    if (Date.now() - _nhipCuoi < NHIP_MS - 5000) return;
+    _nhipCuoi = Date.now();
+    try { var f = await NW.fb(); await f.fs.updateDoc(f.fs.doc(f.db, 'nwUsers', NW.toi.uid), { hoatDongLuc: _nhipCuoi }); }
+    catch (e) { console.warn('[nw] nhịp online', e); }
+  }
+  function batNhip() {
+    nhipOnline();
+    setInterval(nhipOnline, NHIP_MS);
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) nhipOnline(); });
+  }
+
   // ---------- kênh nghe ----------
   async function moKenh() {
     if (NW.laBanThu()) return;
+    batNhip();
     var f = await NW.fb();
     var uid = NW.toi.uid;
     f.fs.onSnapshot(
@@ -224,7 +267,17 @@
 
   NW.dungThanh = async function (o) {
     o = o || {};
-    if (NW.laBanThu()) { NW.toi = toiBanThu(); veThanh(o.tab); return { user: null, hoSo: NW.toi, laThay: false, banThu: true }; }
+    if (NW.laBanThu()) {
+      NW.toi = toiBanThu();
+      var t0 = Date.now();   // v14: thông báo mẫu — có LỜI MỜI KẾT BẠN xử lý ngay trong hộp
+      TB_DS = [
+        { id: 't1', loai: 'ketBan', tuUid: 'hs_4', tuTen: 'THU HÀ', tuAnh: '', chu: 'B1B · 2 bạn chung', luc: t0 - 600e3, daDoc: false, link: 'canhan.html?uid=hs_4' },
+        { id: 't2', loai: 'camXuc', tuUid: 'hs_1', tuTen: 'MINH ANH', tuAnh: '', chu: '❤️ Được 3 sao bài Listening hôm nay', luc: t0 - 1500e3, daDoc: false, link: 'baidang.html?id=m0' },
+        { id: 't3', loai: 'binhLuan', tuUid: 'gv', tuTen: 'Thầy Andrew', tuAnh: 'assets/avatar-tron.jpg', chu: 'Cảm ơn em, đội em nói rất tự tin đó!', luc: t0 - 2700e3, daDoc: true, link: 'baidang.html?id=m6' }
+      ];
+      veThanh(o.tab); capNhatCham();
+      return { user: null, hoSo: NW.toi, laThay: false, banThu: true };
+    }
     var ph = await NW.phien();
     if (!ph) { location.replace('index.html'); return new Promise(function () { }); }
     if (ph.thieuHoSo) {
