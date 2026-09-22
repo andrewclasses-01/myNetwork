@@ -133,7 +133,7 @@
   }
   CN.mo = function (nguoi) {
     if (!nguoi || !nguoi.uid) return;
-    if (window.innerWidth <= 640) { location.href = 'tinnhan.html?voi=' + encodeURIComponent(nguoi.uid); return; }
+    if (window.innerWidth <= 640) { NW.di('tinnhan.html?voi=' + encodeURIComponent(nguoi.uid)); return; }
     var co = hops.filter(function (h) { return h.uid === nguoi.uid; })[0];
     if (co) { if (co.min) moLai(co); $('textarea', co.el).focus(); return; }
     var hop = dungHop(nguoi); hops.push(hop); xepHop(); veMin();

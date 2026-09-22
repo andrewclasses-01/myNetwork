@@ -807,4 +807,30 @@
   NW.thamSo = function (ten) { return new URLSearchParams(location.search).get(ten); };
   // Cửa bàn thử: `?thu=1` (vai học sinh) / `?thu=thay` (vai thầy, v0.9.0) xem giao diện với dữ liệu mẫu, KHÔNG ghi gì.
   NW.laBanThu = function () { return /^(1|thay)$/.test(NW.thamSo('thu') || '') && /^(localhost|127\.0\.0\.1)$/.test(location.hostname); };
+
+  // v0.9.1 — Ban thu: moi duong sang trang khac TRONG NHA tu mang theo `?thu=1` / `?thu=thay`,
+  // de bam qua lai giua cac trang y het trang that (ngoai ban thu ham tra ve nguyen duong cu).
+  NW.duong = function (href) {
+    if (!href || !NW.laBanThu()) return href;
+    var s = String(href);
+    if (/^(https?:|\/\/|mailto:|tel:|javascript:|#)/i.test(s)) return s;          // ra ngoai / neo trong trang
+    var neo = '', i = s.indexOf('#');
+    if (i >= 0) { neo = s.slice(i); s = s.slice(0, i); }
+    if (!/\.html$/i.test(s.split('?')[0])) return s + neo;                        // khong phai trang .html
+    if (/[?&]thu=/.test(s)) return s + neo;                                       // da co san
+    return s + (s.indexOf('?') >= 0 ? '&' : '?') + 'thu=' + encodeURIComponent(NW.thamSo('thu')) + neo;
+  };
+  NW.di = function (href) { location.href = NW.duong(href); };
+  NW.thay = function (href) { location.replace(NW.duong(href)); };
+  // Bam vao the <a> nao cung nan duong TRUOC khi trinh duyet di (ca bam chuot giua / Ctrl+bam / ban phim).
+  if (NW.laBanThu()) {
+    var nanA = function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a) return;
+      var cu = a.getAttribute('href'), moi = NW.duong(cu);
+      if (moi !== cu) a.setAttribute('href', moi);
+    };
+    document.addEventListener('pointerdown', nanA, true);
+    document.addEventListener('click', nanA, true);
+  }
 })();

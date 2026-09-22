@@ -80,12 +80,13 @@
     var toi = NW.toi || {};
     var LAPC = function (c) { return '<svg class="sao-con ' + c + '" viewBox="0 0 10 10">' + LAP + '</svg>'; };
     var items = [
-      { ic: IC.caNhan, nh: 'Trang cá nhân của em', mo: 'Bìa · giới thiệu · bài của em', onclick: function () { location.href = 'canhan.html'; } },
+      { ic: IC.caNhan, nh: 'Trang cá nhân của em', mo: 'Bìa · giới thiệu · bài của em', onclick: function () { NW.di('canhan.html'); } },
       { ic: IC.khoa, nh: 'Đổi mật khẩu', mo: 'Mật khẩu đăng nhập My ID', onclick: moDoiMk },
       { ic: IC.baiTap, nh: 'Trang bài tập', mo: 'andrewclasses.com', onclick: function () { location.href = CFG.LINK_BAI_TAP; } }
     ];
-    if (toi.laThay) items.push({ ic: IC.caiDat, nh: 'Trang quản lý', mo: 'Báo cáo · bài ẩn · từ cấm · tài khoản', onclick: function () { location.href = 'quanly.html'; } });
+    if (toi.laThay) items.push({ ic: IC.caiDat, nh: 'Trang quản lý', mo: 'Báo cáo · bài ẩn · từ cấm · tài khoản', onclick: function () { NW.di('quanly.html'); } });
     items.push({ ic: IC.thoat, nh: 'Đăng xuất', mo: 'Đăng xuất ID Andrew Classes', nguy: true, onclick: function () {
+      if (NW.laBanThu()) { NW.thay('index.html?vao=1'); return; }   // ban thu: khong goi kho
       NW.thoat().then(function () { location.replace('index.html?vao=1'); });
     } });
     var phu = document.createElement('div'); phu.className = 'phu-mo'; phu.id = 'nwSidePhu'; phu.onclick = dongSide;
@@ -161,7 +162,7 @@
         dongTha();
         if (!t) return;
         if (!t.daDoc) danhDauDoc([t.id]);
-        if (t.link) location.href = t.link;
+        if (t.link) NW.di(t.link);
       };
       var ok = $('[data-kbok]', b), xoa = $('[data-kbxoa]', b);
       if (ok) ok.onclick = function () { xuLyKetBan(t, 'ok', neo); };

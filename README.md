@@ -9,7 +9,24 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 
 ⭐ 22/09: phiên thiết kế đợt 1 đã build v0.2.0→v0.4.0 (xem `BAN GIAO.md` mục A). Thầy dừng cuối phiên, ⬜ chưa bấm tay; còn mở: tin nhắn · khám phá · đăng nhập. Vẫn chưa dán luật, chưa tạo tài khoản.
 
-## Bản hiện tại — v0.9.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+## Bản hiện tại — v0.9.1 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+
+### v0.9.1 — 22/09/2026: BÀN THỬ ĐI LẠI ĐƯỢC GIỮA CÁC TRANG (như trang thật) — `?v=12`
+Trước bản này, bàn thử chỉ xem được TỪNG trang: bấm icon trên thanh là mất `?thu=…` ⇒ trang mới không có phiên ⇒ bị đẩy về màn đăng nhập.
+Giờ mọi đường **trong nhà** tự mang theo vai đang xem, nên thầy bấm đi bấm lại thoải mái y như trang thật. Ngoài bàn thử (trên mạng) **không đổi gì**.
+- **`js/loi.js`**: thêm `NW.duong(href)` (chỉ thêm `thu=` cho đường `.html` cùng nhà; bỏ qua `http(s)://`, `#`, `mailto:`, đường đã có `thu=`), `NW.di()`,
+  `NW.thay()`, và **bộ bắt cú bấm** (`pointerdown` + `click` pha capture) nắn `href` của MỌI thẻ `<a>` — kể cả thẻ vẽ ra sau, bấm chuột giữa, Ctrl+bấm.
+  Cả khối chỉ chạy khi `NW.laBanThu()` (tức `?thu=1|thay` **và** localhost).
+- Các chỗ nhảy trang bằng JS đổi sang `NW.di()`: `thanh.js` (sidebar Trang cá nhân · Trang quản lý · bấm thông báo), `bai.js` (mở bài gốc, ⋯ "Mở bài này"),
+  `chat.js` (xem trang cá nhân, 2 chỗ), `chatnoi.js` (điện thoại mở hẳn trang tin nhắn).
+- **`khampha.html` — lỗi thật đã vá**: `history.replaceState` khi vào/ra trang một loại **ép cứng `?thu=1`** ⇒ đang xem vai THẦY mà bấm ô "Trò chơi" là
+  **rơi xuống vai học sinh**. Nay giữ đúng `NW.thamSo('thu')`. `quanly.html` đẩy học sinh về bảng tin cũng dùng `NW.duong` cho đúng vai.
+- **`index.html` trong bàn thử**: không gọi kho nữa — gõ ID nào + bấm ĐĂNG NHẬP là vào thẳng bảng tin đúng vai (`ANDREW` vẫn ra màn Google, bấm nút Google =
+  vào vai thầy); màn đặt mật khẩu `#doimk` bấm xong cũng vào thẳng. Sidebar **Đăng xuất** trong bàn thử về `index.html?vao=1&thu=…` (không gọi `NW.thoat()`)
+  ⇒ đăng xuất rồi đăng nhập lại được thành một vòng khép kín.
+- Đã kiểm bằng **bấm chuột thật** (không chỉ đo DOM): thanh trên máy tính + thanh đáy điện thoại 375px, ô to Khám phá, avatar/tên ở cột phải, sidebar,
+  đăng xuất → đăng nhập lại; cả hai vai `?thu=1` và `?thu=thay` đều giữ nguyên vai qua mọi lần bấm.
+- ⚠ Trình duyệt hay giữ HTML cũ: mở bàn thử lần đầu sau bản này thì thêm `&moi=<số bất kỳ>` vào địa chỉ (hoặc Ctrl+Shift+R).
 
 ### v0.9.0 — 22/09/2026: TRANG QUẢN LÝ của thầy làm lại (mẫu v28, thầy "ok build" ngay vòng 1) — `?v=11`
 **Hướng lớn thầy chốt (22/09):** andrewclasses.com sau này **trở thành myNetwork** (đa chức năng), làm bài tập chỉ là MỘT phần; trang lớp của

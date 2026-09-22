@@ -6,7 +6,7 @@
 <title>Khám phá · Andrew Classes Network</title>
 <link rel="icon" href="assets/avatar-tron.jpg">
 <link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="css/nw.css?v=11">
+<link rel="stylesheet" href="css/nw.css?v=12">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
 </head>
@@ -14,11 +14,11 @@
 <main class="main hep kp">
   <section id="kpTrang"></section>
 </main>
-<script src="config.js?v=11"></script>
-<script src="js/loi.js?v=11"></script>
-<script src="js/thanh.js?v=11"></script>
-<script src="js/bai.js?v=11"></script>
-<script src="js/khampha.js?v=11"></script>
+<script src="config.js?v=12"></script>
+<script src="js/loi.js?v=12"></script>
+<script src="js/thanh.js?v=12"></script>
+<script src="js/bai.js?v=12"></script>
+<script src="js/khampha.js?v=12"></script>
 <script>
 /* KHÁM PHÁ — v0.7.0 (mẫu v18+v19 thầy chốt 22/09): cổng hoạt động của trung tâm.
    Thông báo quan trọng → NỔI BẬT (bài thầy ghim từ menu ⋯ ở Bảng tin: nwPosts.noiBat) → 4 ô to → trang từng loại.
@@ -126,12 +126,12 @@
     // ---------- trang một loại ----------
     function veLoai(k) {
       var L = LOAI[k], ds = cuaLoai(k); loaiDangXem = k;
-      history.replaceState(null, '', location.pathname + (ph.banThu ? '?thu=1&' : '?') + 'loai=' + k);
+      history.replaceState(null, '', location.pathname + (ph.banThu ? '?thu=' + NW.thamSo('thu') + '&' : '?') + 'loai=' + k);
       trang.innerHTML =
         '<div class="kp-loai-dau" style="--m1:' + L.mau[0] + ';--m2:' + L.mau[1] + '"><button type="button" class="lui" id="kpLui" aria-label="Về Khám phá">' + IC.lui + '</button>' +
           '<span class="hinh">' + icLoai(k) + '</span><div><h1>' + an(L.ten) + '</h1><p>' + an(L.mo) + '</p></div>' + (toi.laThay ? '<button class="btn nho" type="button" id="kpThem" style="background:#fff;color:var(--ink)">' + IC.them + 'Thêm</button>' : '') + '</div>' +
         '<div class="kp-luoi">' + (ds.length ? ds.map(theMuc).join('') : '<div class="card trong" style="grid-column:1/-1">Chưa có mục nào.</div>') + '</div>';
-      $('#kpLui').onclick = function () { history.replaceState(null, '', location.pathname + (ph.banThu ? '?thu=1' : '')); veChinh(); };
+      $('#kpLui').onclick = function () { history.replaceState(null, '', location.pathname + (ph.banThu ? '?thu=' + NW.thamSo('thu') : '')); veChinh(); };
       $$('[data-xem]', trang).forEach(function (b) { b.onclick = function (e) { if (e.target.closest('a,button')) return; xemMuc(MUC.filter(function (m) { return m.id === b.getAttribute('data-xem'); })[0]); }; });
       $$('[data-sua]', trang).forEach(function (b) { b.onclick = function () { popMuc(MUC.filter(function (m) { return m.id === b.getAttribute('data-sua'); })[0]); }; });
       $$('[data-mo]', trang).forEach(function (b) { b.onclick = function () { xemMuc(MUC.filter(function (m) { return m.id === b.getAttribute('data-mo'); })[0]); }; });

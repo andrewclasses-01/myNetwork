@@ -2,6 +2,13 @@
 
 > **Phiên mới đọc khối 🚀 ngay dưới, rồi MỤC A0**, rồi mục A (phiên thiết kế đợt 1), rồi `README.md` (nhật ký từng bản).
 
+## 🔵 22/09/2026 (phiên sau) — **v0.9.1**: bàn thử ĐI LẠI ĐƯỢC giữa các trang
+Thầy yêu cầu "cho các trang liên kết với nhau như khi mở trang thật để tôi dò lỗi". Đã làm: mọi đường trong nhà tự mang theo `?thu=1`/`?thu=thay`
+(`NW.duong/NW.di/NW.thay` + bộ bắt cú bấm `<a>` trong `js/loi.js`, chỉ chạy ở localhost có `?thu=`), các chỗ nhảy trang bằng JS đổi sang `NW.di()`,
+`index.html` trong bàn thử vào thẳng không gọi kho, Đăng xuất → đăng nhập lại thành vòng khép kín. **Vá 1 lỗi thật**: `khampha.html` ép cứng `?thu=1`
+khi bấm ô một loại ⇒ đang xem vai THẦY bị rơi xuống vai học sinh. Chi tiết: README v0.9.1. ⇒ Bảng địa chỉ A4 bên dưới giờ chỉ cần mở MỘT địa chỉ
+(`bangtin.html?thu=1` hoặc `quanly.html?thu=thay`) rồi bấm đi khắp nơi.
+
 ## 🚀 BẮT ĐẦU PHIÊN SAU — thầy dừng tối 22/09/2026 sau v0.9.0 `ee93d55` (main = origin/main, cây sạch)
 
 **Đang ở đâu:** GIAO DIỆN ĐÃ XONG CẢ 6 MẢNG (bảng tin · cá nhân · tin nhắn · khám phá · đăng nhập · quản lý) — v0.5.0 → v0.9.0 đều push

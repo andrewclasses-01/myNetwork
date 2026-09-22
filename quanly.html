@@ -6,19 +6,19 @@
 <title>Quản lý · Andrew Classes Network</title>
 <link rel="icon" href="assets/avatar-tron.jpg">
 <link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="css/nw.css?v=11">
+<link rel="stylesheet" href="css/nw.css?v=12">
 </head>
 <body>
 <main class="ql-main">
   <aside class="ql-cot" id="qlCot"></aside>
   <section class="ql-noi" id="khu"></section>
 </main>
-<script src="config.js?v=11"></script>
-<script src="js/loi.js?v=11"></script>
-<script src="js/thanh.js?v=11"></script>
-<script src="js/bai.js?v=11"></script>
-<script src="js/chat.js?v=11"></script>
-<script src="js/khampha.js?v=11"></script>
+<script src="config.js?v=12"></script>
+<script src="js/loi.js?v=12"></script>
+<script src="js/thanh.js?v=12"></script>
+<script src="js/bai.js?v=12"></script>
+<script src="js/chat.js?v=12"></script>
+<script src="js/khampha.js?v=12"></script>
 <script>
 /* TRANG QUẢN LÝ CỦA THẦY — v0.9.0 (mẫu v28 thầy "ok build" 22/09/2026)
    Cột trái 2 nhóm: BÀI TẬP (nhúng dashboard myLesson — CFG.LINK_DASHBOARD) · NETWORK (nhóm chat · bài đăng ·
@@ -40,7 +40,7 @@
   var MAU_LOAI = { thongBao: '#E0B411', troChoi: '#0E7C6E', giaiDau: '#E0575B', khoaHoc: '#3E7BFA', chuongTrinh: '#F2A93B' };
 
   NW.dungThanh({ tab: 'quanLy' }).then(async function (ph) {
-    if (!NW.toi.laThay) { location.replace('bangtin.html' + (ph.banThu ? '?thu=1' : '')); return; }   // học sinh không vào được trang này
+    if (!NW.toi.laThay) { location.replace(NW.duong('bangtin.html')); return; }   // học sinh không vào được trang này
     var toi = NW.toi, thu = !!ph.banThu;
     var f = thu ? null : await NW.fb();
     var MAU = thu ? duLieuMau() : null;

@@ -174,7 +174,7 @@
       items.push({ ic: chua ? IC.daDoc : IC.chuaDoc, chu: chua ? 'Đánh dấu đã đọc' : 'Đánh dấu chưa đọc', onclick: function () { danhDauChuaDoc(p, !chua); } });
       items.push({ ic: tat ? IC.chuongBat : IC.chuongTat, chu: tat ? 'Bật thông báo' : 'Tắt thông báo', onclick: function () { datTat(p, !tat); } });
       if (p.loai === 'nhom') items.push({ ic: IC.nhom, chu: 'Xem thành viên', onclick: function () { xemThanhVien(p); } });
-      else items.push({ ic: IC.caNhan, chu: 'Xem trang cá nhân', onclick: function () { location.href = 'canhan.html?uid=' + nguoiKia(p).uid; } });
+      else items.push({ ic: IC.caNhan, chu: 'Xem trang cá nhân', onclick: function () { NW.di('canhan.html?uid=' + nguoiKia(p).uid); } });
       if (p.loai !== 'nhom') items.push({ ic: IC.xoa, chu: 'Xoá đoạn chat', nguy: true, onclick: function () { xoaCuoc(p); } });
       items.push({ ic: IC.baoCao, chu: 'Báo cáo', onclick: function () { baoCaoCuoc(p); } });
       NW.menuNho(nut, items);
@@ -465,7 +465,7 @@
         if (toi.laThay) items.push({ ic: IC.thoat, chu: 'Rời nhóm', nguy: true, onclick: function () { roiNhom(p); } });   // v16: HS không rời nhóm
       } else {
         var k = (p.thanhVien || []).filter(function (u) { return u !== toi.uid; })[0];
-        items.push({ ic: IC.caNhan, chu: 'Xem trang cá nhân', onclick: function () { location.href = 'canhan.html?uid=' + k; } });
+        items.push({ ic: IC.caNhan, chu: 'Xem trang cá nhân', onclick: function () { NW.di('canhan.html?uid=' + k); } });
       }
       NW.menuNho(nut, items);
     }

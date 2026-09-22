@@ -323,7 +323,7 @@
     var khungGoc = $('[data-goc]', el);
     if (khungGoc) khungGoc.onclick = function (e) {
       if (e.target.closest('a,button')) return;
-      location.href = 'baidang.html?id=' + khungGoc.getAttribute('data-goc');
+      NW.di('baidang.html?id=' + khungGoc.getAttribute('data-goc'));
     };
 
     // ảnh phóng to — v13: mở cả bộ ảnh của khối đó, bắt đầu từ ảnh bấm
@@ -573,7 +573,7 @@
     // ---- menu ba chấm ----
     $('[data-menu]', el).onclick = function () {
       var nut = this; var items = [];
-      items.push({ ic: IC.link, chu: 'Mở bài này', onclick: function () { location.href = 'baidang.html?id=' + id; } });
+      items.push({ ic: IC.link, chu: 'Mở bài này', onclick: function () { NW.di('baidang.html?id=' + id); } });
       if (cuaToi && !bai.chiaSeTu) items.push({ ic: IC.sua, chu: 'Sửa bài', onclick: suaBai });
       if (cuaToi || toi.laThay) items.push({ ic: IC.xoa, chu: 'Xoá bài', nguy: true, onclick: xoaBai });
       if (!cuaToi) items.push({ ic: IC.baoCao, chu: 'Báo cáo với thầy', onclick: baoCao });

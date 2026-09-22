@@ -6,7 +6,7 @@
 <title>Andrew Classes Network</title>
 <link rel="icon" href="assets/avatar-tron.jpg">
 <link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="css/nw.css?v=11">
+<link rel="stylesheet" href="css/nw.css?v=12">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
 </head>
@@ -70,8 +70,8 @@
   </div>
 </div>
 
-<script src="config.js?v=11"></script>
-<script src="js/loi.js?v=11"></script>
+<script src="config.js?v=12"></script>
+<script src="js/loi.js?v=12"></script>
 <script>
 (function () {
   'use strict';
@@ -107,6 +107,7 @@
     loi('#loiVao', '');
     if (!ma) { $('#inMa').focus(); return; }
     if (ma === ID_THAY) { loi('#loiThay', ''); man('manThay'); return; }   // ID của thầy → màn Google, không hỏi mật khẩu
+    if (NW.laBanThu()) { NW.thay('bangtin.html'); return; }   // bàn thử: gõ ID nào cũng vào thẳng, không gọi kho
     if (!mk) { $('#inMk').focus(); return; }
     var nut = $('#btnVao'); nut.disabled = true; nut.textContent = 'ĐANG VÀO…';
     try { await NW.dangNhap(ma, mk); await sauKhiVao(); }
@@ -118,6 +119,7 @@
   $('#inMk').onkeydown = function (e) { if (e.key === 'Enter') vao(); };
 
   $('#btnGoogle').onclick = async function () {
+    if (NW.laBanThu()) { location.replace('bangtin.html?thu=thay'); return; }   // bàn thử: vào thẳng vai thầy
     loi('#loiThay', ''); this.disabled = true;
     try { await NW.dangNhapThay(); await sauKhiVao(); }
     catch (e) { loi('#loiThay', e.message || NW.chuLoiAuth(e)); }
@@ -147,6 +149,7 @@
   nutOk.onclick = async function () {
     loi('#loiMk', '');
     this.disabled = true; this.textContent = 'ĐANG LƯU…';
+    if (NW.laBanThu()) { NW.thay('bangtin.html'); return; }   // bàn thử: không ghi mật khẩu thật
     try { await NW.datMatKhau(a.value); location.replace('bangtin.html'); }
     catch (e) { loi('#loiMk', NW.chuLoiAuth(e)); this.textContent = 'XONG, VÀO MẠNG'; kiem(); }
   };
@@ -154,6 +157,7 @@
 
   // Khởi động: máy đã có phiên thì đi thẳng (trừ ?vao=1 = ép đăng xuất để gõ mã khác).
   (async function () {
+    if (NW.laBanThu()) { var mk1 = location.hash === '#doimk'; man(mk1 ? 'manDoiMk' : 'manVao'); if (mk1) kiem(); return; }   // bàn thử: không gọi kho
     var epGo = NW.thamSo('vao') === '1';
     if (epGo) { try { await NW.thoat(); } catch (e) { } man('manVao'); return; }
     man('manCho');
