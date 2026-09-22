@@ -888,3 +888,152 @@ body.mo-menu .side{transform:none; visibility:visible; transition:transform .3s 
 .cn-min button .dong .ic{width:10px; height:10px; stroke-width:3}
 .cn-min button .cham{position:absolute; top:-2px; left:-2px; min-width:18px; height:18px; padding:0 5px; border-radius:999px; background:var(--do); color:#fff; font-size:10px; font-weight:800; display:grid; place-items:center; border:2px solid #fff}
 @media (max-width:640px){ .cn-khu,.cn-min{display:none} }
+
+
+/* ============================================================
+   v15 — MẪU TRANG TIN NHẮN (2 cột + bảng thông tin · cụm tin · 7 cảm xúc · trả lời · đã xem)
+   ============================================================ */
+.tn{grid-template-columns:340px minmax(0,1fr); overflow:hidden}
+.tn.mo-info{grid-template-columns:340px minmax(0,1fr) 300px}
+.tn-ds-dau{padding:14px 14px 6px}
+.tn-ds-dau h2{font-size:20px}
+.tn-ds-dau .nut-tron{width:36px; height:36px; background:var(--ground); color:var(--ink)}
+.tn-ds-dau .nut-tron.dam{background:var(--accent-soft); color:var(--accent)}
+.tn-tim{padding:4px 12px 8px}
+.tn-tim .tim-o{display:flex; align-items:center; gap:8px; padding:0 12px; border-radius:999px; background:var(--ground); color:var(--muted)}
+.tn-tim .tim-o .ic{width:17px; height:17px; flex:none}
+.tn-tim .tim-o .ic{position:static; transform:none}
+.tn-tim input{border:none; background:transparent; padding:9px 0 9px 0; font-size:14px; font-weight:500}
+.tn-tim input:focus{border:none}
+.tn-muc{padding:8px 12px; gap:12px; border-radius:12px; margin:0 6px; width:calc(100% - 12px)}
+.tn-muc .av,.tn-muc .av-nhom{width:52px; height:52px; font-size:16px}
+.tn-muc .av-nhom .av{width:34px; height:34px; font-size:11px}
+.tn-muc .ten{display:flex; align-items:center; gap:4px; font-size:14px}
+.tn-muc .cuoi{font-size:12.5px}
+.tn-muc .cuoi .gio{font-size:12px; color:var(--muted); font-weight:600}
+.tn-muc.chua .ten,.tn-muc.chua .cuoi{color:var(--ink); font-weight:800}
+.tn-muc .cham{width:10px; height:10px; background:var(--accent)}
+.tn-muc.chon{background:var(--accent-soft)}
+/* khung phòng */
+.tn-phong{background:var(--surface)}
+.tn-phong-dau{padding:8px 12px; box-shadow:0 1px 0 var(--line); z-index:1}
+.tn-phong-dau .av,.tn-phong-dau .av-nhom{width:42px; height:42px}
+.tn-phong-dau .av-nhom .av{width:28px; height:28px; font-size:10px}
+.tn-phong-dau .ai{flex:1; min-width:0}
+.tn-phong-dau .ten{display:flex; align-items:center; gap:5px}
+.tn-phong-dau .nut-tron{color:var(--accent)}
+.tn-cuon{padding:16px 16px 8px; gap:2px}
+.tin-ai{font-size:10.5px; color:var(--muted); font-weight:700; margin:8px 0 2px 42px}
+.tin{display:flex; gap:8px; align-items:flex-end; max-width:min(72%, 560px); position:relative}
+.tin .av-cho{width:28px; flex:none; align-self:flex-end}
+.tin .av-cho .av{width:28px; height:28px; font-size:10px}
+.tin .than{display:flex; flex-direction:column; min-width:0; position:relative}
+.tin .bong{position:relative; background:var(--ground); border:none; border-radius:18px; padding:8px 12px; font-size:14.5px; line-height:1.4; word-wrap:break-word; color:var(--ink)}
+.tin.ho.dau .bong{border-bottom-left-radius:6px}
+.tin.ho.giua .bong{border-top-left-radius:6px; border-bottom-left-radius:6px}
+.tin.ho.cuoi .bong{border-top-left-radius:6px}
+.tin.toi{align-self:flex-end; flex-direction:row-reverse}
+.tin.toi .than{align-items:flex-end}
+.tin.toi .bong{background:var(--accent); color:#fff}
+.tin.toi .bong a{color:#fff; text-decoration:underline}
+.tin.toi.dau .bong{border-bottom-right-radius:6px}
+.tin.toi.giua .bong{border-top-right-radius:6px; border-bottom-right-radius:6px}
+.tin.toi.cuoi .bong{border-top-right-radius:6px}
+.tin.chi-anh .bong{padding:0; background:transparent; overflow:hidden; border-radius:14px}
+.tin .bong .hinh{display:block; border-radius:14px; overflow:hidden; max-width:260px}
+.tin .bong .hinh img{max-height:320px; width:auto; max-width:100%; display:block}
+.tin .bong .chu{white-space:pre-wrap}
+.tin.chi-tim .bong{background:transparent; padding:2px 0}
+.tin.chi-tim .bong .cx.to{width:40px; height:40px}
+.tin.nhay .bong{animation:tinNhay 1.4s var(--em)}
+@keyframes tinNhay{0%,60%{box-shadow:0 0 0 3px var(--amber)} 100%{box-shadow:none}}
+/* cụm cảm xúc góc bong bóng */
+.tin .bong .cx-cum{position:absolute; right:-4px; bottom:-11px; display:inline-flex; align-items:center; padding:2px 5px 2px 3px; border-radius:999px; background:#fff; box-shadow:0 1px 4px rgba(22,35,42,.2); font-size:10.5px; font-weight:800; color:var(--muted); cursor:pointer}
+.tin.toi .bong .cx-cum{right:auto; left:-4px}
+.tin .bong .cx-cum .cx{width:15px; height:15px; margin-left:-4px}
+.tin .bong .cx-cum .cx:first-child{margin-left:0}
+.tin .bong .cx-cum b{margin-left:3px}
+.tin:has(.cx-cum){margin-bottom:9px}
+/* trích tin trả lời */
+.tin-trich{display:block; max-width:100%; text-align:left; padding:6px 10px 12px; margin-bottom:-8px; border-radius:14px 14px 4px 4px; background:#E6EEEC; color:var(--muted); font-size:12px; font-weight:600; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.tin-trich b{display:block; font-size:11px; color:var(--ink); margin-bottom:1px}
+.tin.toi .tin-trich{background:#CDE6E1}
+/* hàng nút hiện khi rê chuột */
+.tin .nut-tin{position:absolute; top:50%; transform:translateY(-50%); display:flex; gap:2px; opacity:0; transition:opacity .12s; pointer-events:none}
+.tin.ho .nut-tin{left:calc(100% + 6px)}
+.tin.toi .nut-tin{right:calc(100% + 6px)}
+.tin:hover .nut-tin{opacity:1; pointer-events:auto}
+.tin .nut-tin button{width:28px; height:28px; border-radius:50%; display:grid; place-items:center; color:var(--muted)}
+.tin .nut-tin button:hover{background:var(--ground); color:var(--ink)}
+.tin .nut-tin .ic{width:16px; height:16px}
+.tin .gio{position:absolute; bottom:-14px; font-size:10px; opacity:0}
+.tin.ho .gio{left:36px}
+.tin.toi .gio{right:0}
+.tin:hover .gio{opacity:1}
+.tin.mot,.tin.cuoi{margin-bottom:6px}
+/* đã xem */
+.tin-daxem{display:flex; justify-content:flex-start; gap:2px; padding:0 0 4px 36px; margin-top:-2px}
+.tin-daxem.toi{justify-content:flex-end; padding:0 2px 4px 0}
+.tin-daxem .av{width:15px; height:15px; font-size:6px; border:1.5px solid #fff}
+/* ô nhập */
+.tn-nhap-khu{background:var(--surface); border-top:1px solid var(--line)}
+.tn-tra{display:flex; align-items:center; gap:8px; padding:8px 14px 0}
+.tn-tra .chu{flex:1; min-width:0; border-left:3px solid var(--accent); padding-left:10px; line-height:1.3}
+.tn-tra .chu b{display:block; font-size:12px; color:var(--ink)}
+.tn-tra .chu small{display:block; font-size:11.5px; color:var(--muted); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.tn-tra button{width:26px; height:26px; border-radius:50%; display:grid; place-items:center; color:var(--muted)}
+.tn-tra button:hover{background:var(--ground)}
+.tn-tra button .ic{width:14px; height:14px; stroke-width:2.4}
+.tn-nhap{border-top:none; padding:8px 10px 10px; gap:4px}
+.tn-nhap textarea{background:var(--ground); border-color:transparent; min-height:40px; padding:9px 14px; font-size:14.5px}
+.tn-nhap textarea:focus{border-color:var(--accent)}
+.tn-nhap .anh{width:40px; height:40px; color:var(--accent)}
+.tn-nhap .gui{width:40px; height:40px; background:transparent; color:var(--accent)}
+.tn-nhap .gui .ic{width:20px; height:20px}
+.tn-nhap .tim{width:40px; height:40px; border-radius:50%; display:grid; place-items:center; color:var(--accent); flex:none}
+.tn-nhap .tim .ic{fill:currentColor}
+.tn-nhap .tim:hover,.tn-nhap .gui:hover{background:var(--accent-soft)}
+/* bảng thông tin */
+.tn-info{border-left:1px solid var(--line); overflow:auto; background:var(--surface); display:flex; flex-direction:column}
+.tn-info-dau{display:flex; justify-content:flex-end; padding:6px 8px 0}
+.tn-info-ai{display:flex; flex-direction:column; align-items:center; gap:4px; padding:4px 16px 16px; text-align:center}
+.tn-info-ai .av-nhom.to{width:72px; height:72px}
+.tn-info-ai .av-nhom.to .av{width:48px; height:48px; font-size:16px}
+.tn-info-ai .ten{font-weight:800; font-size:16px; display:flex; align-items:center; gap:5px; margin-top:6px}
+.tn-info-ai .phu{font-size:12px; color:var(--muted); font-weight:600}
+.tn-info-ai .btn{margin-top:10px}
+.tn-info-muc{padding:12px 16px; border-top:1px solid var(--line)}
+.tn-info-muc h4{margin:0 0 10px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+.tn-info-anh{display:grid; grid-template-columns:repeat(3,1fr); gap:4px}
+.tn-info-anh button{aspect-ratio:1; border-radius:8px; overflow:hidden; background:var(--ground)}
+.tn-info-anh img{width:100%; height:100%; object-fit:cover}
+.tn-info-nut{display:flex; flex-direction:column; gap:2px}
+.tn-info-nut button{display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:10px; font-size:13px; font-weight:700; text-align:left}
+.tn-info-nut button:hover{background:var(--ground)}
+.tn-info-nut button .ic{width:17px; height:17px; color:var(--muted)}
+.tn-info-nut button.nguy{color:var(--do)}
+.tn-info-nut button.nguy .ic{color:var(--do)}
+@media (max-width:1000px){
+  .tn.mo-info{grid-template-columns:340px minmax(0,1fr)}
+  .tn-info{position:absolute; inset:0; left:auto; width:min(320px, 100%); z-index:5; box-shadow:-8px 0 30px rgba(22,35,42,.12)}
+  .tn{position:relative}
+}
+@media (max-width:640px){
+  .tn,.tn.mo-info{grid-template-columns:minmax(0,1fr)}
+  .tn-info{width:100%}
+  .tin{max-width:82%}
+  .tin .nut-tin{display:none}   /* điện thoại: giữ tin = bảng cảm xúc, trả lời qua ⋯ trong menu giữ */
+}
+
+
+/* ---------- v16: menu ⋯ từng cuộc chat · nhóm đứng đầu ---------- */
+.tn-muc{position:relative; cursor:pointer; -webkit-user-select:none; user-select:none}
+.tn-muc .menu{position:absolute; right:10px; top:50%; transform:translateY(-50%); width:32px; height:32px; border-radius:50%; display:grid; place-items:center;
+  background:#fff; color:var(--muted); box-shadow:0 1px 4px rgba(22,35,42,.18); opacity:0; transition:opacity .12s}
+.tn-muc .menu .ic{width:17px; height:17px}
+.tn-muc:hover .menu,.tn-muc .menu:focus-visible{opacity:1}
+.tn-muc:hover .cham,.tn-muc:hover .cuoi .gio{visibility:hidden}
+.tn-muc .ten .tat{display:inline-grid; color:var(--muted); margin-left:2px}
+.tn-muc .ten .tat .ic{width:13px; height:13px}
+.tn-muc.nhom .av-nhom{width:52px; height:52px}
+@media (hover:none){ .tn-muc .menu{display:none} }   /* điện thoại: giữ cuộc chat = mở menu */

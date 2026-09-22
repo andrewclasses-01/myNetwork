@@ -154,7 +154,13 @@
     traLoi: P('<polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/>'),
     gan: P('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 4v6M22 7h-6"/>'),
     camGiac: P('<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>'),
-    tien: P('<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>')
+    tien: P('<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>'),
+    thongTin: P('<circle cx="12" cy="12" r="9.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".9" fill="currentColor" stroke="none"/>'),
+    // v16 — menu từng cuộc chat (đen trắng kiểu Facebook)
+    chuongTat: P('<path d="M8.6 3.7A5.8 5.8 0 0 1 17.8 8.5c0 3.1.6 5.2 1.3 6.6"/><path d="M6.2 8.5c0 6.5-2.7 8.3-2.7 8.3h13"/><path d="M10.4 20.5a1.8 1.8 0 0 0 3.2 0"/><path d="M3 3l18 18"/>'),
+    chuongBat: P('<path d="M6.2 8.5a5.8 5.8 0 0 1 11.6 0c0 6.5 2.7 8.3 2.7 8.3H3.5s2.7-1.8 2.7-8.3"/><path d="M10.4 20.5a1.8 1.8 0 0 0 3.2 0"/>'),
+    chuaDoc: P('<rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m2.5 7.5 9.5 6.5 9.5-6.5"/><circle cx="19" cy="6" r="3" fill="currentColor" stroke="#fff" stroke-width="1.5"/>'),
+    daDoc: P('<rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m2.5 7.5 9.5 6.5 9.5-6.5"/>')
   };
 
   // Cảm xúc — cùng bộ với chat lớp bên myLesson (lop.html CAM_XUC)

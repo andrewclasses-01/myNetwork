@@ -142,6 +142,7 @@
         && nwToi() in request.resource.data.thanhVien
         && request.resource.data.taoBoi == nwToi()
         && request.resource.data.loai in ['rieng', 'nhom']
+        && (request.resource.data.loai == 'rieng' || laThay())   // v0.6.0: CHỈ THẦY tạo nhóm
         && request.resource.data.thanhVien.size() >= 2
         && request.resource.data.thanhVien.size() <= 30
         && (request.resource.data.loai == 'nhom'
@@ -149,12 +150,18 @@
                 && id == request.resource.data.thanhVien[0] + '__' + request.resource.data.thanhVien[1]
                 && nwNhanDuoc(request.resource.data.thanhVien[0] == nwToi()
                                 ? request.resource.data.thanhVien[1] : request.resource.data.thanhVien[0])));
-      // Thành viên: cập nhật tin cuối / mốc đã đọc; nhóm còn đổi tên, thêm/bớt thành viên.
+      // Thành viên: cập nhật tin cuối / mốc đã đọc / cờ riêng từng em (tat · chuaDoc · anLuc — v0.6.0);
+      // nhóm: CHỈ THẦY đổi tên, thêm/bớt thành viên (v0.6.0: học sinh không rời nhóm thầy lập).
       allow update: if nwVao() && (nwToi() in resource.data.thanhVien || laThay())
         && request.resource.data.diff(resource.data).affectedKeys()
-             .hasOnly(['tinCuoi', 'capNhat', 'docLuc', 'ten', 'thanhVien', 'tv', 'anh'])
-        && (resource.data.loai == 'nhom'
-            || !request.resource.data.diff(resource.data).affectedKeys().hasAny(['thanhVien', 'tv', 'ten', 'anh']));
+             .hasOnly(['tinCuoi', 'capNhat', 'docLuc', 'ten', 'thanhVien', 'tv', 'anh', 'tat', 'chuaDoc', 'anLuc'])
+        && (laThay()
+            || !request.resource.data.diff(resource.data).affectedKeys().hasAny(['thanhVien', 'tv', 'ten', 'anh']))
+        // cờ riêng: chỉ sửa ô của chính mình trong 3 map
+        && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['tat', 'chuaDoc', 'anLuc'])
+            || (request.resource.data.get('tat', {}).diff(resource.data.get('tat', {})).affectedKeys().hasOnly([nwToi()])
+                && request.resource.data.get('chuaDoc', {}).diff(resource.data.get('chuaDoc', {})).affectedKeys().hasOnly([nwToi()])
+                && request.resource.data.get('anLuc', {}).diff(resource.data.get('anLuc', {})).affectedKeys().hasOnly([nwToi()])));
       allow delete: if laThay();
 
       match /tin/{mid} {
@@ -163,11 +170,17 @@
         allow create: if nwVao()
           && nwToi() in get(/databases/$(database)/documents/nwChats/$(id)).data.thanhVien
           && request.resource.data.uid == nwToi()
-          && request.resource.data.keys().hasOnly(['uid', 'ten', 'anh', 'chu', 'hinh', 'luc'])
+          && request.resource.data.keys().hasOnly(['uid', 'ten', 'anh', 'chu', 'hinh', 'luc', 'camXuc', 'traLoi'])   // v0.6.0: cảm xúc + trả lời
           && request.resource.data.chu is string && request.resource.data.chu.size() <= 1000
           && (request.resource.data.chu.size() > 0 || request.resource.data.hinh.size() > 0)
           && request.resource.data.luc is number;
-        allow update, delete: if laThay();
+        // v0.6.0: ai trong phòng cũng thả/gỡ cảm xúc — CHỈ ô của mình trong map camXuc
+        allow update: if nwVao()
+          && nwToi() in get(/databases/$(database)/documents/nwChats/$(id)).data.thanhVien
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['camXuc'])
+          && request.resource.data.get('camXuc', {}).diff(resource.data.get('camXuc', {})).affectedKeys().hasOnly([nwToi()]);
+        // v0.6.0: thu hồi tin = tác giả hoặc thầy
+        allow delete: if nwVao() && (resource.data.uid == nwToi() || laThay());
       }
     }
 ```

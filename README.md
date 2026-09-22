@@ -9,7 +9,19 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 
 ⭐ 22/09: phiên thiết kế đợt 1 đã build v0.2.0→v0.4.0 (xem `BAN GIAO.md` mục A). Thầy dừng cuối phiên, ⬜ chưa bấm tay; còn mở: tin nhắn · khám phá · đăng nhập. Vẫn chưa dán luật, chưa tạo tài khoản.
 
-## Bản hiện tại — v0.5.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+## Bản hiện tại — v0.6.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+
+### v0.6.0 — 22/09/2026: TRANG TIN NHẮN theo mẫu v15 + v16 thầy chốt ("ok build" 22/09) — `?v=8`
+Mẫu: `D:\OTHERS\CLAUDE\myNetwork - thiet ke\mau-v15\` (8810) → `mau-v16\` (8811), bản chép repo v0.5.0; chép về `js/chat.js` `js/loi.js` `css/nw.css`. `Chat.dung` viết lại (khối menu phòng / chọn người giữ nguyên).
+- **Cột trái**: ô tìm "Tìm trong tin nhắn" · avatar 52 + chấm online · tên (thầy tích vàng) · "Em: … · giờ ngắn" (12:05 / T3 / 18/8) · chưa đọc đậm + chấm · **nhóm luôn đứng đầu** (`xepPhong`) · cuộc em đã xoá (`anLuc[uid] >= capNhat`) giấu tới khi có tin mới · **menu ⋯ từng cuộc** (rê chuột hiện ⋯; điện thoại giữ 450 ms): Đánh dấu chưa đọc/đã đọc (`chuaDoc[uid]` + `docLuc`) · Tắt/Bật thông báo (`tat[uid]`, icon chuông gạch cạnh tên) · Xem trang cá nhân (nhóm: Xem thành viên) · Xoá đoạn chat (`anLuc[uid]`, không có với nhóm) · Báo cáo (`nwBaoCao` loai `chat`).
+- **HS không tạo nhóm** (nút chỉ hiện với thầy) · **HS không rời nhóm** (bảng thông tin ghi "Nhóm do thầy lập — em ở trong nhóm này"); thầy vẫn thêm/đổi tên/rời.
+- **Khung chat**: cụm tin theo người < 5 phút (bo góc đầu/giữa/cuối, avatar ở tin cuối cụm) · ngăn ngày · rê chuột hiện 😊 ↩ ⋯ cạnh tin (điện thoại: giữ tin = bảng 7 cảm xúc) · **cảm xúc** `tin.camXuc{uid:mã}`, cụm góc bong bóng, bấm → ai thả · **trả lời** `tin.traLoi{id,uid,ten,chu,hinh}`: trích tin gốc dính trên bong bóng (bấm → cuộn tới + nháy), dải "Đang trả lời X ✕" (Esc thôi) · **đã xem** = avatar 15 px dưới tin cuối mỗi người đọc tới (`docLuc[uid] >= luc`) · tin chỉ ❤️ vẽ tim to · ảnh bong bóng không viền, bấm xem cả bộ ảnh của cuộc, gửi nhiều ảnh · menu ⋯: sao chép / trả lời / **thu hồi** (của mình hoặc thầy) · ô nhập "Aa" + ảnh + gửi/❤️.
+- **Nút ⓘ → bảng thông tin** (cột 3 khi ≥ 1000 px, phủ phải khi hẹp, phủ toàn màn ≤ 640): avatar to, Trang cá nhân / Thành viên, Ảnh đã gửi (lưới 3), nhóm: thêm thành viên · đổi tên · (thầy) rời.
+- Icon mới `IC.thongTin · chuongTat · chuongBat · chuaDoc · daDoc`. `Chat.danhDauDoc` nay xoá luôn cờ `chuaDoc`.
+- **Luật Firestore** (`tai-lieu/`, ⬜ chưa dán): `nwChats` create nhóm CHỈ thầy; update thêm `tat/chuaDoc/anLuc` (chỉ ô mình), `thanhVien/tv/ten/anh` CHỈ thầy; `tin` create thêm `camXuc`,`traLoi`; update `camXuc` ô mình; delete = tác giả hoặc thầy.
+- Kiểm: bàn thử `tinnhan.html?thu=1` (5 cuộc mẫu, MINH ANH đủ kiểu tin), console sạch, 375 px không tràn, bấm thật menu ⋯ / đánh dấu chưa đọc / trả lời / ⓘ. ⬜ Thầy chưa bấm tay.
+
+## Bản trước — v0.5.0 (22/09/2026)
 
 ### v0.5.0 — 22/09/2026: BẢNG TIN đợt 2 theo mẫu v13 + v14 thầy chốt ("ok build" 22/09) — `?v=7`
 Mẫu: `D:\OTHERS\CLAUDE\myNetwork - thiet ke\mau-v13\` (cổng 8808) và `mau-v14\` (8809) — là BẢN CHÉP repo có sửa, nên đợt này chép thẳng `js/bai.js` `js/loi.js` `js/thanh.js` `css/nw.css` `config.js` + `mau-v14.html` → `bangtin.html` về, rồi gắn phần thật.
