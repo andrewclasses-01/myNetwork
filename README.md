@@ -5,7 +5,9 @@ bảng tin · đăng bài/ảnh · cảm xúc · bình luận · chia sẻ · ti
 Dùng chung Firebase `aword-70dae` với AWord/myLesson/mySpeaking; sẽ gắn vào myLesson web
 (andrewclasses.com) thành một hệ có 5 tab **TRANG BÀI TẬP · BẢNG TIN · TIN NHẮN · KHÁM PHÁ · CÁ NHÂN**.
 
-Kế hoạch + lý do từng quyết định: **`KE HOACH XAY DUNG.md`** (đọc trước khi sửa gì).
+Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file + việc còn mở), rồi **`KE HOACH XAY DUNG.md`** (lý do từng quyết định).
+
+⭐ Thầy chốt 20/09: **phiên sau THIẾT KẾ THÊM giao diện trước, gắn chức năng thật sau** — chưa dán luật, chưa tạo tài khoản.
 
 ## Bản hiện tại — v0.1.0 (20/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
 
