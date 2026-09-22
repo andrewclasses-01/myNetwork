@@ -63,6 +63,8 @@
     hop.innerHTML = '<div class="thanh-in">' +
       '<div class="trai">' + avEm + '</div>' +
       '<nav class="tabs">' + TABS.map(function (t) {
+        // v0.9.0 thầy chốt: thầy không có bài tập — tab đầu của thầy là QUẢN LÝ (quanly.html); học sinh vẫn TRANG BÀI TẬP
+        if (t.ma === 'baiTap' && toi.laThay) t = { ma: 'quanLy', chu: 'QUẢN LÝ', ic: IC.quanLy, href: 'quanly.html' + (NW.laBanThu() ? '?thu=thay' : '') };
         return '<a class="tab' + (t.ma === tab ? ' chon' : '') + '" data-tab="' + t.ma + '" data-nh="' + t.chu + '" href="' + an(t.href) + '" title="' + t.chu + '" aria-label="' + t.chu + '">' + t.ic + '</a>';
       }).join('') + '</nav>' +
       '<div class="phai"><button class="nut-menu" id="nutMenu" title="Menu" aria-label="Menu">' + IC.menu3 + '</button></div>' +
@@ -260,8 +262,9 @@
       (nut || '<a class="btn primary wide" href="index.html?vao=1">Về màn đăng nhập</a>') + '</div></div>';
   }
 
-  // Dữ liệu giả cho bàn thử `?thu=1` (chỉ localhost).
+  // Dữ liệu giả cho bàn thử `?thu=1` (vai học sinh) / `?thu=thay` (vai thầy) — chỉ localhost.
   function toiBanThu() {
+    if (NW.thamSo('thu') === 'thay') return { uid: 'gv', ten: 'Thầy Andrew', lop: 'GV', cacLop: [], vaiTro: 'gv', anh: 'assets/avatar-tron.jpg', bia: '', gioiThieu: '', laThay: true, phaiDoiMk: false, khoa: false };   // v0.9.0
     return { uid: 'hs_0', ten: 'BẠN THỬ', lop: 'A1C', cacLop: ['A1C'], vaiTro: 'hs', anh: '', bia: '', gioiThieu: 'Tài khoản bàn thử', laThay: false, phaiDoiMk: false, khoa: false };
   }
 
@@ -276,7 +279,7 @@
         { id: 't3', loai: 'binhLuan', tuUid: 'gv', tuTen: 'Thầy Andrew', tuAnh: 'assets/avatar-tron.jpg', chu: 'Cảm ơn em, đội em nói rất tự tin đó!', luc: t0 - 2700e3, daDoc: true, link: 'baidang.html?id=m6' }
       ];
       veThanh(o.tab); capNhatCham();
-      return { user: null, hoSo: NW.toi, laThay: false, banThu: true };
+      return { user: null, hoSo: NW.toi, laThay: !!NW.toi.laThay, banThu: true };
     }
     var ph = await NW.phien();
     if (!ph) { location.replace('index.html'); return new Promise(function () { }); }

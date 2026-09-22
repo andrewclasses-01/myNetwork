@@ -9,7 +9,42 @@ Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file
 
 ⭐ 22/09: phiên thiết kế đợt 1 đã build v0.2.0→v0.4.0 (xem `BAN GIAO.md` mục A). Thầy dừng cuối phiên, ⬜ chưa bấm tay; còn mở: tin nhắn · khám phá · đăng nhập. Vẫn chưa dán luật, chưa tạo tài khoản.
 
-## Bản hiện tại — v0.8.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+## Bản hiện tại — v0.9.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
+
+### v0.9.0 — 22/09/2026: TRANG QUẢN LÝ của thầy làm lại (mẫu v28, thầy "ok build" ngay vòng 1) — `?v=11`
+**Hướng lớn thầy chốt (22/09):** andrewclasses.com sau này **trở thành myNetwork** (đa chức năng), làm bài tập chỉ là MỘT phần; trang lớp của
+học sinh nằm ở tab TRANG BÀI TẬP; thẻ bài vẫn mở trang bài như cũ. **Chưa chuyển ngay** — build xong hết mọi thứ đã, HS vẫn đang dùng myLesson web.
+- **Thanh trên**: thầy không có bài tập ⇒ tab đầu của thầy là **QUẢN LÝ** (`IC.quanLy` 4 ô, `quanly.html`); học sinh vẫn TRANG BÀI TẬP.
+- **`quanly.html`** viết lại: **cột trái** (dính khi cuộn; điện thoại = dải cuộn ngang) 2 nhóm — *BÀI TẬP → Trang bài tập* · *NETWORK → Nhóm chat · Bài đăng ·
+  Nổi bật · Sự kiện & Khám phá · Báo cáo (chấm đỏ số mới) · Bài đã ẩn · Từ cấm · Tài khoản · Lớp*. Thêm mục = thêm dòng `MUC_QL`. `?muc=<ma>` mở thẳng mục.
+  - **Trang bài tập** = khung nhúng nguyên dashboard myLesson (`CFG.LINK_DASHBOARD` = `https://andrewclasses.com/dashboard.html`) — luôn y hệt, sửa myLesson
+    một nơi. Khi hai trang về cùng nhà thì trỏ đường cùng nhà (VD `baitap/dashboard.html`) và dùng chung phiên đăng nhập. ⚠ Trên localhost khung là *khác nhà*
+    ⇒ phải gõ mã quản lý riêng trong khung. Dashboard vẫn có đầu trang riêng (bấm mở menu quà/nghỉ) — khi gộp cân nhắc giấu (việc bên myLesson).
+  - **Nhóm chat**: thẻ từng nhóm (thành viên · tin cuối); dải vàng nhắc lớp chưa có nhóm + nút tạo nhanh; pop-up tạo nhóm **Cả lớp** (mọi em đang có trong lớp,
+    ghi `lop` vào phòng) / **Tự chọn từng em** (chọn nhiều, lọc lớp, tìm tên) + ảnh nhóm (nén 512px, Storage `_nhom`); menu ⋯: mở chat · thành viên (thêm/bớt:
+    `arrayUnion/arrayRemove` + `tv.<uid>`) · đổi tên/ảnh · xoá nhóm (`deleteDoc` — tin con không tự mất). Thông báo `loai:'nhom'` cho em được thêm.
+    ⬜ Em mới vào lớp **chưa tự vào nhóm lớp** — công cụ tạo tài khoản sau này nên thêm (chạy khoá quản trị); tạm thời thầy thêm tay.
+  - **Bài đăng**: 100 bài mới nhất toàn mạng, tìm + chip lớp + chip (Nổi bật / Đang ẩn / Bị báo cáo = có báo cáo `moi` trỏ tới / Bài của thầy); mỗi bài Xem ·
+    Ghim/Gỡ nổi bật (`noiBat`+`noiBatLuc`) · Ẩn/Hiện (`an`) · Xoá hẳn (hỏi lại, nhắc "thường chỉ cần ẨN").
+  - **Nổi bật**: dải "học sinh sẽ thấy" (thẻ `.kp-bai` như Khám phá) + danh sách kéo ≡ / ↑↓ xếp thứ tự → gán lại `noiBatLuc` cách nhau 1 s ghi MỘT `writeBatch`;
+    Gỡ; "Ghim thêm bài" chọn từ bài mới nhất chưa ghim.
+  - **Sự kiện & Khám phá**: mọi mục nwKhamPha (kể cả đang ẩn) nhóm theo loại có màu, trạng thái (Đang hiện / Sắp tới / Hết hạn / Đang ẩn; giải đấu Sắp–Đang–Đã
+    kết thúc), ghim; menu ⋯ Sửa · Ghim · Ẩn/Hiện · Xoá hẳn; đúp hàng = sửa. Pop-up thêm/sửa **dùng chung** với trang Khám phá qua **`js/khampha.js` mới**
+    (`NW.KhamPha = { LOAI, TEN_LOAI, icLoai, ngayInput, docNgay, popMuc(m, {loai, banThu, xong(moi, 'them'|'sua'|'an')}) }`) — tách từ khampha.html, không còn
+    hai bản form.
+  - **Báo cáo · Bài đã ẩn · Từ cấm · Tài khoản · Lớp** làm lại cùng phong cách: báo cáo dạng thẻ (kể cả báo cáo đoạn chat → nút "Mở đoạn chat"); tài khoản có
+    ONLINE (`NW.dangOnline`), "CHƯA ĐỔI" mật khẩu, Khoá/Mở khoá (hỏi lại khi khoá), tìm tên/mã; Lớp có Số em · Đang online · Nhóm chat + nút "Tạo nhóm chat"
+    nhảy sang mục Nhóm mở sẵn pop-up cho lớp đó.
+- **Bàn thử vai thầy `?thu=thay`** (localhost): `NW.laBanThu()` nhận `1|thay`; `thanh.js` `toiBanThu()` trả hồ sơ thầy `laThay:true`; mọi trang khác cũng chạy được
+  với vai thầy (VD `khampha.html?thu=thay` thấy nút thêm mục). Quản lý bàn thử dùng dữ liệu mẫu (`duLieuMau()`), mọi lượt ghi chỉ đổi trên máy.
+- Kho/luật: KHÔNG cần đổi luật — mọi việc trang này ghi đã nằm trong luật v0.6.0/0.7.0 (nwChats thầy tạo/sửa/xoá · nwPosts thầy `an/noiBat/noiBatLuc`/xoá ·
+  nwKhamPha laThay · nwBaoCao · nwCauHinh · nwUsers.khoa). Phòng nhóm có thêm trường `lop` (chỉ ghi lúc tạo; create không giới hạn khoá). Không thêm chỉ mục
+  (truy vấn nhóm: `where loai=='nhom'` rồi xếp trên máy).
+- CSS: khối `v0.9.0 (mẫu v28)` `.ql-*` nối vào `nw.css`.
+- Kiểm: bản thật cổng 8795 `quanly.html?thu=thay` — console sạch, 10 mục vẽ đúng, pop-up thêm mục ghi vào danh sách; `khampha.html?thu=thay` pop-up chung vẫn
+  chạy; `quanly.html?thu=1` (học sinh) bị đẩy về bảng tin. ⬜ Thầy chưa bấm tay với kho thật (chưa có tài khoản).
+
+## Bản trước — v0.8.0 (22/09/2026)
 
 ### v0.8.0 — 22/09/2026: MÀN ĐĂNG NHẬP làm lại (mẫu v20 → v27, 8 vòng, thầy "ok build") — `?v=10`
 Chốt của thầy (không hỏi lại): **tiếng Việt hết** · **bỏ mọi hướng dẫn thừa** (học sinh tự hiểu) · ô nhập **không icon**, chữ mờ "Andrew Classes ID" / "Mật khẩu" **nhỏ, mảnh, bấm vào là ẩn** (chưa gõ cũng ẩn) · **không có nút "Thầy đăng nhập"** — thầy gõ ID của mình (`CFG.ID_THAY` = `ANDREW`) → sang màn *"Xin chào thầy Andrew"* + nút *Đăng nhập bằng Google* · *Quên mật khẩu?* chính giữa · **bỏ chữ "Đăng nhập"** trong thẻ · **logo luôn trong thẻ** · máy tính: cột trái = **hình minh hoạ thầy gửi** (`assets/dang-nhap.webp`, nén từ PNG 1,4 MB → 180 KB, 960 px, nền trong) + slogan **"Cùng khám phá những *bài học thú vị.*"** (đoạn sau xanh dương), hình 440 px, slogan 22 px, **mép dưới slogan = mép dưới thẻ** ở mọi bề ngang (lưới `align-items:end`, không dịch cứng) · điện thoại chỉ có thẻ.

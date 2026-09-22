@@ -150,6 +150,7 @@
                 && id == request.resource.data.thanhVien[0] + '__' + request.resource.data.thanhVien[1]
                 && nwNhanDuoc(request.resource.data.thanhVien[0] == nwToi()
                                 ? request.resource.data.thanhVien[1] : request.resource.data.thanhVien[0])));
+      // v0.9.0: trang Quản lý của thầy tạo nhóm 'Cả lớp' ghi thêm trường `lop` (chỉ lúc create — create không giới hạn khoá; update không cho đổi).
       // Thành viên: cập nhật tin cuối / mốc đã đọc / cờ riêng từng em (tat · chuaDoc · anLuc — v0.6.0);
       // nhóm: CHỈ THẦY đổi tên, thêm/bớt thành viên (v0.6.0: học sinh không rời nhóm thầy lập).
       allow update: if nwVao() && (nwToi() in resource.data.thanhVien || laThay())

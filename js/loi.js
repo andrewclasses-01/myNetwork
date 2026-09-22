@@ -114,6 +114,7 @@
   // ---------- ICON (Lucide-style, stroke) ----------
   var P = function (d) { return '<svg class="ic" viewBox="0 0 24 24">' + d + '</svg>'; };
   NW.IC = {
+    quanLy: P('<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="11" width="8" height="10" rx="2"/><rect x="3" y="14" width="8" height="7" rx="2"/>'),   // v0.9.0: tab QUẢN LÝ của thầy (4 ô)
     baiTap: P('<path d="M8.5 21H5.2A1.7 1.7 0 0 1 3.5 19.3V4.2A1.7 1.7 0 0 1 5.2 2.5h8.3l5 5v3.3"/><path d="M13.5 2.5v4.2a1 1 0 0 0 1 1h4"/><path d="M6.8 9.6h4M6.8 12.6h7M6.8 15.6h5.2"/><path d="M11.3 21.5l.9-3.5 6.5-6.5a1.85 1.85 0 0 1 2.6 2.6l-6.5 6.5z"/><path d="M17.4 12.8l2.6 2.6"/>'),  // v14 theo mẫu Flaticon paper_10538038 (giấy gấp góc + bút chì)
     bangTin: P('<path d="M3 10.8 12 3.5l9 7.3"/><path d="M5.5 9.3V20.5h13V9.3"/><path d="M10 20.5v-5.5h4v5.5"/>'),  // v0.4.0 ngôi nhà (bảng tin)
     tinNhan: P('<path d="M12.5 2.5a8.5 8.5 0 1 1-4.6 15.6L3 21.5l1.6-5.2A8.5 8.5 0 0 1 12.5 2.5z"/><circle cx="8.8" cy="11" r="1.2" fill="currentColor" stroke="none"/><circle cx="12.5" cy="11" r="1.2" fill="currentColor" stroke="none"/><circle cx="16.2" cy="11" r="1.2" fill="currentColor" stroke="none"/>'),  // v0.3.1 theo mẫu Flaticon thầy gửi
@@ -804,6 +805,6 @@
 
   // Tham số URL
   NW.thamSo = function (ten) { return new URLSearchParams(location.search).get(ten); };
-  // Cửa bàn thử: `?thu=1` cho phép xem giao diện với dữ liệu mẫu, KHÔNG ghi gì.
-  NW.laBanThu = function () { return NW.thamSo('thu') === '1' && /^(localhost|127\.0\.0\.1)$/.test(location.hostname); };
+  // Cửa bàn thử: `?thu=1` (vai học sinh) / `?thu=thay` (vai thầy, v0.9.0) xem giao diện với dữ liệu mẫu, KHÔNG ghi gì.
+  NW.laBanThu = function () { return /^(1|thay)$/.test(NW.thamSo('thu') || '') && /^(localhost|127\.0\.0\.1)$/.test(location.hostname); };
 })();
