@@ -7,7 +7,7 @@ Dùng chung Firebase `aword-70dae` với AWord/myLesson/mySpeaking; sẽ gắn v
 
 Phiên mới đọc **`BAN GIAO.md`** trước (trạng thái + bản đồ file + việc còn mở), rồi **`KE HOACH XAY DUNG.md`** (lý do từng quyết định).
 
-⭐ Thầy chốt 20/09: **phiên sau THIẾT KẾ THÊM giao diện trước, gắn chức năng thật sau** — chưa dán luật, chưa tạo tài khoản.
+⭐ 22/09: phiên thiết kế đợt 1 đã build v0.2.0→v0.4.0 (xem `BAN GIAO.md` mục A). Thầy dừng cuối phiên, ⬜ chưa bấm tay; còn mở: tin nhắn · khám phá · đăng nhập. Vẫn chưa dán luật, chưa tạo tài khoản.
 
 ## Bản hiện tại — v0.4.0 (22/09/2026) · ⬜ CHƯA LIVE, chưa dán luật, chưa tạo tài khoản
 
