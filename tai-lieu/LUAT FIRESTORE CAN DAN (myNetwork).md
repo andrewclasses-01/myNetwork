@@ -1,6 +1,7 @@
 # LUẬT FIRESTORE CẦN DÁN — myNetwork (20/09/2026)
 
-> ⬜ **CHƯA DÁN.** Chưa dán thì trang mạng xã hội mở được, đăng nhập được (Auth), nhưng MỌI phép
+> ✅ **ĐÃ DÁN + PUBLISH 24/09/2026 14:31** (bản gộp ở `D:\OTHERS\CLAUDE\myNetwork - thiet ke\LUAT DAN 24-09-2026\`). Dòng dưới là ghi chú cũ:
+> ~~CHƯA DÁN.~~ Chưa dán thì trang mạng xã hội mở được, đăng nhập được (Auth), nhưng MỌI phép
 > đọc/ghi kho đều báo *"Kho từ chối"* (permission-denied). Không ảnh hưởng gì tới AWord/myLesson/
 > mySpeaking — mọi khối mới đều bắt đầu bằng `nw`, không đụng khối cũ.
 >

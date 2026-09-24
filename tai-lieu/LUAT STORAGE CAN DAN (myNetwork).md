@@ -1,6 +1,7 @@
 # LUẬT STORAGE CẦN DÁN — myNetwork (20/09/2026)
 
-> ⬜ **CHƯA DÁN.** Ảnh bài đăng / ảnh đại diện / ảnh bìa / ảnh trong tin nhắn tải lên Firebase Storage
+> ✅ **ĐÃ DÁN + PUBLISH 24/09/2026 14:31.** Ghi chú cũ:
+> ~~CHƯA DÁN.~~ Ảnh bài đăng / ảnh đại diện / ảnh bìa / ảnh trong tin nhắn tải lên Firebase Storage
 > (bucket `aword-70dae.firebasestorage.app`, cùng project). Đo 02/09/2026: bucket này đang KHOÁ
 > (403 với mọi đường) — đúng, vì chỉ myStudent ghi bằng khoá quản trị. Khối dưới **CHỈ mở thư mục
 > `nw/`**, không đụng `mystudentAnhMat`/ảnh mặt.

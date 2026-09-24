@@ -3,6 +3,20 @@
 > **Phiên mới đọc khối 🚀 24/09 ngay dưới là đủ.** Khối 🚀 23/09 bên dưới vẫn đúng cho phần code myNetwork (repo này).
 > Cần sâu hơn: `README.md` (nhật ký từng bản) → mục A0/A → `KE HOACH XAY DUNG.md`.
 
+## ⭐ 24/09 CHIỀU — CHẶNG 1 (KỸ THUẬT: đăng nhập Firebase Auth) ĐÃ LÀM TRÊN TRANG THỬ — ⬜ chờ thầy thử live + "ok"
+Thầy chọn thứ tự: **kỹ thuật trước** → cá nhân → tin nhắn → bảng tin → thông báo/tìm kiếm → khám phá → Network trong quản lý.
+- ✅ **159 tài khoản** tạo thật (`tools/tao-tai-khoan.mjs`, 9 lớp/khoá, 0 lỗi) — đọc lại tận kho: 159 Auth + 159 `nwUsers` + claims + `phaiDoiMk:true` + `nwCauHinh/lop`.
+- ✅ **Luật Firestore + Storage ĐÃ SỐNG** (thầy bấm Publish 24/09 14:31; Claude dán bằng CodeMirror `view.dispatch` — bộ kiểm quyền CHẶN Claude bấm Publish).
+  Đọc lại bằng khoá quản trị: khớp TỪNG KÝ TỰ bản soạn ở `D:\OTHERS\CLAUDE\myNetwork - thiet ke\LUAT DAN 24-09-2026\` (ngoài repo công khai vì có email thầy).
+  ⚠ Bẫy Console mới: dispatch xong KHÔNG hiện nút Publish ⇒ phải GÕ THẬT 1 phím trước (dấu cách cuối dòng 1) rồi mới dispatch bản đầy đủ (bỏ dấu cách đó).
+- ✅ **Email/Password đã bật** (thầy, Email link TẮT). Tên miền không cần cho kiểu mật khẩu.
+- ⬜ **6 chỉ mục CHƯA tạo** (bảng trong `tai-lieu/CHI MUC FIRESTORE.md`) — cần từ chặng Trang cá nhân/Tin nhắn trở đi.
+- ✅ Kho thử `ab17455`: ô mật khẩu mở · "Quên mật khẩu?" → hộp Liên hệ · `js/nw-phien.js` (mới) · màn ĐẶT MẬT KHẨU MỚI (≥6, khác ID, nhập lại khớp) ·
+  máy nhớ em mà mất phiên Firebase ⇒ bắt đăng nhập lại (điền sẵn ID) · phụ huynh + mã quản lý vào như cũ. Thử chuột thật trên máy với tài khoản HÀ ANH (hs_142)
+  rồi **trả về** bằng `--reset hs_142`; thử live: sai mật khẩu báo đúng.
+- ⬜ Trang lớp/khoá CHƯA đòi phiên Firebase (vẫn đọc localStorage) — gắn vào chặng 2 khi trang cần biết "em là ai".
+- ⚠ Luật `nwKhamPha`: `allow delete` dùng `request.resource.data` ⇒ thầy KHÔNG xoá được mục Khám phá (chỉ ẩn) — sửa khi làm chặng Khám phá.
+
 ## 🚀🚀 BẮT ĐẦU PHIÊN SAU — thầy dừng tối 24/09/2026
 
 ### Thầy giao cho phiên sau
