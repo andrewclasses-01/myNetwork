@@ -16,6 +16,21 @@ Thầy chọn thứ tự: **kỹ thuật trước** → cá nhân → tin nhắn
   rồi **trả về** bằng `--reset hs_142`; thử live: sai mật khẩu báo đúng.
 - ⬜ Trang lớp/khoá CHƯA đòi phiên Firebase (vẫn đọc localStorage) — gắn vào chặng 2 khi trang cần biết "em là ai".
 - ⚠ Luật `nwKhamPha`: `allow delete` dùng `request.resource.data` ⇒ thầy KHÔNG xoá được mục Khám phá (chỉ ẩn) — sửa khi làm chặng Khám phá.
+- ✅ Thầy **"Ok chặng 1"** — nhưng CHƯA đưa lên trang thật (học sinh chưa đổi cách đăng nhập trước 01/10; đưa cùng lúc ra mắt).
+- ✅ Trang thử đồng bộ **web v1.141.0** (`6f1d058`, cách áp bản vá — xem trí nhớ quy-trinh-trang-thu).
+
+### ⏭ PHIÊN SAU BẮT ĐẦU TỪ ĐÂY — CHẶNG 2 TRANG CÁ NHÂN: đã chốt thiết kế, ⬜ CHƯA "ok build" (thầy dừng tại câu hỏi ok build)
+Chốt của thầy 24/09 (KHÔNG hỏi lại):
+1. Avatar MẶC ĐỊNH = **ảnh myStudent** (như trang lớp); chưa có ảnh ⇒ chữ tắt tên.
+2. **Đổi ảnh bìa: MỞ.** **Đổi avatar: KHOÁ** — nút vẫn HIỆN, bấm ra hộp "sắp mở" (kiểu hộp sắp ra mắt). Tương lai thầy cho mở ⇒ avatar mới
+   thành **ảnh avatar CHUNG cho mọi app trong hệ sinh thái** (trang lớp, chat lớp, AWord, myStudent…) — việc đồng bộ đó làm riêng khi mở.
+3. Tab: chỉ **GIỚI THIỆU** mở; BÀI VIẾT + ẢNH hiện nhưng bấm ra "sắp ra mắt" (mở cùng chặng Bảng tin).
+4. Nút **Nhắn tin / Kết bạn** trên trang người khác ⇒ hộp "sắp ra mắt" (mở ở chặng Tin nhắn / Thông báo).
+5. **Trang cá nhân THẦY mở luôn**: bấm avatar / "Thầy Andrew" cột trái dashboard (phiên Google sẵn có); lần đầu tự tạo hồ sơ `nwUsers` vai gv.
+Kế hoạch kỹ thuật đã báo thầy: avatar thanh 6 icon (lop/khoa) → `canhan.html` thay hộp sắp ra mắt · trang đòi phiên Firebase (chưa có ⇒ về đăng nhập) ·
+thanh trên trang cá nhân giữ kiểu trang lớp · **TẮT 2 kênh nghe** (thông báo + tin nhắn) của `thanh.js` tới chặng Tin nhắn/Thông báo (đỡ tốn lượt đọc) ·
+`nw/nw.css` trang thử = y hệt `css/nw.css` repo (đã so). ⬜ 6 chỉ mục vẫn chưa tạo (chặng 2 chỉ Giới thiệu nên chưa bắt buộc).
+⇒ Phiên sau: hỏi thầy "ok build" chặng 2 (AskUserQuestion) rồi mới code.
 
 ## 🚀🚀 BẮT ĐẦU PHIÊN SAU — thầy dừng tối 24/09/2026
 
