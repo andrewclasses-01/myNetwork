@@ -17,6 +17,7 @@ Quy tắc đi kèm:
    File vùng CHUNG ⇒ gắn từng đoạn thay đổi (không chép file), thử cả dashboard sau khi gắn (vì dashboard cũng nạp file chung).
 3. Sửa file vùng CHUNG ở trang thử ⇒ ghi rõ trong commit "(file chung)" để lúc đưa sang nhớ gắn từng đoạn.
 4. Đồng bộ thử sau khi thật đổi dashboard: dùng `git apply` bản vá, `dashboard.html` luôn nhận nguyên phần đổi của thật.
+5. ⭐ **NGOẠI LỆ (thầy chốt):** chặng 7 **mục NETWORK trong trang quản lý** (nhóm chat, bài đăng, báo cáo, từ cấm… ở cột trái dashboard) VẪN build qua trang thử. Để không đụng dashboard thầy đang sửa trên thật: viết phần Network trong **FILE RIÊNG** (vd `js/nw-quanly.js` + `css/nw-quanly.css`), `dashboard.html` ở thử chỉ thêm **vài dòng móc** (thẻ `<script>`/`<link>` + chỗ gắn) — đưa sang thật = chép file riêng + gắn đúng mấy dòng móc đó lên dashboard thật MỚI NHẤT (đây là lần DUY NHẤT được đụng `dashboard.html` khi đưa sang, và phải báo thầy trước).
 
 ## ⭐ 24/09 CHIỀU — CHẶNG 1 (KỸ THUẬT: đăng nhập Firebase Auth) ĐÃ LÀM TRÊN TRANG THỬ — ⬜ chờ thầy thử live + "ok"
 Thầy chọn thứ tự: **kỹ thuật trước** → cá nhân → tin nhắn → bảng tin → thông báo/tìm kiếm → khám phá → Network trong quản lý.
