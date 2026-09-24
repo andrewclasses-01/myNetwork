@@ -1,4 +1,57 @@
-# BÀN GIAO myNetwork — chốt phiên 23/09/2026 (**v0.9.2** `c069c25`, đã push) · trước đó v0.9.0 `ee93d55` · gốc 20/09 (v0.1.0 `dc03133`)
+# BÀN GIAO myNetwork — chốt phiên 24/09/2026: **andrewclasses.com ĐÃ ĐỔI SANG GIAO DIỆN myNetwork** (web v1.140.0 `0f54ab9`) + **TRANG THỬ** để build tiếp
+
+> **Phiên mới đọc khối 🚀 24/09 ngay dưới là đủ.** Khối 🚀 23/09 bên dưới vẫn đúng cho phần code myNetwork (repo này).
+> Cần sâu hơn: `README.md` (nhật ký từng bản) → mục A0/A → `KE HOACH XAY DUNG.md`.
+
+## 🚀🚀 BẮT ĐẦU PHIÊN SAU — thầy dừng tối 24/09/2026
+
+### Thầy giao cho phiên sau
+**Build các trang còn lại của myNetwork TRONG TRANG THỬ; mỗi chặng thầy thử live, chốt "ok" thì mới đưa chặng đó vào andrewclasses.com thật.**
+
+### Có 3 nơi — đừng lẫn
+| Nơi | Là gì | Kho / thư mục | Xem thử trên máy |
+|---|---|---|---|
+| **Trang THẬT** https://andrewclasses.com | myLesson web, HỌC SINH ĐANG DÙNG. Từ 24/09 = giao diện myNetwork, chỉ mở TRANG BÀI TẬP | kho myLesson `web` = `E:\LAP TRINH APP\myLesson\web` (app myLesson + phiên myLesson khác CŨNG đẩy vào đây) | worktree + cổng 8826 `mylesson-web-nw` |
+| **Trang THỬ** https://andrewclasses-01.github.io/andrewclasses-thu/ | bản chép trang thật để build live, HS không biết tới. Dữ liệu bài tập DÙNG CHUNG kho thật | `andrewclasses-01/andrewclasses-thu` = `E:\LAP TRINH APP\andrewclasses-thu` | cổng 8825 `andrewclasses-thu` |
+| **Repo myNetwork** (repo này) | code 6 mảng myNetwork (bảng tin, tin nhắn, khám phá, cá nhân, quản lý, đăng nhập Firebase Auth) — giao diện xong, CHƯA chạy thật lần nào | `E:\LAP TRINH APP\myNetwork` | cổng 8795 `?thu=1` / `?thu=thay` |
+
+Quy trình chi tiết (cách đưa sang thật, cách đồng bộ trang thử): trí nhớ `quy-trinh-trang-thu-mynetwork.md`.
+
+### Đã làm phiên 24/09 (tóm tắt — thầy đã duyệt từng bước)
+1. Mẫu `mau-v29` (`D:\OTHERS\CLAUDE\myNetwork - thiet ke\mau-v29`, cổng 8824 — nay CŨ, nguồn thật là kho thử) → thầy "ok ổn rồi".
+2. **Đăng nhập kiểu myNetwork** (`index.html` + `js/nw-dangnhap.js`, logic CHÉP `js/dangnhap.js` của myLesson): ô *Andrew Classes ID* (= mã My ID cũ) ·
+   ô mật khẩu **KHOÁ**, chữ "Để trống ô này" (thầy: kích hoạt + ép đổi mật khẩu SAU, khi myNetwork xong) · màn chọn nơi học "Xin chào, TÊN" ·
+   dưới nút: **Đăng ký | Liên hệ** — Đăng ký = VỎ ("sắp ra mắt"; ⬜ tương lai: form → lưu kho → thầy xem ở dashboard) · Liên hệ = CHỈ Zalo + điện thoại 0359.769.765.
+   Mã quản lý → dashboard như cũ. Bỏ 3 mục "Coming soon" của màn cũ.
+3. **Thanh 6 icon** ở trang LỚP + KHOÁ (`css/nw-thanh.css`, `js/nw-thanh.js`, tiền tố `nwb-`): chỉ TRANG BÀI TẬP mở; avatar (= Trang cá nhân) + 5 icon →
+   **hộp giới thiệu** (câu móc + ý nổi bật, chữ thầy đã sửa — mảng `GIOI_THIEU`) + **ĐẾM NGƯỢC tới 00:00 Thứ Năm 01/10/2026** (`MOC_RA_MAT`, giờ VN), nút "EM SẼ CHỜ!".
+   ⚠ Hết giờ chỉ đổi chữ "ĐÃ ĐẾN GIỜ RA MẮT!" — tính năng KHÔNG tự mở. ☰ mở sidebar myLesson cũ (ví sao…), nay trượt PHẢI. Bấm thẻ bài → trang làm bài NHƯ CŨ (không thanh).
+   Mở andrewclasses.com / đăng nhập xong **LUÔN mặc định TRANG BÀI TẬP** (thầy chốt cả về sau).
+4. **Dashboard thầy** = thiết kế QUẢN LÝ 22/09: tab đầu **QUẢN LÝ** · cột trái **kiểu Facebook** (không khung, dòng đầu avatar + "Thầy Andrew", icon màu,
+   nhóm "Bài tập" [Trang bài tập = dashboard giữ nguyên] / "Network" [9 mục → hộp sắp ra mắt + mô tả]) · ☰ (`id="moSb"`) mở menu quản lý cũ trượt phải.
+5. **Lên trang thật web v1.140.0 `0f54ab9`** — gắn lên v1.139.0 của phiên myLesson khác (không chép đè), kiểm live (đăng nhập → lớp A1C 4 thẻ + chat).
+6. **Trang thử đồng bộ = v1.140.0** (`ccbe10a`), script `thu/doi-duong-du-lieu.py` (`1fe2917`).
+
+### ⛔ Luật phải giữ
+- **KHÔNG sửa kho `web` thật cho việc myNetwork khi thầy chưa chốt chặng đó.** Trang thử thì push thoải mái.
+- **Kho thử KHÔNG chứa dữ liệu học sinh** (`data/`, `assets/avatar/`, `tools/`, CNAME bị bỏ/.gitignore) — bộ kiểm quyền Claude Code CHẶN bật Pages khi có PII.
+  Code thử đọc `data/*.json` + ảnh HS từ `https://andrewclasses.com/…` (Pages cho CORS `*`). Khi đưa sang thật: KHÔNG mang các chỗ đổi đường này theo.
+- Bộ kiểm quyền cũng CHẶN `gh repo create` công khai — kho thử do thầy tự tạo trên github.com.
+- Đưa sang thật: worktree từ `origin/main` → GẮN phần mới lên bản mới nhất → bump `PHIEN_BAN` + `config.js?v=` MỌI trang (đang **1.140.0 / v=110**; `nw-thanh.*?v=6`) →
+  thử 8826 → `git add` TỪNG FILE → rebase → push → chờ live → kiểm → `merge --ff-only` thư mục `web` chính → xoá worktree.
+- Phiên myLesson đẩy web mới ⇒ thầy nói "đồng bộ trang thử" ⇒ làm theo trí nhớ quy trình (git archive → bỏ file HS → chép đè → script → thử → push).
+
+### Việc kế tiếp (hỏi thầy chọn chặng bằng AskUserQuestion)
+- ⭐ **Câu hỏi LỚN phải giải trước khi đưa trang myNetwork (bảng tin, tin nhắn…) vào trang thử:** các trang đó dùng **đăng nhập Firebase Auth** (email giả + mật khẩu,
+  custom claims, luật `nw*`), còn trang thử/thật đang đăng nhập bằng **mã My ID của myLesson** (localStorage, không có Firebase Auth).
+  ⇒ Chặng myNetwork đầu tiên gần như chắc chắn phải là **KỸ THUẬT**: dán luật `tai-lieu/` (+ chỉ mục) · bật Email/Password + Authorized domain
+  (`andrewclasses-01.github.io` + `andrewclasses.com`) · `tools/tao-tai-khoan.mjs` · nối màn đăng nhập (mở ô mật khẩu) với Firebase Auth. ⛔ Claude không tự dán luật / tạo tài khoản.
+- Gợi ý thứ tự chặng: (1) đăng nhập Firebase Auth trên trang thử → (2) Trang cá nhân → (3) Tin nhắn → (4) Bảng tin → (5) Thông báo/Tìm kiếm → (6) Khám phá → (7) mục Network trong quản lý.
+  Mỗi chặng: chép trang từ repo myNetwork sang kho thử, nối thanh `nw-thanh.js` (bỏ "sắp ra mắt" cho tab đó), thầy thử live, "ok" → đưa sang thật.
+- Còn nợ cũ: xem khối 🚀 23/09 bên dưới (khung sinh nhật 0/182 em có ngày sinh, chặn tin nhắn chưa áp cho `tinnhan.html`, nút Thích tim/ngón cái…).
+- Lỗi SẴN CÓ giao phiên myLesson: điện thoại 375px, thẻ STAGE rộng ~513px ⇒ trang lớp tràn ngang.
+
+## (CŨ) BÀN GIAO myNetwork — chốt phiên 23/09/2026 (**v0.9.2** `c069c25`, đã push) · trước đó v0.9.0 `ee93d55` · gốc 20/09 (v0.1.0 `dc03133`)
 
 > **Phiên mới đọc khối 🚀 ngay dưới là đủ để bắt tay vào việc.** Cần sâu hơn: `README.md` (nhật ký từng bản, chi tiết nhất)
 > → mục A0/A dưới file này (lịch sử 2 phiên thiết kế) → `KE HOACH XAY DUNG.md` (lý do từng quyết định).
