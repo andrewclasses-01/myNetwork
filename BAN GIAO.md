@@ -3,6 +3,21 @@
 > **Phiên mới đọc khối 🚀 24/09 ngay dưới là đủ.** Khối 🚀 23/09 bên dưới vẫn đúng cho phần code myNetwork (repo này).
 > Cần sâu hơn: `README.md` (nhật ký từng bản) → mục A0/A → `KE HOACH XAY DUNG.md`.
 
+## ⛔⛔ LUẬT CHIA VÙNG (thầy chốt tối 24/09) — đọc TRƯỚC mỗi lần build / đồng bộ / đưa sang thật
+Thầy sẽ **build THẲNG trên andrewclasses.com (kho `web` thật)** cho **TRANG QUẢN LÝ (dashboard) và các tính năng trong đó**.
+Chỉ các tính năng **NGOÀI trang quản lý** mới đi đường *trang thử → thầy "ok" → đưa sang thật*.
+| Vùng | Gồm | Nguồn đúng | Làm thế nào |
+|---|---|---|---|
+| **A — Quản lý** | `dashboard.html` + phần chỉ dashboard dùng | **kho `web` thật** | build thẳng trên thật (phiên myLesson/thầy). Trang thử CHỈ NHẬN qua đồng bộ bản vá. ⛔ KHÔNG sửa `dashboard.html` ở kho thử, ⛔ KHÔNG bao giờ chép `dashboard.html` từ thử sang thật |
+| **B — myNetwork ngoài quản lý** | `index.html`, `js/nw-dangnhap.js`, `js/nw-phien.js`, `canhan.html`, tin nhắn, bảng tin… | **kho thử** | build ở thử → "ok" → đưa sang thật |
+| **CHUNG** | `config.js`, `js/chung.js`, `js/chat.js`, `js/thay.js`, `js/nw-thanh.js`, `css/nw-thanh.css` (dashboard CŨNG nạp mấy file này) | kho thật là gốc | ⛔ KHÔNG chép đè cả file sang thật: chỉ GẮN đúng phần mình đổi lên bản thật MỚI NHẤT; `PHIEN_BAN`/`config.js?v=` bump tiếp từ số của bản thật |
+Quy tắc đi kèm:
+1. **Trước khi build ở trang thử**: `git fetch` kho `web` — thật có bản mới ⇒ đồng bộ thử bằng bản vá (trí nhớ quy-trinh-trang-thu) TRƯỚC, rồi mới build.
+2. **Trước khi đưa một chặng sang thật**: liệt kê file chặng đó đổi (`git diff` trong kho thử). Nếu danh sách **có `dashboard.html`** ⇒ DỪNG, hỏi thầy.
+   File vùng CHUNG ⇒ gắn từng đoạn thay đổi (không chép file), thử cả dashboard sau khi gắn (vì dashboard cũng nạp file chung).
+3. Sửa file vùng CHUNG ở trang thử ⇒ ghi rõ trong commit "(file chung)" để lúc đưa sang nhớ gắn từng đoạn.
+4. Đồng bộ thử sau khi thật đổi dashboard: dùng `git apply` bản vá, `dashboard.html` luôn nhận nguyên phần đổi của thật.
+
 ## ⭐ 24/09 CHIỀU — CHẶNG 1 (KỸ THUẬT: đăng nhập Firebase Auth) ĐÃ LÀM TRÊN TRANG THỬ — ⬜ chờ thầy thử live + "ok"
 Thầy chọn thứ tự: **kỹ thuật trước** → cá nhân → tin nhắn → bảng tin → thông báo/tìm kiếm → khám phá → Network trong quản lý.
 - ✅ **159 tài khoản** tạo thật (`tools/tao-tai-khoan.mjs`, 9 lớp/khoá, 0 lỗi) — đọc lại tận kho: 159 Auth + 159 `nwUsers` + claims + `phaiDoiMk:true` + `nwCauHinh/lop`.
