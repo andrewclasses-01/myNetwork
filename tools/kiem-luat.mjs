@@ -70,7 +70,7 @@ try {
   kiem('B sửa chữ bài của A', await goi(b, 'PATCH', '/nwPosts/ZTEST_bai', doc({ chu: 'hack' }), '?updateMask.fieldPaths=chu'), 403);
   kiem('A sửa chữ bài của mình', await goi(a, 'PATCH', '/nwPosts/ZTEST_bai', doc({ chu: 'sửa' }), '?updateMask.fieldPaths=chu'), 200);
   kiem('B ẩn bài (không phải thầy)', await goi(b, 'PATCH', '/nwPosts/ZTEST_bai', doc({ an: true }), '?updateMask.fieldPaths=an'), 403);
-  kiem('B bình luận', await goi(b, 'PATCH', '/nwPosts/ZTEST_bai/binhLuan/ZTEST_bl', doc({ uid: b.uid, tacGia: { uid: b.uid, ten: b.ten, anh: '', lop: b.lop, vaiTro: 'hs' }, chu: 'hi', luc: Date.now(), camXuc: {} })), 200);
+  kiem('B bình luận', await goi(b, 'PATCH', '/nwPosts/ZTEST_bai/binhLuan/ZTEST_bl', doc({ uid: b.uid, tacGia: { uid: b.uid, ten: b.ten, anh: '', lop: b.lop, vaiTro: 'hs' }, chu: 'hi', anh: '', luc: Date.now(), camXuc: {} })), 200);
   kiem('C xoá bình luận của B', await goi(c, 'DELETE', '/nwPosts/ZTEST_bai/binhLuan/ZTEST_bl'), 403);
   kiem('B xoá bài của A', await goi(b, 'DELETE', '/nwPosts/ZTEST_bai'), 403);
 
@@ -91,7 +91,7 @@ try {
   kiem('B đọc thông báo của A', await goi(b, 'GET', '/nwUsers/' + a.uid + '/thongBao/ZTEST_tb'), 403);
   kiem('A sửa giới thiệu của mình', await goi(a, 'PATCH', '/nwUsers/' + a.uid, doc({ gioiThieu: 'xin chào' }), '?updateMask.fieldPaths=gioiThieu'), 200);
   kiem('A sửa TÊN của mình (cấm)', await goi(a, 'PATCH', '/nwUsers/' + a.uid, doc({ ten: 'HACK' }), '?updateMask.fieldPaths=ten'), 403);
-  kiem('A tự khoá/mở khoá (cấm)', await goi(a, 'PATCH', '/nwUsers/' + a.uid, doc({ khoa: false }), '?updateMask.fieldPaths=khoa'), 403);
+  kiem('A tự khoá/mở khoá (cấm)', await goi(a, 'PATCH', '/nwUsers/' + a.uid, doc({ khoa: true }), '?updateMask.fieldPaths=khoa'), 403);
   kiem('B báo cáo bài', await goi(b, 'PATCH', '/nwBaoCao/ZTEST_bc', doc({ tu: b.uid, tuTen: b.ten, baiId: 'ZTEST_bai', uidBai: a.uid, tenBai: a.ten, lyDo: 'khac', chu: '', tomTat: '', luc: Date.now(), trangThai: 'moi' })), 200);
   kiem('B đọc kho báo cáo (chỉ thầy)', await goi(b, 'GET', '/nwBaoCao/ZTEST_bc'), 403);
   kiem('B ghi nwCauHinh (chỉ thầy)', await goi(b, 'PATCH', '/nwCauHinh/ZTEST', doc({ ds: [] })), 403);
