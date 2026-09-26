@@ -1,5 +1,7 @@
 # BÀN GIAO myNetwork — chốt phiên 24/09/2026: **andrewclasses.com ĐÃ ĐỔI SANG GIAO DIỆN myNetwork** (web v1.140.0 `0f54ab9`) + **TRANG THỬ** để build tiếp
 
+> 🔒 **27/09/2026 — BỊ TẤN CÔNG, luật đã siết.** Đọc `QUY TAC BAO MAT.md` trước khi đổi luật/đăng nhập. `nwVao()` nay đòi hồ sơ `nwUsers/{uid}`; tên + tích GV trên bài/bình luận/tin/thông báo phải khớp hồ sơ; tự đăng ký tài khoản Firebase đã TẮT. Tài khoản thử: `tools/kiem-luat.mjs` (27/27). Hồ sơ chi tiết ở kho riêng tư của thầy.
+
 > **Phiên mới đọc khối 🚀 24/09 ngay dưới là đủ.** Khối 🚀 23/09 bên dưới vẫn đúng cho phần code myNetwork (repo này).
 > Cần sâu hơn: `README.md` (nhật ký từng bản) → mục A0/A → `KE HOACH XAY DUNG.md`.
 
