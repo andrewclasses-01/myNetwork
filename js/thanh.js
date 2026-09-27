@@ -162,7 +162,7 @@
         dongTha();
         if (!t) return;
         if (!t.daDoc) danhDauDoc([t.id]);
-        if (t.link) NW.di(t.link);
+        if (t.link && NW.linkAnToan(t.link)) NW.di(t.link);   // (27/09/2026) chỉ link trong site — xem NW.linkAnToan
       };
       var ok = $('[data-kbok]', b), xoa = $('[data-kbxoa]', b);
       if (ok) ok.onclick = function () { xuLyKetBan(t, 'ok', neo); };

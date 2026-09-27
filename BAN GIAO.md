@@ -413,3 +413,12 @@ Dựng mẫu HTML chạy được (mỗi vòng MỘT file mới: `mau-v1.html`, 
 `D:\OTHERS\CLAUDE\myNetwork - thiet ke\` hoặc ngay trong repo `mau/`), phục vụ bằng cổng riêng, thầy xem
 rồi góp ý, tới khi "ok build" mới sửa vào trang thật. Đo bằng `getBoundingClientRect` ở 3 mốc (ngay · rAF ·
 `document.fonts.ready`), kiểm 375 px, console sạch.
+## 27/09/2026 tối — RÀ XSS: link trong THÔNG BÁO do người khác ghi chỉ được là trang trong site
+
+Agent rà XSS (myLesson `HO SO BAO MAT.md` 8.5): `js/thanh.js` bấm thông báo ⇒ `NW.di(t.link)` ⇒ `location.href = link`.
+`nwUsers/{nạn nhân}/thongBao` ai đăng nhập cũng tạo được cho người khác, luật không ràng `link` ⇒ `link: 'javascript:…'` chạy JS trong
+phiên nạn nhân khi bấm. Vá 2 tầng:
+- `js/loi.js` `NW.linkAnToan(s)` = `^[a-z0-9-]+\.html(\?[A-Za-z0-9_=&%.-]*)?(#[A-Za-z0-9_-]*)?$` (mọi link hợp lệ hiện có: `baidang.html?id=`,
+  `canhan.html?uid=`, `tinnhan.html?phong=`); `js/thanh.js` chỉ `NW.di` khi an toàn.
+- Luật Firestore `thongBao` create: `link` vắng hoặc khớp cùng khuôn — công cụ `myLesson Web/tools/dang-luat-thong-bao-link.js` (--xem/--dang/--kiem/--lui).
+Mọi chỗ khác (bài, bình luận, chat, hồ sơ, báo cáo) đã qua `an()`; `nwKhamPha.link` chỉ thầy ghi.

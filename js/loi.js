@@ -826,6 +826,9 @@
     if (/[?&]thu=/.test(s)) return s + neo;                                       // da co san
     return s + (s.indexOf('?') >= 0 ? '&' : '?') + 'thu=' + encodeURIComponent(NW.thamSo('thu')) + neo;
   };
+  // (27/09/2026, rà XSS sau tấn công Tr0ngX) LINK TRONG THÔNG BÁO do NGƯỜI KHÁC ghi (`nwUsers/{tôi}/thongBao.link`)
+  // chỉ được là trang trong site: `ten.html?a=b#neo`. `javascript:`/`data:`/link ngoài ⇒ không đi. Luật Firestore cũng ràng cùng khuôn.
+  NW.linkAnToan = function (s) { return /^[a-z0-9-]+\.html(\?[A-Za-z0-9_=&%.-]*)?(#[A-Za-z0-9_-]*)?$/i.test(String(s || '')); };
   NW.di = function (href) { location.href = NW.duong(href); };
   NW.thay = function (href) { location.replace(NW.duong(href)); };
   // Bam vao the <a> nao cung nan duong TRUOC khi trinh duyet di (ca bam chuot giua / Ctrl+bam / ban phim).
