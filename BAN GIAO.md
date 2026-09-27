@@ -2,6 +2,13 @@
 
 > 🔒 **27/09/2026 — BỊ TẤN CÔNG, luật đã siết.** Đọc `QUY TAC BAO MAT.md` trước khi đổi luật/đăng nhập. `nwVao()` nay đòi hồ sơ `nwUsers/{uid}`; tên + tích GV trên bài/bình luận/tin/thông báo phải khớp hồ sơ; tự đăng ký tài khoản Firebase đã TẮT. Tài khoản thử: `tools/kiem-luat.mjs` (27/27). Hồ sơ chi tiết ở kho riêng tư của thầy.
 
+> 🔐 **27/09/2026 trưa — TÀI KHOẢN HỌC SINH ĐÃ DÙNG THẬT cho andrewclasses.com (web myLesson v1.158.0).** Em vào bằng ID +
+> mật khẩu (Firebase Auth); mật khẩu ban đầu CHUNG THEO LỚP do `tools/tao-tai-khoan.mjs --mat-khau-lop` sinh (cất ngoài git, chỉ
+> trên máy thầy đã chạy), lần đầu bắt đặt mật khẩu riêng. Công cụ KHÔNG còn đặt mật khẩu = mã. Lệnh mới: `--mat-khau-lop [--moi]` ·
+> `--reset <mã số>` · `--khoa-qua-han [--ngay 7]` · `--trang-thai`; claims thêm `ma`; tự gỡ email trùng khi myStudent đánh lại id
+> (`giaiPhongEmail`). 159 tài khoản đã MỞ LẠI (commit `68b7a4e`). ⛔ Trang thử `andrewclasses-thu` chưa nhận bản này.
+> ⛔ `--reset` cần bảng mật khẩu lớp — máy khác máy đã phát sẽ báo thiếu, đừng tự sinh bộ mới (`--moi`) khi chưa hỏi thầy.
+
 > **Phiên mới đọc khối 🚀 24/09 ngay dưới là đủ.** Khối 🚀 23/09 bên dưới vẫn đúng cho phần code myNetwork (repo này).
 > Cần sâu hơn: `README.md` (nhật ký từng bản) → mục A0/A → `KE HOACH XAY DUNG.md`.
 
